@@ -5,7 +5,6 @@ import com.simibubi.create.content.processing.recipe.ProcessingInventory;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +31,7 @@ public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlock
     public abstract Optional<ProcessingRecipe<RecipeWrapper>> findRecipe();
 
     @Shadow
-    public abstract void applyRecipe();
+    protected abstract void applyRecipe();
 
     // 创建空构造函数来通过编译器语法检查，没有实际作用
     public CrushingWheelControllerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -76,10 +75,10 @@ public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlock
             )
     )
     private void processImmediately(CallbackInfo ci) {
-        if (level.isClientSide)
+        if (level == null || level.isClientSide)
             return;
 
-        if (inventory.remainingTime < 20 && !inventory.appliedRecipe) {
+        if (inventory.remainingTime <= 20 && !inventory.appliedRecipe) {
             applyRecipe();
             inventory.appliedRecipe = true;
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2 | 16);

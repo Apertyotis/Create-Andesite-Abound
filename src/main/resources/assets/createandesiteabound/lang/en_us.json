@@ -1,0 +1,4 @@
+{
+  "jei.text.processing_duration": "Recipe time: %s ticks",
+  "jei.text.processing_duration_with_num": "Recipe time: %s ticks / %s items"
+}
