@@ -15,7 +15,9 @@
     "create.MixerBlockEntityMixin",
     "create.PressBehaviourMixin",
     "create.SawBlockEntityMixin",
-    "create.SpoutBlockEntityMixin",
+    "create.SpoutBlockEntityMixin"
+  ],
+  "client": [
     "jei.BlockCuttingCategoryMixin",
     "jei.CreateRecipeCategoryMixin",
     "jei.CrushingCategoryMixin",
@@ -28,8 +30,6 @@
     "jei.ProcessingViaFanCategoryMixin",
     "jei.SawingCategoryMixin",
     "jei.SpoutCategoryMixin"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1
