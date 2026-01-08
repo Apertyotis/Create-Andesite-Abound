@@ -1,4 +1,6 @@
 {
   "jei.text.processing_duration": "Recipe time: %s ticks",
-  "jei.text.processing_duration_with_num": "Recipe time: %s ticks / %s items"
+  "jei.text.processing_duration_with_num": "Recipe time: %s ticks / %s items",
+  "jei.text.total_energy": "Total cost: %s FE",
+  "jei.text.max_charge_rate": "Charging rate: %s FE / ticks"
 }

@@ -1,4 +1,6 @@
 {
 	"jei.text.processing_duration": "配方时间: %s 刻",
-	"jei.text.processing_duration_with_num": "配方时间: %s 刻 / %s 物品"
+	"jei.text.processing_duration_with_num": "配方时间: %s 刻 / %s 物品",
+	"jei.text.total_energy": "总计消耗: %s FE",
+	"jei.text.max_charge_rate": "充电速率: %s FE / 刻"
 }
