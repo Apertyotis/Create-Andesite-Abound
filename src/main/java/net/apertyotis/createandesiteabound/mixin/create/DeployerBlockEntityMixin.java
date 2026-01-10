@@ -1,5 +1,8 @@
 package net.apertyotis.createandesiteabound.mixin.create;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
@@ -12,8 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Accessor;
-import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,16 +28,12 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
     @Shadow
     protected int timer;
 
+    @Shadow
+    protected abstract int getTimerSpeed();
+
     // 创建空构造函数来通过编译器语法检查，没有实际作用
     public DeployerBlockEntityMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
-    }
-
-    // 修改机械手的工作速度
-    @Inject(method = "getTimerSpeed", at = @At("HEAD"), cancellable = true)
-    private void getTimerSpeedMixin(CallbackInfoReturnable<Integer> cir) {
-        int speed = (int) (getSpeed() == 0 ? 0 : Mth.clamp(Math.abs(getSpeed() * 1.5), 8, 384));
-        cir.setReturnValue(speed);
     }
 
     // 让机械手等待阶段倒计时结束，但发现目标为传送带等装配目标时不再什么都不做
@@ -58,19 +55,19 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
         }
     }
 
-    // 让等待阶段的默认冷却下降到300
-    @Inject(
+    // 跳过原先的倒计时代码
+    @WrapOperation(
             method = "tick",
             at = @At(
                     value = "FIELD",
                     target = "Lcom/simibubi/create/content/kinetics/deployer/DeployerBlockEntity;timer:I",
-                    opcode = Opcodes.PUTFIELD,
-                    ordinal = 5,
-                    shift = At.Shift.AFTER
+                    opcode = Opcodes.GETFIELD,
+                    ordinal = 0
             )
     )
-    private void redirectTimerSet(CallbackInfo ci) {
-        timer = 300;
+    private int skipReturnIfStateCanChange(DeployerBlockEntity instance, Operation<Integer> original, @Cancellable CallbackInfo ci) {
+        timer -= getTimerSpeed();
+        if (timer > 0) ci.cancel();
+        return -1;
     }
-
 }

@@ -22,7 +22,7 @@ public abstract class DeployingCategoryMixin extends CreateRecipeCategory<Deploy
     public @NotNull List<Component> getTooltipStrings(@NotNull DeployerApplicationRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 74 && mouseX < 102 && mouseY > 1 && mouseY < 65) {
-            tooltip.add(Component.translatable("jei.text.processing_duration", 10));
+            tooltip.add(Component.translatable("jei.text.processing_duration", 5));
         }
         return tooltip;
     }
