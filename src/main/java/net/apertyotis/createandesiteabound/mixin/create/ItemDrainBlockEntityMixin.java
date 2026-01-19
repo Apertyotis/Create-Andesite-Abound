@@ -21,7 +21,8 @@ public class ItemDrainBlockEntityMixin {
                     value = "FIELD",
                     target = "Lcom/simibubi/create/content/fluids/drain/ItemDrainBlockEntity;processingTicks:I",
                     opcode = Opcodes.PUTFIELD,
-                    ordinal = 1
+                    ordinal = 1,
+                    shift = At.Shift.AFTER
             )
     )
     private void modifyProcessingTicks(CallbackInfo ci) {

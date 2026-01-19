@@ -8,6 +8,7 @@
     "accessor.DeployerBlockEntityAccessor",
     "create.BasinBlockEntityMixin",
     "create.BeltDeployerCallbacksMixin",
+    "create.BeltFunnelInteractionHandlerMixin",
     "create.CrushingWheelControllerBlockEntityMixin",
     "create.DeployerBlockEntityMixin",
     "create.ItemDrainBlockEntityMixin",
