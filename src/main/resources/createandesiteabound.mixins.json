@@ -9,6 +9,7 @@
     "create.BasinBlockEntityMixin",
     "create.BeltDeployerCallbacksMixin",
     "create.BeltFunnelInteractionHandlerMixin",
+    "create.BeltInventoryMixin",
     "create.CrushingWheelControllerBlockEntityMixin",
     "create.DeployerBlockEntityMixin",
     "create.ItemDrainBlockEntityMixin",
