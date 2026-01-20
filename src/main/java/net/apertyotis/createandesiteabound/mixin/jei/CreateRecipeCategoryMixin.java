@@ -22,7 +22,7 @@ public abstract class CreateRecipeCategoryMixin<T extends Recipe<?>> implements 
         cir.setReturnValue((view, tooltip) -> {
             float chance = output.getChance();
             if (chance != 1) {
-                DecimalFormat df = new DecimalFormat("0.#####");
+                DecimalFormat df = new DecimalFormat("0.####");
                 String chanceString = df.format(chance * 100);
                 tooltip.add(1, Lang.translateDirect("recipe.processing.chance", chanceString)
                         .withStyle(ChatFormatting.GOLD));

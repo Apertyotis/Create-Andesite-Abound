@@ -30,6 +30,7 @@
     "jei.PressingCategoryMixin",
     "jei.ProcessingViaFanCategoryMixin",
     "jei.SawingCategoryMixin",
+    "jei.SequencedAssemblyCategoryMixin",
     "jei.SpoutCategoryMixin"
   ],
   "injectors": {
