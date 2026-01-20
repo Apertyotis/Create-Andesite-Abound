@@ -27,6 +27,10 @@ public abstract class BeltInventoryMixin {
     @Shadow
     private List<TransportedItemStack> items;
 
+    @Final
+    @Shadow
+    List<TransportedItemStack> toRemove;
+
     @Shadow
     boolean beltMovementPositive;
 
@@ -115,13 +119,17 @@ public abstract class BeltInventoryMixin {
 
         // 靠终点端物品会优先提取，与原方法行为一致
         int index = caa$lowerBound(items, furtherPos, beltMovementPositive);
-        if (index < items.size()) {
+        while (index < items.size()) {
             TransportedItemStack stack = items.get(index);
-            if (beltMovementPositive ? stack.beltPosition >= closerPos : stack.beltPosition <= closerPos) {
+            if (beltMovementPositive ? stack.beltPosition < closerPos : stack.beltPosition > closerPos) {
+                // 区间遍历完成，退出
+                break;
+            } else if (!toRemove.contains(stack)) {
                 // 物品有效，返回
                 cir.setReturnValue(stack);
                 return;
             }
+            ++index;
         }
 
         // 未找到物品，返回空，取消原方法
