@@ -31,7 +31,8 @@
     "jei.ProcessingViaFanCategoryMixin",
     "jei.SawingCategoryMixin",
     "jei.SequencedAssemblyCategoryMixin",
-    "jei.SpoutCategoryMixin"
+    "jei.SpoutCategoryMixin",
+    "renderer.FluidRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
