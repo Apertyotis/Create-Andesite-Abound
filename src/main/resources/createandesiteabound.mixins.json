@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "createandesiteabound.refmap.json",
   "mixins": [
+    "accessor.CombinedTankWrapperAccessor",
     "accessor.DeployerBlockEntityAccessor",
     "create.BasinBlockEntityMixin",
     "create.BasinOperatingBlockEntityMixin",
