@@ -17,6 +17,7 @@
     "create.MixerBlockEntityMixin",
     "create.PressBehaviourMixin",
     "create.SawBlockEntityMixin",
+    "create.SequencedAssemblyRecipeMixin",
     "create.SpoutBlockEntityMixin"
   ],
   "client": [
