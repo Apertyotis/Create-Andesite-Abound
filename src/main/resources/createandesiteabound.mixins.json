@@ -7,8 +7,10 @@
   "mixins": [
     "accessor.CombinedTankWrapperAccessor",
     "accessor.DeployerBlockEntityAccessor",
+    "accessor.FilteringBehaviourAccessor",
     "create.BasinBlockEntityMixin",
     "create.BasinOperatingBlockEntityMixin",
+    "create.BasinRecipeMixin",
     "create.BeltDeployerCallbacksMixin",
     "create.BeltFunnelInteractionHandlerMixin",
     "create.BeltInventoryMixin",
