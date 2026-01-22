@@ -69,8 +69,8 @@ public abstract class BeltInventoryMixin {
     {
         // 所需判断的区间最远处
         float furtherPos = beltMovementPositive ? segmentPos + 1 : segmentPos - 1;
-        // 最近处为中点回退1/16格，这是插入物品的位置
-        float closerPos = segment + 0.5f + (beltMovementPositive ? -1f : 1f) / 16;
+        // 最近处，比理想状态下的范围稍大，因为传送带并不完美
+        float closerPos = beltMovementPositive ? segment : segment + 1;
         // 约定最远物品在列表低索引处
         int index = caa$lowerBound(items, furtherPos, beltMovementPositive);
         while(index < items.size()) {
