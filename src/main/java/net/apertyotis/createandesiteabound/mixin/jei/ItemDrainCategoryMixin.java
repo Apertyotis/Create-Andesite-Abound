@@ -30,7 +30,7 @@ public abstract class ItemDrainCategoryMixin extends CreateRecipeCategory<Emptyi
     public @NotNull List<Component> getTooltipStrings(@NotNull EmptyingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 74 && mouseX < 102 && mouseY > 21 && mouseY < 45) {
-            tooltip.add(Component.translatable("jei.text.processing_duration", 10));
+            tooltip.add(Component.translatable("jei.text.processing_duration", 20));
         }
         return tooltip;
     }

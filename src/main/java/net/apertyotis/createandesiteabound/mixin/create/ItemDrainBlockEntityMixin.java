@@ -1,5 +1,7 @@
 package net.apertyotis.createandesiteabound.mixin.create;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.fluids.drain.ItemDrainBlockEntity;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,5 +39,19 @@ public class ItemDrainBlockEntityMixin {
     )
     private void redirectItemMovementPerTick(CallbackInfoReturnable<Float> cir){
         cir.setReturnValue(0.1f);
+    }
+
+    // 更改分液配方应用的时机
+    @WrapOperation(
+            method = "continueProcessing",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lcom/simibubi/create/content/fluids/drain/ItemDrainBlockEntity;processingTicks:I",
+                    opcode = Opcodes.GETFIELD,
+                    ordinal = 0
+            )
+    )
+    private int redirectProcessingTicks_1(ItemDrainBlockEntity instance, Operation<Integer> original) {
+        return original.call(instance) + 1;
     }
 }
