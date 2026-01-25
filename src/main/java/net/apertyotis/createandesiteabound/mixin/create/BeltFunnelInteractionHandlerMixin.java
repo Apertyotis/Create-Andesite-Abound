@@ -7,6 +7,7 @@ import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.kinetics.belt.transport.BeltFunnelInteractionHandler;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import net.apertyotis.createandesiteabound.Config;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -76,6 +77,8 @@ public abstract class BeltFunnelInteractionHandlerMixin {
             @Local(name = "beltMovementPositive") boolean beltMovementPositive,
             @Local(name = "funnelEntry") float funnelEntry)
     {
+        if (!Config.belt_funnel_detection_tweak) return value;
+
         return (nextOffset >= funnelEntry && beltMovementPositive) ||
                 (nextOffset <= funnelEntry && !beltMovementPositive);
     }

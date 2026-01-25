@@ -3,6 +3,7 @@ package net.apertyotis.createandesiteabound.mixin.create;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.fluids.drain.ItemDrainBlockEntity;
+import net.apertyotis.createandesiteabound.Config;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,6 +29,7 @@ public class ItemDrainBlockEntityMixin {
             )
     )
     private void modifyProcessingTicks(CallbackInfo ci) {
+        if (!Config.item_drain_speed_change) return;
         processingTicks--;
     }
 
@@ -38,6 +40,7 @@ public class ItemDrainBlockEntityMixin {
             cancellable = true
     )
     private void redirectItemMovementPerTick(CallbackInfoReturnable<Float> cir){
+        if (!Config.item_drain_speed_change) return;
         cir.setReturnValue(0.1f);
     }
 
@@ -52,6 +55,7 @@ public class ItemDrainBlockEntityMixin {
             )
     )
     private int redirectProcessingTicks_1(ItemDrainBlockEntity instance, Operation<Integer> original) {
+        if (!Config.item_drain_speed_change) return original.call(instance);
         return original.call(instance) + 1;
     }
 }

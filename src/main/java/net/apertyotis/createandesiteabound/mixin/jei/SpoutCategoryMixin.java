@@ -4,6 +4,7 @@ import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.SpoutCategory;
 import com.simibubi.create.content.fluids.transfer.FillingRecipe;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import net.apertyotis.createandesiteabound.Config;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +23,8 @@ public abstract class SpoutCategoryMixin extends CreateRecipeCategory<FillingRec
     public @NotNull List<Component> getTooltipStrings(@NotNull FillingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 76 && mouseX < 100 && mouseY > 1 && mouseY < 64) {
-            tooltip.add(Component.translatable("jei.text.processing_duration", 20));
+            int processingTicks = Config.spout_speed_change ? 20 : 21;
+            tooltip.add(Component.translatable("jei.text.processing_duration", processingTicks));
         }
         return tooltip;
     }

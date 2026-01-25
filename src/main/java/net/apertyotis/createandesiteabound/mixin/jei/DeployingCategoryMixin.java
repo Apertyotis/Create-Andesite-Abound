@@ -4,6 +4,7 @@ import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.DeployingCategory;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import net.apertyotis.createandesiteabound.Config;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +23,8 @@ public abstract class DeployingCategoryMixin extends CreateRecipeCategory<Deploy
     public @NotNull List<Component> getTooltipStrings(@NotNull DeployerApplicationRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 74 && mouseX < 102 && mouseY > 1 && mouseY < 65) {
-            tooltip.add(Component.translatable("jei.text.processing_duration", 5));
+            int processingTicks = Config.deployer_speed_change ? 5 : 6;
+            tooltip.add(Component.translatable("jei.text.processing_duration", processingTicks));
         }
         return tooltip;
     }

@@ -4,6 +4,7 @@ import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.MillingCategory;
 import com.simibubi.create.content.kinetics.crusher.AbstractCrushingRecipe;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import net.apertyotis.createandesiteabound.Config;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,7 +24,7 @@ public abstract class MillingCategoryMixin extends CreateRecipeCategory<Abstract
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 42 && mouseX < 71 && mouseY > 18 && mouseY < 50) {
             int duration = recipe.getProcessingDuration();
-            if (duration == 0) duration = 10;
+            if (duration == 0) duration = Config.millstone_speed_change ? 10 : 100;
             tooltip.add(Component.translatable("jei.text.processing_duration", duration));
         }
         return tooltip;

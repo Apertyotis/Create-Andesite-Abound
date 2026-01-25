@@ -4,6 +4,7 @@ import com.simibubi.create.compat.jei.category.BasinCategory;
 import com.simibubi.create.compat.jei.category.MixingCategory;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import net.apertyotis.createandesiteabound.Config;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +25,7 @@ public abstract class MixingCategoryMixin extends BasinCategory {
         if (mouseX > 90 && mouseX < 120 && mouseY > 9 && mouseY < 76) {
             int duration = recipe.getProcessingDuration();
             if (duration == 0) duration = 100;
-            duration = (int) Math.ceil(duration * 0.15);
+            if (Config.mixer_speed_change) duration = (int) Math.ceil(duration * 0.15);
             tooltip.add(Component.translatable("jei.text.processing_duration", duration));
         }
         return tooltip;

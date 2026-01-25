@@ -8,6 +8,7 @@ import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.Couple;
+import net.apertyotis.createandesiteabound.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -48,6 +49,7 @@ public abstract class MixerBlockEntityMixin extends BasinOperatingBlockEntity {
             )
     )
     private int modifyProcessingTicks(MechanicalMixerBlockEntity instance, Operation<Integer> original) {
+        if (!Config.mixer_speed_change) return original.call(instance);
         // 计算配方时间
         if (processingTicks < 0) {
             float recipeSpeed = 1;
@@ -75,6 +77,7 @@ public abstract class MixerBlockEntityMixin extends BasinOperatingBlockEntity {
     // 增加1tick启动延迟，来抵消抬头过快的bug
     @Inject(method = "startProcessingBasin", at = @At("TAIL"))
     private void afterStartProcessingBasin(CallbackInfo ci) {
+        if (!Config.mixer_speed_change) return;
         runningTicks = -1;
     }
 }

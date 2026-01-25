@@ -4,6 +4,7 @@ import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock
 import com.simibubi.create.content.processing.recipe.ProcessingInventory;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import net.apertyotis.createandesiteabound.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -41,6 +42,8 @@ public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlock
     // 修改配方时间，抵消西米布比神秘的条件判断影响，并设置默认配方时间为30
     @Inject(method = "itemInserted", at = @At("HEAD"), cancellable = true)
     private void modifyProcessingDuration(ItemStack stack, CallbackInfo ci) {
+        if (!Config.crushing_wheel_speed_change) return;
+
         Optional<ProcessingRecipe<RecipeWrapper>> recipe = findRecipe();
         inventory.remainingTime = recipe.isPresent() ? recipe.get().getProcessingDuration() + 20 : 50;
         inventory.appliedRecipe = false;
@@ -54,6 +57,8 @@ public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlock
             name = "processingSpeed"
     )
     private float modifyProcessingSpeed(float original) {
+        if (!Config.crushing_wheel_speed_change) return original;
+
         if (inventory.appliedRecipe) return 1;
 
         float speed = crushingspeed * 50 / 256;
@@ -75,6 +80,8 @@ public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlock
             )
     )
     private void processImmediately(CallbackInfo ci) {
+        if (!Config.crushing_wheel_speed_change) return;
+
         if (level == null || level.isClientSide)
             return;
 

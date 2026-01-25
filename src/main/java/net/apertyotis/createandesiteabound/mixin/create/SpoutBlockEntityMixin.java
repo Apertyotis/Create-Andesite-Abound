@@ -2,6 +2,7 @@ package net.apertyotis.createandesiteabound.mixin.create;
 
 import com.simibubi.create.content.fluids.spout.SpoutBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import net.apertyotis.createandesiteabound.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,7 +36,9 @@ public abstract class SpoutBlockEntityMixin extends SmartBlockEntity {
             )
     )
     private void afterTick(CallbackInfo ci) {
-        if (processingTicks == 19) processingTicks--;
+        if (!Config.spout_speed_change || processingTicks != 19) return;
+
+        processingTicks--;
     }
 
     // 设定储罐大小为2000mb
@@ -47,6 +50,7 @@ public abstract class SpoutBlockEntityMixin extends SmartBlockEntity {
             )
     )
     private int modifyTankCapacity(int original) {
+        if (!Config.spout_double_capacity) return original;
         return 2000;
     }
 }

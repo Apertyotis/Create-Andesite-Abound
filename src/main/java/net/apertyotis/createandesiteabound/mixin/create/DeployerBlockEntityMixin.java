@@ -7,9 +7,9 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import net.apertyotis.createandesiteabound.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.objectweb.asm.Opcodes;
@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static com.simibubi.create.content.kinetics.base.DirectionalKineticBlock.FACING;
 
@@ -48,9 +47,13 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
             )
     )
     private void endWaitingState(CallbackInfo ci) {
+        if (!Config.deployer_speed_change) return;
+
         Direction facing = getBlockState().getValue(FACING);
         if (facing != Direction.DOWN) return;
-        if (BlockEntityBehaviour.get(level, worldPosition.below(2), TransportedItemStackHandlerBehaviour.TYPE) != null) {
+        if (BlockEntityBehaviour.get(
+                level, worldPosition.below(2),
+                TransportedItemStackHandlerBehaviour.TYPE) != null) {
             timer = -1000;
         }
     }
@@ -65,7 +68,13 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
                     ordinal = 0
             )
     )
-    private int skipReturnIfStateCanChange(DeployerBlockEntity instance, Operation<Integer> original, @Cancellable CallbackInfo ci) {
+    private int skipReturnIfStateCanChange(
+            DeployerBlockEntity instance,
+            Operation<Integer> original,
+            @Cancellable CallbackInfo ci)
+    {
+        if (!Config.deployer_speed_change) return original.call(instance);
+
         timer -= getTimerSpeed();
         if (timer > 0) ci.cancel();
         return -1;
