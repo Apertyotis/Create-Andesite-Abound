@@ -30,59 +30,58 @@ public class Config {
         public final ForgeConfigSpec.BooleanValue PRESS_SPEED_CHANGE;
         public final ForgeConfigSpec.BooleanValue SAW_SPEED_CHANGE;
         public final ForgeConfigSpec.BooleanValue SPOUT_SPEED_CHANGE;
+        public final ForgeConfigSpec.BooleanValue CHUTE_SPEED_CHANGE;
 
         public final ForgeConfigSpec.BooleanValue BELT_FUNNEL_DETECTION_TWEAK;
         public final ForgeConfigSpec.BooleanValue SPOUT_DOUBLE_CAPACITY;
+        public final ForgeConfigSpec.BooleanValue NO_CHUTE_LEAKING;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
             builder.comment("Recipe Time Normalization").push("normalization");
             DEPLOYER_SPEED_CHANGE = builder
-                    .comment("")
                     .comment("Set the Deployer’s full-speed processing time to 5 ticks.")
                     .define("deployer", true);
             CRUSHING_WHEEL_SPEED_CHANGE = builder
-                    .comment("")
                     .comment("Set the Crushing Wheel’s full-speed processing time equals to recipe time and default value to 30 ticks.")
                     .define("crushing_wheel", true);
             ITEM_DRAIN_SPEED_CHANGE = builder
-                    .comment("")
                     .comment("Set the Item Drain's rolling time to 10 ticks and recipe time to 10 ticks.")
                     .define("item_drain", true);
             MILLSTONE_SPEED_CHANGE = builder
-                    .comment("")
                     .comment("Set the Millstone's full-speed processing time equals to recipe time.")
                     .define("millstone", true);
             MIXER_SPEED_CHANGE = builder
-                    .comment("")
                     .comment("Set the Mechanical Mixer's default full-speed processing time to 15 ticks.")
                     .define("mixer", true);
             PRESS_SPEED_CHANGE = builder
-                    .comment("")
                     .comment("Set the Mechanical Press's full-speed processing time to 10 ticks.")
                     .define("press", true);
             SAW_SPEED_CHANGE = builder
-                    .comment("")
                     .comment("Set the Mechanical Saw's full-speed processing time to 10 ticks each bulk.")
                     .define("saw", true);
             SPOUT_SPEED_CHANGE = builder
-                    .comment("")
                     .comment("Set the Spout's processing time to 20 ticks.")
                     .define("spout", true);
+            CHUTE_SPEED_CHANGE = builder
+                    .comment("Set the Chute's default transport time to 5 ticks.")
+                    .define("chute", true);
             builder.pop();
 
             // 其他非 bugfix 调整
             builder.comment("Behaviour Tweaks").push("tweaks");
             BELT_FUNNEL_DETECTION_TWEAK = builder
-                    .comment("")
                     .comment("Allows funnels to extract items positioned exactly at the center of a belt.")
                     .comment("Previously, funnels could only extract items past the center.")
                     .comment("When a opposing funnel blocks items at the center, all side-facing belt funnels stop extracting, which is unintuitive.")
                     .define("belt_funnel_detection_tweak", true);
             SPOUT_DOUBLE_CAPACITY = builder
-                    .comment("")
                     .comment("Set the spout's fluid capacity to 2000 mB.")
                     .define("spout_double_capacity", true);
+            NO_CHUTE_LEAKING = builder
+                    .comment("Prevent Diagonal Chutes from interacting with containers below.")
+                    .comment("Because visually, Diagonal Chutes have no opening at the bottom.")
+                    .define("no_chute_leaking", true);
             builder.pop();
         }
     }
@@ -96,9 +95,11 @@ public class Config {
     public static boolean press_speed_change;
     public static boolean saw_speed_change;
     public static boolean spout_speed_change;
+    public static boolean chute_speed_change;
 
     public static boolean belt_funnel_detection_tweak;
     public static boolean spout_double_capacity;
+    public static boolean no_chute_leaking;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -113,8 +114,10 @@ public class Config {
         press_speed_change = COMMON.PRESS_SPEED_CHANGE.get();
         saw_speed_change = COMMON.SAW_SPEED_CHANGE.get();
         spout_speed_change = COMMON.SPOUT_SPEED_CHANGE.get();
+        chute_speed_change = COMMON.CHUTE_SPEED_CHANGE.get();
 
         belt_funnel_detection_tweak = COMMON.BELT_FUNNEL_DETECTION_TWEAK.get();
         spout_double_capacity = COMMON.SPOUT_DOUBLE_CAPACITY.get();
+        no_chute_leaking = COMMON.NO_CHUTE_LEAKING.get();
     }
 }
