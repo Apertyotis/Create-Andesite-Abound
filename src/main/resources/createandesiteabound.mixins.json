@@ -17,6 +17,7 @@
     "create.ChuteBlockEntityMixin",
     "create.CrushingWheelControllerBlockEntityMixin",
     "create.DeployerBlockEntityMixin",
+    "create.FluidNetworkMixin",
     "create.ItemDrainBlockEntityMixin",
     "create.MillstoneBlockEntityMixin",
     "create.MixerBlockEntityMixin",

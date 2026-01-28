@@ -31,6 +31,7 @@ public class Config {
         public final ForgeConfigSpec.BooleanValue SAW_SPEED_CHANGE;
         public final ForgeConfigSpec.BooleanValue SPOUT_SPEED_CHANGE;
         public final ForgeConfigSpec.BooleanValue CHUTE_SPEED_CHANGE;
+        public final ForgeConfigSpec.BooleanValue PUMP_SPEED_CHANGE;
 
         public final ForgeConfigSpec.BooleanValue BELT_FUNNEL_DETECTION_TWEAK;
         public final ForgeConfigSpec.BooleanValue SPOUT_DOUBLE_CAPACITY;
@@ -66,6 +67,9 @@ public class Config {
             CHUTE_SPEED_CHANGE = builder
                     .comment("Set the Chute's default transport time to 5 ticks.")
                     .define("chute", true);
+            PUMP_SPEED_CHANGE = builder
+                    .comment("Multiply the fluid network transfer speed by 8.")
+                    .define("pump", true);
             builder.pop();
 
             // 其他非 bugfix 调整
@@ -96,6 +100,7 @@ public class Config {
     public static boolean saw_speed_change;
     public static boolean spout_speed_change;
     public static boolean chute_speed_change;
+    public static boolean pump_speed_change;
 
     public static boolean belt_funnel_detection_tweak;
     public static boolean spout_double_capacity;
@@ -115,6 +120,7 @@ public class Config {
         saw_speed_change = COMMON.SAW_SPEED_CHANGE.get();
         spout_speed_change = COMMON.SPOUT_SPEED_CHANGE.get();
         chute_speed_change = COMMON.CHUTE_SPEED_CHANGE.get();
+        pump_speed_change = COMMON.PUMP_SPEED_CHANGE.get();
 
         belt_funnel_detection_tweak = COMMON.BELT_FUNNEL_DETECTION_TWEAK.get();
         spout_double_capacity = COMMON.SPOUT_DOUBLE_CAPACITY.get();
