@@ -24,7 +24,8 @@
     "create.PressBehaviourMixin",
     "create.SawBlockEntityMixin",
     "create.SequencedAssemblyRecipeMixin",
-    "create.SpoutBlockEntityMixin"
+    "create.SpoutBlockEntityMixin",
+    "minecraft.GameTypeMixin"
   ],
   "client": [
     "jei.BlockCuttingCategoryMixin",
