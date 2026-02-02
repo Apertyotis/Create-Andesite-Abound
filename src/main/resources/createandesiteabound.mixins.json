@@ -25,6 +25,7 @@
     "create.SawBlockEntityMixin",
     "create.SequencedAssemblyRecipeMixin",
     "create.SpoutBlockEntityMixin",
+    "minecraft.BlockBehaviourMixin",
     "minecraft.GameTypeMixin"
   ],
   "client": [

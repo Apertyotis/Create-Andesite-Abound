@@ -37,6 +37,7 @@ public class Config {
         public final ForgeConfigSpec.BooleanValue SPOUT_DOUBLE_CAPACITY;
         public final ForgeConfigSpec.BooleanValue NO_CHUTE_LEAKING;
         public final ForgeConfigSpec.BooleanValue ALWAYS_ALLOW_FLYING;
+        public final ForgeConfigSpec.BooleanValue HEURISTIC_ROTATION;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -90,6 +91,12 @@ public class Config {
             ALWAYS_ALLOW_FLYING = builder
                     .comment("Allow all players flying.")
                     .define("always_allow_flying",true);
+            HEURISTIC_ROTATION = builder
+                    .comment("Allow rotation for blocks without a custom rotate implementation.")
+                    .comment("Many mod authors do not override rotate and mirror when adding directional blocks.")
+                    .comment("As a result, vanilla structure block placement and Create schematic printing are unable to correctly rotate these blocks.")
+                    .comment("Enabling this feature automatically detects common facing properties and applies rotation/mirror.")
+                    .define("heuristic_rotation", true);
             builder.pop();
         }
     }
@@ -110,6 +117,7 @@ public class Config {
     public static boolean spout_double_capacity;
     public static boolean no_chute_leaking;
     public static boolean always_allow_flying;
+    public static boolean heuristic_rotation;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -131,5 +139,6 @@ public class Config {
         spout_double_capacity = COMMON.SPOUT_DOUBLE_CAPACITY.get();
         no_chute_leaking = COMMON.NO_CHUTE_LEAKING.get();
         always_allow_flying = COMMON.ALWAYS_ALLOW_FLYING.get();
+        heuristic_rotation = COMMON.HEURISTIC_ROTATION.get();
     }
 }
