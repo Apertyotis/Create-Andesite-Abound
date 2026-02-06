@@ -1,5 +1,6 @@
 package net.apertyotis.createandesiteabound.mixin.create;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Cancellable;
@@ -7,6 +8,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.kinetics.belt.transport.BeltInventory;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,6 +29,10 @@ public abstract class BeltInventoryMixin {
     @Final
     @Shadow
     private List<TransportedItemStack> items;
+
+    @Final
+    @Shadow
+    List<TransportedItemStack> toInsert;
 
     @Final
     @Shadow
@@ -134,5 +141,25 @@ public abstract class BeltInventoryMixin {
 
         // 未找到物品，返回空，取消原方法
         cir.setReturnValue(null);
+    }
+
+    // 尝试修复传送带刷物品 bug
+    @Inject(method = "read", at = @At("TAIL"))
+    private void readInsertAndRemove(CompoundTag nbt, CallbackInfo ci) {
+        nbt.getList("ToInsert", CompoundTag.TAG_COMPOUND)
+                .forEach(inbt -> toInsert.add(TransportedItemStack.read((CompoundTag) inbt)));
+        nbt.getList("ToRemove", CompoundTag.TAG_COMPOUND)
+                .forEach(inbt -> toRemove.add(TransportedItemStack.read((CompoundTag) inbt)));
+    }
+
+    @ModifyReturnValue(method = "write", at = @At("RETURN"))
+    private CompoundTag writeInsertAndRemove(CompoundTag nbt) {
+        ListTag toInsertNBT = new ListTag();
+        ListTag toRemoveNBT = new ListTag();
+        toInsert.forEach(stack -> toInsertNBT.add(stack.serializeNBT()));
+        toRemove.forEach(stack -> toRemoveNBT.add(stack.serializeNBT()));
+        nbt.put("ToInsert", toInsertNBT);
+        nbt.put("ToRemove", toRemoveNBT);
+        return nbt;
     }
 }
