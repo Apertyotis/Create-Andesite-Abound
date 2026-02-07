@@ -146,6 +146,8 @@ public abstract class BeltInventoryMixin {
     // 尝试修复传送带刷物品 bug
     @Inject(method = "read", at = @At("TAIL"))
     private void readInsertAndRemove(CompoundTag nbt, CallbackInfo ci) {
+        toInsert.clear();
+        toRemove.clear();
         nbt.getList("ToInsert", CompoundTag.TAG_COMPOUND)
                 .forEach(inbt -> toInsert.add(TransportedItemStack.read((CompoundTag) inbt)));
         nbt.getList("ToRemove", CompoundTag.TAG_COMPOUND)
