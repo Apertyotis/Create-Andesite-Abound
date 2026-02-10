@@ -16,6 +16,7 @@
     "create.BeltFunnelInteractionHandlerMixin",
     "create.BeltInventoryMixin",
     "create.ChuteBlockEntityMixin",
+    "create.ControlledContraptionEntityMixin",
     "create.CrushingWheelControllerBlockEntityMixin",
     "create.DeployerBlockEntityMixin",
     "create.FluidNetworkMixin",
