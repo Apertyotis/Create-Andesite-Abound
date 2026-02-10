@@ -11,6 +11,7 @@
     "create.BasinBlockEntityMixin",
     "create.BasinOperatingBlockEntityMixin",
     "create.BasinRecipeMixin",
+    "create.BeltBlockEntityMixin",
     "create.BeltDeployerCallbacksMixin",
     "create.BeltFunnelInteractionHandlerMixin",
     "create.BeltInventoryMixin",

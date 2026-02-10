@@ -143,7 +143,10 @@ public abstract class BeltInventoryMixin {
         cir.setReturnValue(null);
     }
 
-    // 尝试修复传送带刷物品 bug
+    /**
+     * 部分修复传送带吞物品和刷物品问题，详见 Create PR <a href="https://github.com/Creators-of-Create/Create/pull/9954">#9882</a>
+     * 剩余部分见 {@link BeltBlockEntityMixin}
+     */
     @Inject(method = "read", at = @At("TAIL"))
     private void readInsertAndRemove(CompoundTag nbt, CallbackInfo ci) {
         toInsert.clear();
