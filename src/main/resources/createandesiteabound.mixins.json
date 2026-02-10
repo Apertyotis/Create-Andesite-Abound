@@ -23,6 +23,8 @@
     "create.ItemDrainBlockEntityMixin",
     "create.MillstoneBlockEntityMixin",
     "create.MixerBlockEntityMixin",
+    "create.PortableItemInterfaceBlockEntityMixin",
+    "create.PortableStorageInterfaceMovementMixin",
     "create.PressBehaviourMixin",
     "create.SawBlockEntityMixin",
     "create.SequencedAssemblyRecipeMixin",
