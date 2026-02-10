@@ -30,7 +30,7 @@ public abstract class FluidNetworkMixin {
     }
 
     /**
-     * 修复多流体容器含有 n 格同种流体时，从中抽取会浪费 n 份流体但只取出一份的问题
+     * 修复多流体容器含有 n 格同种流体时，从中抽取会浪费 n 份流体但只取出一份的问题<br>
      * 详见 Create PR <a href ="https://github.com/Creators-of-Create/Create/pull/9137">#9137</a>
      */
     @WrapOperation(
