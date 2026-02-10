@@ -18,6 +18,10 @@ public abstract class ControlledContraptionEntityMixin {
     @Shadow
     protected BlockPos controllerPos;
 
+    /**
+     * 修复运动结构会在客户端消失的问题，详见 Create PR <a href="https://github.com/Creators-of-Create/Create/pull/9824">#8492</a><br>
+     * 这个修复大概率是有效的，但是目前无论原修复者还是 Create 开发者都无法确定它为什么有效
+     */
     @Inject(method = "readAdditional", at = @At("TAIL"))
     private void redirectReadControllerPos(CompoundTag compound, boolean spawnPacket, CallbackInfo ci) {
         if (compound.contains("ControllerPos")) {
