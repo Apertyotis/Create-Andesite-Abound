@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 @Mixin(value = FluidRenderer.class, remap = false)
 public abstract class FluidRendererMixin {
-    // 修复蓝图打印注液器会崩溃的bug
+    // 修复蓝图打印注液器会崩溃的 bug
     @WrapOperation(
             method = "renderFluidBox(Lnet/minecraftforge/fluids/FluidStack;FFFFFFLcom/mojang/blaze3d/vertex/VertexConsumer;Lcom/mojang/blaze3d/vertex/PoseStack;IZ)V",
             at = @At(

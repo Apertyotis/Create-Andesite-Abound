@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ItemDrainBlockEntity.class, remap = false)
-public class ItemDrainBlockEntityMixin {
+public abstract class ItemDrainBlockEntityMixin {
     @Shadow
     protected int processingTicks;
 
