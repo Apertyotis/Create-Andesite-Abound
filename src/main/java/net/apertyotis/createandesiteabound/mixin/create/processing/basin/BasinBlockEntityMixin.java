@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mixin(value = BasinBlockEntity.class, remap = false)
 public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
@@ -39,8 +40,12 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
             return;
 
         BlockEntity be = level.getBlockEntity(worldPosition.above(1));
-        if (be instanceof BasinOperatingBlockEntity boe)
-             boe.basinChecker.scheduleUpdate();
+        if (be instanceof BasinOperatingBlockEntity boe) {
+            Optional<BasinBlockEntity> basin = ((BasinOperatingBlockEntityAccessor) boe).invokeGetBasin();
+            if (basin.isPresent() && basin.get().getBlockPos().equals(getBlockPos())) {
+                boe.basinChecker.scheduleUpdate();
+            }
+        }
     }
 
     // 修复工作盆对1个空流体输出槽分别判断是否接受两种输出而导致吞流体的问题
