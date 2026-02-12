@@ -28,6 +28,7 @@
     "create.PortableItemInterfaceBlockEntityMixin",
     "create.PortableStorageInterfaceMovementMixin",
     "create.PressBehaviourMixin",
+    "create.RotationPropagatorMixin",
     "create.SawBlockEntityMixin",
     "create.SequencedAssemblyRecipeMixin",
     "create.SpoutBlockEntityMixin",
