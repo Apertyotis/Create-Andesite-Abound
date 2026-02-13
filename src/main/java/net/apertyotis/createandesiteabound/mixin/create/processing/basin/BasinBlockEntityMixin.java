@@ -5,6 +5,7 @@ import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
+import net.apertyotis.createandesiteabound.mixin.create.foundation.fluid.CombinedTankWrapperAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -62,7 +63,7 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
 
             // 尝试测试插入多流体，会记录被占用的槽位
             CombinedTankWrapperAccessor accessor = (CombinedTankWrapperAccessor) internalFluidHandler;
-            IFluidHandler[] handlers = accessor.getItemHandler();
+            IFluidHandler[] handlers = accessor.getFluidHandler();
             boolean[] occupied = new boolean[handlers.length];
             for (FluidStack stack: outputFluids) {
                 // 原样复制 CombinedTankWrapper 的 fill 方法，但是会记录成功注入流体的储罐，并在之后测试中认为这些储罐无法插入
@@ -95,7 +96,7 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
 
                         if (resource.isEmpty())
                             break Outer;
-                        if (fittingHandlerFound && (accessor.isEnforceVariety() || filledIntoCurrent != 0))
+                        if (accessor.isEnforceVariety() && (fittingHandlerFound || filledIntoCurrent != 0))
                             break Outer;
                     }
                 }
