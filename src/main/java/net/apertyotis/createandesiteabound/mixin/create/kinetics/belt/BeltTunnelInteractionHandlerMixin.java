@@ -16,9 +16,7 @@ public abstract class BeltTunnelInteractionHandlerMixin {
      */
     @ModifyVariable(
             method = "flapTunnelsAndCheckIfStuck",
-            at = @At(
-                    value = "STORE"
-            ),
+            at = @At(value = "STORE"),
             name = "currentSegment"
     )
     private static int redirectCurrentSegment(

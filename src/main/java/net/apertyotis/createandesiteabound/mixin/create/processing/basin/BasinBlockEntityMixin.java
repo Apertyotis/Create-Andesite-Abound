@@ -1,5 +1,7 @@
 package net.apertyotis.createandesiteabound.mixin.create.processing.basin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -12,11 +14,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
@@ -24,8 +25,6 @@ import java.util.Optional;
 
 @Mixin(value = BasinBlockEntity.class, remap = false)
 public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
-    @Shadow
-    private boolean contentsChanged;
 
     // 创建空构造函数来通过编译器语法检查，没有实际作用
     public BasinBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -33,20 +32,28 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
     }
 
     // 工作盆也会提醒头顶的工作方块更新（让锅盖类工作方块不必频繁主动搜索配方
-    @Inject(method = "tick", at = @At("HEAD"))
-    private void onTick(CallbackInfo ci) {
-        if (level == null)
-            return;
-        if (!contentsChanged)
-            return;
+    @WrapOperation(
+            method = "tick",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lcom/simibubi/create/content/processing/basin/BasinBlockEntity;contentsChanged:Z",
+                    opcode = Opcodes.GETFIELD
+            )
+    )
+    private boolean onContentChanged(BasinBlockEntity instance, Operation<Boolean> original) {
+        boolean contentsChanged = original.call(instance);
 
-        BlockEntity be = level.getBlockEntity(worldPosition.above(1));
-        if (be instanceof BasinOperatingBlockEntity boe) {
-            Optional<BasinBlockEntity> basin = ((BasinOperatingBlockEntityAccessor) boe).invokeGetBasin();
-            if (basin.isPresent() && basin.get().getBlockPos().equals(getBlockPos())) {
-                boe.basinChecker.scheduleUpdate();
+        if (level != null && contentsChanged) {
+            BlockEntity be = level.getBlockEntity(worldPosition.above(1));
+            if (be instanceof BasinOperatingBlockEntity boe) {
+                Optional<BasinBlockEntity> basin = ((BasinOperatingBlockEntityAccessor) boe).invokeGetBasin();
+                if (basin.isPresent() && basin.get().getBlockPos().equals(getBlockPos())) {
+                    boe.basinChecker.scheduleUpdate();
+                }
             }
         }
+
+        return contentsChanged;
     }
 
     // 修复工作盆对1个空流体输出槽分别判断是否接受两种输出而导致吞流体的问题
@@ -79,13 +86,15 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
                         if (occupied[i]) continue;
 
                         IFluidHandler iFluidHandler = handlers[i];
-                        for (int j = 0; j < iFluidHandler.getTanks(); j++)
-                            if (searchPass && iFluidHandler.getFluidInTank(j)
-                                    .isFluidEqual(resource))
-                                fittingHandlerFound = true;
 
-                        if (searchPass && !fittingHandlerFound)
-                            continue;
+                        if (searchPass) {
+                            for (int j = 0; j < iFluidHandler.getTanks(); j++)
+                                if (iFluidHandler.getFluidInTank(j).isFluidEqual(resource))
+                                    fittingHandlerFound = true;
+
+                            if (!fittingHandlerFound)
+                                continue;
+                        }
 
                         int filledIntoCurrent = iFluidHandler.fill(resource, IFluidHandler.FluidAction.SIMULATE);
                         resource.shrink(filledIntoCurrent);
@@ -96,6 +105,9 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
 
                         if (resource.isEmpty())
                             break Outer;
+
+                        // 这里 simulate 逻辑与实际 execute 不同，会尝试填充尽可能多的储罐
+                        // 而 execute 时会方便玩家交互，无论 enforceVariety 是什么，都会限定一次操作最多填充一个储罐
                         if (accessor.isEnforceVariety() && (fittingHandlerFound || filledIntoCurrent != 0))
                             break Outer;
                     }
