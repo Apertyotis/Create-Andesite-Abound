@@ -33,8 +33,9 @@ public abstract class PortableStorageInterfaceMovementMixin {
             ),
             remap = true
     )
-    private boolean cancelStallWhenWorkingPosAbsent(CompoundTag instance, String p_128442_, Operation<Boolean> original,
-                                @Local(argsOnly = true) MovementContext context)
+    private boolean cancelStallWhenWorkingPosAbsent(
+            CompoundTag instance, String p_128442_, Operation<Boolean> original,
+            @Local(argsOnly = true) MovementContext context)
     {
         boolean value = original.call(instance, p_128442_);
         if (!value && context.stall) {
@@ -55,8 +56,9 @@ public abstract class PortableStorageInterfaceMovementMixin {
                     target = "Ljava/util/Optional;isPresent()Z"
             )
     )
-    private boolean cancelStallWhenCurrentFacingAbsent(Optional<Direction> instance, Operation<Boolean> original,
-                                  @Local(argsOnly = true) MovementContext context)
+    private boolean cancelStallWhenCurrentFacingAbsent(
+            Optional<Direction> instance, Operation<Boolean> original,
+            @Local(argsOnly = true) MovementContext context)
     {
         boolean value = original.call(instance);
         if (!value) {
