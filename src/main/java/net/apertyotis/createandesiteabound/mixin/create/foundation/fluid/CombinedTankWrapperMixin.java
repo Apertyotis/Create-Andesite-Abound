@@ -60,7 +60,7 @@ public abstract class CombinedTankWrapperMixin {
     {
         boolean enforceVariety = ((CombinedTankWrapperAccessor) this).isEnforceVariety();
         int filledIntoCurrent = localIntRef.get();
-        if (enforceVariety && (fittingHandlerFound || filledIntoCurrent != 0)) {
+        if (filledIntoCurrent != 0 || (enforceVariety && fittingHandlerFound)) {
             cir.setReturnValue(filledIntoCurrent);
         }
         return false;
