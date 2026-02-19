@@ -1,7 +1,6 @@
 package net.apertyotis.createandesiteabound.mixin.create.processing.basin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -32,7 +31,7 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
     }
 
     // 工作盆也会提醒头顶的工作方块更新（让锅盖类工作方块不必频繁主动搜索配方
-    @WrapOperation(
+    @ModifyExpressionValue(
             method = "tick",
             at = @At(
                     value = "FIELD",
@@ -40,9 +39,7 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
                     opcode = Opcodes.GETFIELD
             )
     )
-    private boolean onContentChanged(BasinBlockEntity instance, Operation<Boolean> original) {
-        boolean contentsChanged = original.call(instance);
-
+    private boolean onContentChanged(boolean contentsChanged) {
         if (level != null && contentsChanged) {
             BlockEntity be = level.getBlockEntity(worldPosition.above(1));
             if (be instanceof BasinOperatingBlockEntity boe) {

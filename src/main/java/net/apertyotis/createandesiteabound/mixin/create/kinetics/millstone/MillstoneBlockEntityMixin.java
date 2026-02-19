@@ -9,32 +9,28 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = MillstoneBlockEntity.class, remap = false)
 public abstract class MillstoneBlockEntityMixin {
 
     @Shadow
-    public int timer;
-
-    @Shadow
     abstract public int getProcessingSpeed();
 
     // 默认配方时间设为160，即满速需处理10tick，并减少1tick计时抵消配方搜索耗时
-    @Inject(
+    @WrapOperation(
             method = "tick",
             at = @At(
                     value = "FIELD",
                     target = "Lcom/simibubi/create/content/kinetics/millstone/MillstoneBlockEntity;timer:I",
                     opcode = Opcodes.PUTFIELD,
-                    ordinal = 1,
-                    shift = At.Shift.AFTER
+                    ordinal = 1
             )
     )
-    private void modifyDefaultTimer(CallbackInfo ci) {
-        if (!Config.millstone_speed_change) return;
-        timer = Math.max(160 - getProcessingSpeed(), 1);
+    private void modifyDefaultTimer(MillstoneBlockEntity instance, int value, Operation<Void> original) {
+        if (!Config.millstone_speed_change)
+            original.call(instance, value);
+        else
+            original.call(instance, Math.max(160 - getProcessingSpeed(), 1));
     }
 
     // 配方时间翻16倍，使满速时为1倍速，并减少1tick计时抵消配方搜索耗时
@@ -46,7 +42,9 @@ public abstract class MillstoneBlockEntityMixin {
             )
     )
     private int modifyProcessingDuration(MillingRecipe instance, Operation<Integer> original) {
-        if (!Config.millstone_speed_change) return original.call(instance);
-        return Math.max(original.call(instance) * 16 - getProcessingSpeed(), 1);
+        if (!Config.millstone_speed_change)
+            return original.call(instance);
+        else
+            return Math.max(original.call(instance) * 16 - getProcessingSpeed(), 1);
     }
 }

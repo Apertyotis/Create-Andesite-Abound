@@ -1,5 +1,8 @@
 package net.apertyotis.createandesiteabound.mixin.create.kinetics.belt;
 
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.AllBlocks;
@@ -21,7 +24,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.EnumMap;
@@ -52,33 +54,18 @@ public abstract class BeltTunnelInteractionHandlerMixin {
      * 详见 issue <a href="https://github.com/Creators-of-Create/Create/issues/9682">#9682</a>
      */
     @SuppressWarnings("SameReturnValue")
-    @ModifyVariable(
-            method = "flapTunnelsAndCheckIfStuck",
-            at = @At(
-                    value = "LOAD",
-                    ordinal = 0
-            ),
-            name = "nextTunnel",
-            slice = @Slice(
-                    from = @At(
-                            value = "INVOKE",
-                            target = "Lcom/simibubi/create/content/kinetics/belt/BeltBlockEntity;setChanged()V"
-                    ),
-                    to = @At(
-                        value = "INVOKE",
-                        target = "Lcom/simibubi/create/content/logistics/tunnel/BeltTunnelBlockEntity;" +
-                                "getBlockState()Lnet/minecraft/world/level/block/state/BlockState;"
-                    )
-            )
-    )
-    private static BeltTunnelBlockEntity redirectAndesiteTunnelCheck(
-            BeltTunnelBlockEntity nextTunnel,
+    @Definition(id = "nextTunnel", local = @Local(type = BeltTunnelBlockEntity.class))
+    @Expression("nextTunnel != null")
+    @ModifyExpressionValue(method = "flapTunnelsAndCheckIfStuck", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 0))
+    private static boolean redirectAndesiteTunnelCheck(
+            boolean original,
+            @Local(name = "nextTunnel") BeltTunnelBlockEntity nextTunnel,
             @Local(argsOnly = true) BeltInventory beltInventory,
             @Local(argsOnly = true) TransportedItemStack current,
             @Local(argsOnly = true) float nextOffset,
             @Cancellable CallbackInfoReturnable<Boolean> cir)
     {
-        if (nextTunnel == null) return null;
+        if (nextTunnel == null) return false;
 
         int upcomingSegment = (int) nextOffset;
         BeltBlockEntity belt = ((BeltInventoryAccessor) beltInventory).getBelt();
@@ -91,6 +78,7 @@ public abstract class BeltTunnelInteractionHandlerMixin {
                 && BeltTunnelBlock.isJunction(blockState)
                 && movementFacing.getAxis() == blockState.getValue(BeltTunnelBlock.HORIZONTAL_AXIS))
         {
+            // 拆分原代码逻辑，先检查和记录可输出的方向
             EnumMap<Direction, DirectBeltInputBehaviour> outputs = new EnumMap<>(Direction.class);
             for (Direction d: Iterate.horizontalDirections) {
                 if (d.getAxis() == blockState.getValue(BeltTunnelBlock.HORIZONTAL_AXIS))
@@ -100,7 +88,7 @@ public abstract class BeltTunnelInteractionHandlerMixin {
                 BlockPos outPos = nextTunnel.getBlockPos().below().relative(d);
                 if (world == null || !world.isLoaded(outPos)) {
                     cir.setReturnValue(true);
-                    return null;
+                    return false;
                 }
                 DirectBeltInputBehaviour behaviour = BlockEntityBehaviour.get(world, outPos, DirectBeltInputBehaviour.TYPE);
                 if (behaviour == null || !behaviour.canInsertFromSide(d))
@@ -109,19 +97,21 @@ public abstract class BeltTunnelInteractionHandlerMixin {
                 ItemStack toInsert = ItemHandlerHelper.copyStackWithSize(current.stack, 1);
                 if (!behaviour.handleInsertion(toInsert, d, true).isEmpty()) {
                     cir.setReturnValue(true);
-                    return null;
+                    return false;
                 }
                 outputs.put(d, behaviour);
 
+                // 物品不足时忽略更多输出方向
                 if (outputs.size() + 1 >= current.stack.getCount())
                     break;
             }
 
+            // 再统一输出
             for (var entry: outputs.entrySet()) {
                 ItemStack toInsert = ItemHandlerHelper.copyStackWithSize(current.stack, 1);
                 if (!entry.getValue().handleInsertion(toInsert, entry.getKey(), false).isEmpty()) {
                     cir.setReturnValue(true);
-                    return null;
+                    return false;
                 }
                 if (onServer)
                     BeltTunnelInteractionHandler.flapTunnel(beltInventory, upcomingSegment, entry.getKey(), false);
@@ -132,6 +122,6 @@ public abstract class BeltTunnelInteractionHandlerMixin {
                     break;
             }
         }
-        return null;
+        return false;
     }
 }

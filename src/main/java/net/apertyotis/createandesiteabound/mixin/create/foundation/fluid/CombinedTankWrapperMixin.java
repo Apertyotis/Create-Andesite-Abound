@@ -1,13 +1,10 @@
 package net.apertyotis.createandesiteabound.mixin.create.foundation.fluid;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -17,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = CombinedTankWrapper.class, remap = false)
 public abstract class CombinedTankWrapperMixin {
     // 目标函数极难获取准确的 int 局部变量，因此改用 share 在变量值产生时存储
-    @WrapOperation(
+    @ModifyExpressionValue(
             method = "fill",
             at = @At(
                     value = "INVOKE",
@@ -26,14 +23,7 @@ public abstract class CombinedTankWrapperMixin {
                             "Lnet/minecraftforge/fluids/capability/IFluidHandler$FluidAction;)I"
             )
     )
-    private int localSaveFilledIntoCurrent(
-            IFluidHandler instance,
-            FluidStack fluidStack,
-            IFluidHandler.FluidAction fluidAction,
-            Operation<Integer> original,
-            @Share("filledIntoCurrent") LocalIntRef localIntRef)
-    {
-        int value = original.call(instance, fluidStack, fluidAction);
+    private int localSaveFilledIntoCurrent(int value, @Share("filledIntoCurrent") LocalIntRef localIntRef) {
         localIntRef.set(value);
         return value;
     }

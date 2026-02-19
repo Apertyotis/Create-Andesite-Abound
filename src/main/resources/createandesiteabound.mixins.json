@@ -4,6 +4,9 @@
   "package": "net.apertyotis.createandesiteabound.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "createandesiteabound.refmap.json",
+  "mixinextras": {
+    "minVersion": "0.5.2"
+  },
   "mixins": [
     "create.contraption.ControlledContraptionEntityMixin",
     "create.contraption.psi.PortableItemInterfaceBlockEntityMixin",

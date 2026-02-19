@@ -1,7 +1,8 @@
 package net.apertyotis.createandesiteabound.mixin.create.kinetics.mixer;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
@@ -15,7 +16,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,17 +39,14 @@ public abstract class MixerBlockEntityMixin extends BasinOperatingBlockEntity {
     }
 
     // 重写计算配方时间逻辑，一方面替代了目标原先计算方法，一方面减少了1gt机器延迟
-    @WrapOperation(
+    @Definition(id = "processingTicks", field = "Lcom/simibubi/create/content/kinetics/mixer/MechanicalMixerBlockEntity;processingTicks:I")
+    @Expression("this.processingTicks < 0")
+    @ModifyExpressionValue(
             method = "tick",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lcom/simibubi/create/content/kinetics/mixer/MechanicalMixerBlockEntity;processingTicks:I",
-                    opcode = Opcodes.GETFIELD,
-                    ordinal = 0
-            )
+            at = @At("MIXINEXTRAS:EXPRESSION")
     )
-    private int modifyProcessingTicks(MechanicalMixerBlockEntity instance, Operation<Integer> original) {
-        if (!Config.mixer_speed_change) return original.call(instance);
+    private boolean modifyProcessingTicks(boolean original) {
+        if (!Config.mixer_speed_change) return original;
         // 计算配方时间
         if (processingTicks < 0) {
             float recipeSpeed = 1;
@@ -71,7 +68,7 @@ public abstract class MixerBlockEntityMixin extends BasinOperatingBlockEntity {
                             SoundSource.BLOCKS, .75f, speed < 65 ? .75f : 1.5f);
             }
         }
-        return processingTicks;
+        return false;
     }
 
     // 增加1tick启动延迟，来抵消抬头过快的bug

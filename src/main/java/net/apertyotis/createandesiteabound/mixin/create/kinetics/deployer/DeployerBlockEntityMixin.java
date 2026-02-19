@@ -1,5 +1,8 @@
 package net.apertyotis.createandesiteabound.mixin.create.kinetics.deployer;
 
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Cancellable;
@@ -16,7 +19,7 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static com.simibubi.create.content.kinetics.base.DirectionalKineticBlock.FACING;
@@ -37,46 +40,46 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
 
     // 让机械手等待阶段倒计时结束，但发现目标为传送带等装配目标时不再什么都不做
     // 而是将计时器设为-1000，保留原逻辑的兼容性，同时也让传送带装配回调知道机械手可以结束等待了
-    @Inject(method = "tick",
+    @WrapOperation(method = "tick",
             at = @At(
                     value = "FIELD",
                     target = "Lcom/simibubi/create/content/kinetics/deployer/DeployerBlockEntity;timer:I",
                     opcode = Opcodes.PUTFIELD,
-                    ordinal = 3,
-                    shift = At.Shift.AFTER
-            )
+                    ordinal = 0
+            ),
+            slice = @Slice(from = @At(
+                    value = "INVOKE",
+                    target = "Lcom/simibubi/create/content/kinetics/deployer/DeployerHandler;" +
+                            "shouldActivate(Lnet/minecraft/world/item/ItemStack;" +
+                            "Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;" +
+                            "Lnet/minecraft/core/Direction;)Z"
+            ))
     )
-    private void endWaitingState(CallbackInfo ci) {
-        if (!Config.deployer_speed_change) return;
+    private void endWaitingState(DeployerBlockEntity instance, int value, Operation<Void> original) {
+        if (!Config.deployer_speed_change) {
+            original.call(instance, value);
+            return;
+        }
 
         Direction facing = getBlockState().getValue(FACING);
         if (facing != Direction.DOWN) return;
         if (BlockEntityBehaviour.get(
                 level, worldPosition.below(2),
                 TransportedItemStackHandlerBehaviour.TYPE) != null) {
-            timer = -1000;
+            original.call(instance, -1000);
         }
     }
 
     // 跳过原先的倒计时代码
-    @WrapOperation(
-            method = "tick",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lcom/simibubi/create/content/kinetics/deployer/DeployerBlockEntity;timer:I",
-                    opcode = Opcodes.GETFIELD,
-                    ordinal = 0
-            )
-    )
-    private int skipReturnIfStateCanChange(
-            DeployerBlockEntity instance,
-            Operation<Integer> original,
-            @Cancellable CallbackInfo ci)
-    {
-        if (!Config.deployer_speed_change) return original.call(instance);
+    @Definition(id = "timer", field = "Lcom/simibubi/create/content/kinetics/deployer/DeployerBlockEntity;timer:I")
+    @Expression("this.timer > 0")
+    @ModifyExpressionValue(method = "tick", at = @At("MIXINEXTRAS:EXPRESSION"))
+    private boolean skipReturnIfStateCanChange(boolean original, @Cancellable CallbackInfo ci) {
+        if (!Config.deployer_speed_change) return original;
 
         timer -= getTimerSpeed();
-        if (timer > 0) ci.cancel();
-        return -1;
+        if (timer > 0)
+            ci.cancel();
+        return false;
     }
 }
