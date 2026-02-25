@@ -11,6 +11,8 @@
     "create.contraption.ControlledContraptionEntityMixin",
     "create.contraption.psi.PortableItemInterfaceBlockEntityMixin",
     "create.contraption.psi.PortableStorageInterfaceMovementMixin",
+    "create.equipment.BacktankBlockEntityMixin",
+    "create.equipment.BacktankBlockMixin",
     "create.fluids.FluidNetworkMixin",
     "create.fluids.FluidPropagatorMixin",
     "create.fluids.OpenEndFluidHandlerMixin",
