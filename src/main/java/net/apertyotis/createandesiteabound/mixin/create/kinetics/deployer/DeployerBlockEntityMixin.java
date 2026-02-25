@@ -62,11 +62,13 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
         }
 
         Direction facing = getBlockState().getValue(FACING);
-        if (facing != Direction.DOWN) return;
-        if (BlockEntityBehaviour.get(
+        if (facing == Direction.DOWN && BlockEntityBehaviour.get(
                 level, worldPosition.below(2),
-                TransportedItemStackHandlerBehaviour.TYPE) != null) {
+                TransportedItemStackHandlerBehaviour.TYPE) != null
+        ) {
             original.call(instance, -1000);
+        } else {
+            original.call(instance, value);
         }
     }
 
