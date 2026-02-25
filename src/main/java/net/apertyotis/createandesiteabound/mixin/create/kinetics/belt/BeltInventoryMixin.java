@@ -1,6 +1,5 @@
 package net.apertyotis.createandesiteabound.mixin.create.kinetics.belt;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Cancellable;
@@ -9,7 +8,6 @@ import com.simibubi.create.content.kinetics.belt.transport.BeltInventory;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -144,27 +142,17 @@ public abstract class BeltInventoryMixin {
     }
 
     /**
-     * 部分修复传送带吞物品和刷物品问题，详见 Create PR <a href="https://github.com/Creators-of-Create/Create/pull/9954">#9882</a>
+     * <s>部分修复传送带吞物品和刷物品问题，详见 Create PR <a href="https://github.com/Creators-of-Create/Create/pull/9954">#9882</a></s><br>
+     * 以上修复并不合适，改用另一方式，详见 Create PR <a = href="https://github.com/Creators-of-Create/Create/pull/10017">#10017</a><br>
      * 剩余部分见 {@link BeltBlockEntityMixin}
      */
-    @Inject(method = "read", at = @At("TAIL"))
-    private void readInsertAndRemove(CompoundTag nbt, CallbackInfo ci) {
-        toInsert.clear();
-        toRemove.clear();
-        nbt.getList("ToInsert", CompoundTag.TAG_COMPOUND)
-                .forEach(inbt -> toInsert.add(TransportedItemStack.read((CompoundTag) inbt)));
-        nbt.getList("ToRemove", CompoundTag.TAG_COMPOUND)
-                .forEach(inbt -> toRemove.add(TransportedItemStack.read((CompoundTag) inbt)));
-    }
-
-    @ModifyReturnValue(method = "write", at = @At("RETURN"))
-    private CompoundTag writeInsertAndRemove(CompoundTag nbt) {
-        ListTag toInsertNBT = new ListTag();
-        ListTag toRemoveNBT = new ListTag();
-        toInsert.forEach(stack -> toInsertNBT.add(stack.serializeNBT()));
-        toRemove.forEach(stack -> toRemoveNBT.add(stack.serializeNBT()));
-        nbt.put("ToInsert", toInsertNBT);
-        nbt.put("ToRemove", toRemoveNBT);
-        return nbt;
+    @Inject(method = "write", at = @At("HEAD"))
+    private void handleInsertAndRemoveBeforeWrite(CallbackInfoReturnable<CompoundTag> cir) {
+        if (!toInsert.isEmpty() || !toRemove.isEmpty()) {
+            toInsert.forEach(((BeltInventoryAccessor) this)::invokeInsert);
+            toInsert.clear();
+            items.removeAll(toRemove);
+            toRemove.clear();
+        }
     }
 }
