@@ -21,7 +21,7 @@ public abstract class RotationPropagatorMixin {
             )
     )
     private static float redirectRPM(float speed, @Local(name = "newSpeed") float newSpeed) {
-        if (Math.abs(speed - newSpeed) <= 1e-5f)
+        if (Math.abs(speed - newSpeed) <= 1e-4f)
             return newSpeed;
         else
             return speed;
