@@ -9,18 +9,25 @@ import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
+import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import net.apertyotis.createandesiteabound.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 import static com.simibubi.create.content.kinetics.base.DirectionalKineticBlock.FACING;
 
@@ -28,7 +35,16 @@ import static com.simibubi.create.content.kinetics.base.DirectionalKineticBlock.
 public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
 
     @Shadow
+    protected DeployerFakePlayer player;
+
+    @Shadow
     protected int timer;
+
+    @Shadow
+    protected List<ItemStack> overflowItems;
+
+    @Shadow
+    protected FilteringBehaviour filtering;
 
     @Shadow
     protected abstract int getTimerSpeed();
@@ -83,5 +99,41 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
         if (timer > 0)
             ci.cancel();
         return false;
+    }
+
+    // 提前机械手溢出物品的判断，使额外产物能立即排出
+    @Inject(method = "activate", at = @At("TAIL"))
+    private void afterActivate(CallbackInfo ci) {
+        if (!Config.deployer_speed_change || !overflowItems.isEmpty())
+            return;
+
+        ItemStack stack = player.getMainHandItem();
+        Inventory inventory = player.getInventory();
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            if (overflowItems.size() > 10)
+                break;
+            ItemStack item = inventory.getItem(i);
+            if (item.isEmpty())
+                continue;
+            if (item != stack || !filtering.test(item)) {
+                overflowItems.add(item);
+                inventory.setItem(i, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    // 取消原先溢出物品的判断
+    @WrapOperation(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/player/Inventory;getContainerSize()I"
+            )
+    )
+    private int cancelOldOverflowItemsHandle(Inventory instance, Operation<Integer> original) {
+        if (Config.deployer_speed_change)
+            return 0;
+        else
+            return original.call(instance);
     }
 }
