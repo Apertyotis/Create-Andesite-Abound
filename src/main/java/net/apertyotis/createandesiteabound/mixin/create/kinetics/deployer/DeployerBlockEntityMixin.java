@@ -128,7 +128,8 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/entity/player/Inventory;getContainerSize()I"
-            )
+            ),
+            remap = true
     )
     private int cancelOldOverflowItemsHandle(Inventory instance, Operation<Integer> original) {
         if (Config.deployer_speed_change)

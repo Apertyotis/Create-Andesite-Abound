@@ -25,7 +25,8 @@ public abstract class BacktankBlockMixin {
                     value = "INVOKE",
                     target = "Ljava/util/Optional;map(Ljava/util/function/Function;)Ljava/util/Optional;",
                     ordinal = 1
-            ))
+            )),
+            remap = true
     )
     private Optional<CompoundTag> copyBeforeUse(Optional<CompoundTag> original) {
         return original.map(CompoundTag::copy);
