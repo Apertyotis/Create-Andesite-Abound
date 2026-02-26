@@ -15,6 +15,7 @@
     "create.equipment.BacktankBlockMixin",
     "create.fluids.FluidNetworkMixin",
     "create.fluids.FluidPropagatorMixin",
+    "create.fluids.OpenEndedPipeMixin",
     "create.fluids.OpenEndFluidHandlerMixin",
     "create.fluids.drain.ItemDrainBlockEntityMixin",
     "create.fluids.hosePulley.HosePulleyFluidHandlerMixin",
