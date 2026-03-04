@@ -1,0 +1,24 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"texture_size": [32, 32],
+	"textures": {
+		"side": "createandesiteabound:block/redstone_radar_side",
+		"particle": "createandesiteabound:block/redstone_radar_side",
+		"tendrils": "createandesiteabound:block/sculk_sensor_tendril_inactive"
+	},
+	"elements": [
+		{
+			"from": [2.999, 0, -2],
+			"to": [13.001, 6, 3],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 3, 0.5]},
+			"faces": {
+				"north": {"uv": [0, 3, 5, 6], "texture": "#side"},
+				"east": {"uv": [0, 6, 2.5, 9], "texture": "#side"},
+				"west": {"uv": [5, 5, 7.5, 8], "texture": "#side"},
+				"up": {"uv": [12.5, 0, 15, 5], "rotation": 90, "texture": "#side"},
+				"down": {"uv": [10, 0, 12.5, 5], "rotation": 270, "texture": "#side"}
+			}
+		}
+	]
+}
