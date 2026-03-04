@@ -10,7 +10,7 @@ import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import net.apertyotis.createandesiteabound.Config;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +31,7 @@ public abstract class ItemDrainCategoryMixin extends CreateRecipeCategory<Emptyi
     public @NotNull List<Component> getTooltipStrings(@NotNull EmptyingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 74 && mouseX < 102 && mouseY > 21 && mouseY < 45) {
-            int processingTicks = Config.item_drain_speed_change ? 20 : 28;
+            int processingTicks = AllConfig.item_drain_speed_change ? 20 : 28;
             tooltip.add(Component.translatable("jei.text.processing_duration", processingTicks));
         }
         return tooltip;

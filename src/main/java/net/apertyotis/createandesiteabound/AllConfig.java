@@ -7,7 +7,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 @Mod.EventBusSubscriber(modid = CreateAndesiteAbound.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class Config {
+public class AllConfig {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
     public static final Common COMMON;

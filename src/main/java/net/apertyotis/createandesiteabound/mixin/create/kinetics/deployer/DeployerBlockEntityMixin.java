@@ -12,7 +12,7 @@ import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
-import net.apertyotis.createandesiteabound.Config;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;
@@ -72,7 +72,7 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
             ))
     )
     private void endWaitingState(DeployerBlockEntity instance, int value, Operation<Void> original) {
-        if (!Config.deployer_speed_change) {
+        if (!AllConfig.deployer_speed_change) {
             original.call(instance, value);
             return;
         }
@@ -93,7 +93,7 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
     @Expression("this.timer > 0")
     @ModifyExpressionValue(method = "tick", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean skipReturnIfStateCanChange(boolean original, @Cancellable CallbackInfo ci) {
-        if (!Config.deployer_speed_change) return original;
+        if (!AllConfig.deployer_speed_change) return original;
 
         timer -= getTimerSpeed();
         if (timer > 0)
@@ -104,7 +104,7 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
     // 提前机械手溢出物品的判断，使额外产物能立即排出
     @Inject(method = "activate", at = @At("TAIL"))
     private void afterActivate(CallbackInfo ci) {
-        if (!Config.deployer_speed_change || !overflowItems.isEmpty())
+        if (!AllConfig.deployer_speed_change || !overflowItems.isEmpty())
             return;
 
         ItemStack stack = player.getMainHandItem();
@@ -132,7 +132,7 @@ public abstract class DeployerBlockEntityMixin extends KineticBlockEntity {
             remap = true
     )
     private int cancelOldOverflowItemsHandle(Inventory instance, Operation<Integer> original) {
-        if (Config.deployer_speed_change)
+        if (AllConfig.deployer_speed_change)
             return 0;
         else
             return original.call(instance);

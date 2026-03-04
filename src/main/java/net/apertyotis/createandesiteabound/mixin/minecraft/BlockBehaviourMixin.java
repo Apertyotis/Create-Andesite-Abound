@@ -1,6 +1,6 @@
 package net.apertyotis.createandesiteabound.mixin.minecraft;
 
-import net.apertyotis.createandesiteabound.Config;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -21,7 +21,7 @@ public abstract class BlockBehaviourMixin {
     // 自动检查常见方向属性并旋转
     @Inject(method = "rotate", at = @At("HEAD"), cancellable = true)
     private void heuristicRotate(BlockState p_60530_, Rotation p_60531_, CallbackInfoReturnable<BlockState> cir) {
-        if (!Config.heuristic_rotation) return;
+        if (!AllConfig.heuristic_rotation) return;
 
         // 常规朝向
         Collection<Property<?>> properties = p_60530_.getProperties();
@@ -79,7 +79,7 @@ public abstract class BlockBehaviourMixin {
     // 自动检查常见方向属性并镜像
     @Inject(method = "mirror", at = @At("HEAD"), cancellable = true)
     private void heuristicMirror(BlockState p_60528_, Mirror p_60529_, CallbackInfoReturnable<BlockState> cir) {
-        if (!Config.heuristic_rotation) return;
+        if (!AllConfig.heuristic_rotation) return;
 
         Collection<Property<?>> properties = p_60528_.getProperties();
         // 常规朝向

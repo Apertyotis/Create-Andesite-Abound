@@ -4,7 +4,7 @@ import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.SawingCategory;
 import com.simibubi.create.content.kinetics.saw.CuttingRecipe;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import net.apertyotis.createandesiteabound.Config;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +24,7 @@ public abstract class SawingCategoryMixin extends CreateRecipeCategory<CuttingRe
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 63 && mouseX < 97 && mouseY > 31 && mouseY < 65) {
             int processingTicks;
-            if (Config.saw_speed_change) {
+            if (AllConfig.saw_speed_change) {
                 processingTicks = 10;
             } else {
                 processingTicks = recipe.getProcessingDuration();

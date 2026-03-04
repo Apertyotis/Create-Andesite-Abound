@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.mixin.create.fluids.spout;
 
 import com.simibubi.create.content.fluids.spout.SpoutBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
-import net.apertyotis.createandesiteabound.Config;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,7 +36,7 @@ public abstract class SpoutBlockEntityMixin extends SmartBlockEntity {
             )
     )
     private void afterTick(CallbackInfo ci) {
-        if (!Config.spout_speed_change || processingTicks != 19) return;
+        if (!AllConfig.spout_speed_change || processingTicks != 19) return;
 
         processingTicks--;
     }
@@ -50,7 +50,7 @@ public abstract class SpoutBlockEntityMixin extends SmartBlockEntity {
             )
     )
     private int modifyTankCapacity(int original) {
-        if (!Config.spout_double_capacity) return original;
+        if (!AllConfig.spout_double_capacity) return original;
         return 2000;
     }
 }

@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.kinetics.millstone.MillingRecipe;
 import com.simibubi.create.content.kinetics.millstone.MillstoneBlockEntity;
-import net.apertyotis.createandesiteabound.Config;
+import net.apertyotis.createandesiteabound.AllConfig;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,7 +27,7 @@ public abstract class MillstoneBlockEntityMixin {
             )
     )
     private void modifyDefaultTimer(MillstoneBlockEntity instance, int value, Operation<Void> original) {
-        if (!Config.millstone_speed_change)
+        if (!AllConfig.millstone_speed_change)
             original.call(instance, value);
         else
             original.call(instance, Math.max(160 - getProcessingSpeed(), 1));
@@ -42,7 +42,7 @@ public abstract class MillstoneBlockEntityMixin {
             )
     )
     private int modifyProcessingDuration(MillingRecipe instance, Operation<Integer> original) {
-        if (!Config.millstone_speed_change)
+        if (!AllConfig.millstone_speed_change)
             return original.call(instance);
         else
             return Math.max(original.call(instance) * 16 - getProcessingSpeed(), 1);

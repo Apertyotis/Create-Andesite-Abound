@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.fluids.FluidNetwork;
-import net.apertyotis.createandesiteabound.Config;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.objectweb.asm.Opcodes;
@@ -23,7 +23,7 @@ public abstract class FluidNetworkMixin {
             )
     )
     private void redirectTransferSpeed(FluidNetwork instance, int value, Operation<Void> original) {
-        if (!Config.pump_speed_change)
+        if (!AllConfig.pump_speed_change)
             original.call(instance, value);
         else
             original.call(instance, value * 8);

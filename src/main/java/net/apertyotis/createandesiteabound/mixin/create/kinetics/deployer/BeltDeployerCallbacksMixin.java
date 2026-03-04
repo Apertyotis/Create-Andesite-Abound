@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.kinetics.deployer.BeltDeployerCallbacks;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
-import net.apertyotis.createandesiteabound.Config;
+import net.apertyotis.createandesiteabound.AllConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -19,7 +19,7 @@ public abstract class BeltDeployerCallbacksMixin {
             )
     )
     private static void waitStart_1(DeployerBlockEntity instance, Operation<Void> original) {
-        if (!Config.deployer_speed_change) {
+        if (!AllConfig.deployer_speed_change) {
             original.call(instance);
             return;
         }
@@ -39,7 +39,7 @@ public abstract class BeltDeployerCallbacksMixin {
             )
     )
     private static void waitStart_2(DeployerBlockEntity instance, Operation<Void> original) {
-        if (!Config.deployer_speed_change) {
+        if (!AllConfig.deployer_speed_change) {
             original.call(instance);
             return;
         }
