@@ -1,14 +1,18 @@
 {
   "block.createandesiteabound.redstone_radar": "幽匿发信器",
+  "msg.caa.target_set": "目标已选择",
+  "msg.caa.target_reset": "目标已清除",
+  "info.caa.goggle.connected": "成功连接到目标",
+  "info.caa.goggle.empty": "无目标, 仅接收",
+  "info.caa.goggle.forceload_disable": "区块加载功能已关闭",
+  "info.caa.goggle.forceload_enable": "正在加载所处区块",
+  "info.caa.goggle.not_loaded": "目标区块未加载",
+  "info.caa.goggle.not_receiver": "目标方块不是幽匿发信器",
+  "info.caa.goggle.status": "信号状态:",
+  "info.caa.goggle.target": "目标位置:",
+  "jei.text.max_charge_rate": "充电速率: %s FE / 刻",
   "jei.text.processing_duration": "配方时间: %s 刻",
   "jei.text.processing_duration_with_num": "配方时间: %s 刻 / %s 物品",
   "jei.text.total_energy": "总计消耗: %s FE",
-  "jei.text.max_charge_rate": "充电速率: %s FE / 刻",
-  "info.crr.google.not_loaded": "目标区块未加载",
-  "info.crr.google.not_receiver": "目标方块不是幽匿发信器",
-  "info.crr.google.forceload_disable": "区块加载功能已关闭",
-  "info.crr.google.forceload_enable": "正在加载所处区块",
-  "info.crr.google.target": "目标位置:",
-  "info.crr.google.empty": "无",
-  "info.crr.google.status": "信号状态:"
+  "tooltip.caa.has_target_nbt": "已记录坐标:"
 }

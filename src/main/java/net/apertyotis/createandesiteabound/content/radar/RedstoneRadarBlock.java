@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -73,6 +75,28 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
     @Override
     public boolean isOcclusionShapeFullBlock(BlockState state, BlockGetter world, BlockPos pos) {
         return false;
+    }
+
+    @Override
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        if (world.isClientSide())
+            return;
+        CompoundTag tag = stack.getTag();
+        if (tag == null || !tag.contains("TargetPos") || !tag.contains("TargetDimension"))
+            return;
+
+        BlockEntity be = world.getBlockEntity(pos);
+        if (be instanceof RedstoneRadarBlockEntity rrbe) {
+            BlockPos targetPos = NbtUtils.readBlockPos(tag.getCompound("TargetPos"));
+            ResourceLocation id = new ResourceLocation(tag.getString("TargetDimension"));
+            ResourceKey<Level> targetDimension = ResourceKey.create(Registries.DIMENSION, id);
+            rrbe.setTarget(targetDimension, targetPos);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        IBE.onRemove(state, world, pos, newState);
     }
 
     @Override

@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
+import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static net.apertyotis.createandesiteabound.CreateAndesiteAbound.REGISTRATE;
 
 
@@ -17,6 +18,7 @@ public class AllBlocks {
     public static final BlockEntry<RedstoneRadarBlock> REDSTONE_RADAR =
             REGISTRATE.block("redstone_radar", RedstoneRadarBlock::new)
                     .initialProperties(SharedProperties::stone)
+                    .transform(pickaxeOnly())
                     .properties(p -> p.isRedstoneConductor(($1, $2, $3) -> false))
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .addLayer(() -> RenderType::cutoutMipped)

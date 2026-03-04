@@ -4,11 +4,15 @@
   "jei.text.processing_duration_with_num": "Recipe time: %s ticks / %s items",
   "jei.text.total_energy": "Total cost: %s FE",
   "jei.text.max_charge_rate": "Charging rate: %s FE / ticks",
-  "info.crr.google.not_loaded": "Target chunk is not loaded",
-  "info.crr.google.not_receiver": "Target block is not a Sculk Transmitter",
-  "info.crr.google.forceload_disable": "Force-loading disabled",
-  "info.crr.google.forceload_enable": "Local chunk kept loaded",
-  "info.crr.google.target": "Target position:",
-  "info.crr.google.empty": "Empty",
-  "info.crr.google.status": "Status:"
+  "info.caa.goggle.connected": "Connected to Target",
+  "info.caa.goggle.not_loaded": "Target chunk is not Loaded",
+  "info.caa.goggle.not_receiver": "Target block is not a Sculk Transmitter",
+  "info.caa.goggle.forceload_disable": "Force-loading disabled",
+  "info.caa.goggle.forceload_enable": "Local chunk kept loaded",
+  "info.caa.goggle.target": "Target Position:",
+  "info.caa.goggle.empty": "No target, receive only",
+  "info.caa.goggle.status": "Status:",
+  "msg.caa.target_set": "Target Selected",
+  "msg.caa.target_reset": "Selection Canceled",
+  "tooltip.caa.has_target_nbt": "Record:"
 }

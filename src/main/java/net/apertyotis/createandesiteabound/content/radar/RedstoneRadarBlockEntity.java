@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ShriekParticleOption;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -12,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -145,6 +148,13 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
                     target.remoteSource.compute(key, (k, v) -> {
                         if (v == null || v != shouldOutput) {
                             target.scheduleUpdate();
+                            BlockPos pos = getBlockPos();
+                            ((ServerLevel) getLevel()).sendParticles(
+                                    new ShriekParticleOption(0),
+                                    pos.getX() + 0.5d, pos.getY() + 0.75d, pos.getZ() + 0.5d,
+                                    1, 0, 0, 0, 4);
+                            getLevel().playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE,
+                                    SoundSource.BLOCKS, 0.8f, 0.5f);
                         }
                         return shouldOutput;
                     });
@@ -161,17 +171,22 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         tooltip.add(Component.literal("    ")
-                .append(Component.translatable("info.crr.google.status")));
+                .append(Component.translatable("info.caa.goggle.status")));
         switch (state) {
-            case NOT_LOADED -> tooltip.add(Component.translatable("info.crr.google.not_loaded")
+            case EMPTY -> tooltip.add(Component.translatable("info.caa.goggle.empty")
+                    .withStyle(ChatFormatting.GRAY));
+            case NOT_LOADED -> tooltip.add(Component.translatable("info.caa.goggle.not_loaded")
                         .withStyle(ChatFormatting.RED));
-            case NOT_RECEIVER -> tooltip.add(Component.translatable("info.crr.google.not_receiver")
+            case NOT_RECEIVER -> tooltip.add(Component.translatable("info.caa.goggle.not_receiver")
                         .withStyle(ChatFormatting.RED));
+            case CONNECTED -> tooltip.add(Component.translatable("info.caa.goggle.connected")
+                    .withStyle(ChatFormatting.GREEN));
         }
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("info.crr.google.target")
-                .withStyle(ChatFormatting.GOLD));
-        if (targetDimension != null && targetPos != null) {
+
+        if (state != State.EMPTY && targetDimension != null && targetPos != null) {
+            tooltip.add(Component.translatable("info.caa.goggle.target")
+                    .withStyle(ChatFormatting.GOLD));
             String dimensionDescId = "dimension." + targetDimension.location().getNamespace() +
                     "." + targetDimension.location().getPath();
             String pos = String.format("%d, %d, %d", targetPos.getX(), targetPos.getY(), targetPos.getZ());
@@ -183,19 +198,14 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
             tooltip.add(Component.literal("    ")
                     .append(Component.literal(pos)
                             .withStyle(ChatFormatting.GRAY)));
-        } else {
-            tooltip.add(Component.literal("    ")
-                    .append(Component.translatable("info.crr.google.empty")
-                            .withStyle(ChatFormatting.GRAY)));
+            tooltip.add(Component.literal(""));
         }
 
-        tooltip.add(Component.literal(""));
-
         if (getBlockState().getValue(RedstoneRadarBlock.FORCELOAD)) {
-            tooltip.add(Component.translatable("info.crr.google.forceload_enable")
+            tooltip.add(Component.translatable("info.caa.goggle.forceload_enable")
                     .withStyle(ChatFormatting.LIGHT_PURPLE));
         } else {
-            tooltip.add(Component.translatable("info.crr.google.forceload_disable"));
+            tooltip.add(Component.translatable("info.caa.goggle.forceload_disable"));
         }
         return true;
     }
