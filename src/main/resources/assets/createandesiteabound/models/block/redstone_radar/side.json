@@ -1,23 +1,23 @@
 {
+	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
-	"texture_size": [32, 32],
+	"texture_size": [64, 64],
 	"textures": {
-		"side": "createandesiteabound:block/redstone_radar_side",
-		"particle": "createandesiteabound:block/redstone_radar_side",
-		"tendrils": "createandesiteabound:block/sculk_sensor_tendril_inactive"
+		"3": "createandesiteabound:block/redstone_radar_base",
+		"particle": "createandesiteabound:block/aluminum_block"
 	},
 	"elements": [
 		{
-			"from": [2.999, 0, -2],
-			"to": [13.001, 6, 3],
-			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 3, 0.5]},
+			"from": [2.999, 0.5, -0.75],
+			"to": [13.001, 6.5, 4.25],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 3.5, 1.75]},
 			"faces": {
-				"north": {"uv": [0, 3, 5, 6], "texture": "#side"},
-				"east": {"uv": [0, 6, 2.5, 9], "texture": "#side"},
-				"west": {"uv": [5, 5, 7.5, 8], "texture": "#side"},
-				"up": {"uv": [12.5, 0, 15, 5], "rotation": 90, "texture": "#side"},
-				"down": {"uv": [10, 0, 12.5, 5], "rotation": 270, "texture": "#side"}
+				"north": {"uv": [7, 1.5, 9.5, 3], "texture": "#3"},
+				"east": {"uv": [7, 3, 8.25, 4.5], "texture": "#3"},
+				"west": {"uv": [9.5, 2.5, 10.75, 4], "texture": "#3"},
+				"up": {"uv": [13.25, 0, 14.5, 2.5], "rotation": 90, "texture": "#3"},
+				"down": {"uv": [12, 0, 13.25, 2.5], "rotation": 270, "texture": "#3"}
 			}
 		}
 	]

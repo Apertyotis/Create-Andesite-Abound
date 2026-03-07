@@ -69,7 +69,7 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        return Block.box(1, 0, 1, 15, 8, 15);
+        return Block.box(1, 0, 1, 15, 11, 15);
     }
 
     @Override

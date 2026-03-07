@@ -37,9 +37,15 @@ public class RedstoneRadarItem extends BlockItem {
         CompoundTag tag = heldItem.getOrCreateTag();
 
         if (player.isShiftKeyDown()) {
-            heldItem.setTag(null);
-            player.displayClientMessage(Component.translatable("msg.caa.target_reset")
-                    .withStyle(ChatFormatting.GOLD), true);
+            if (tag.contains("TargetPos") && tag.contains("TargetDimension")) {
+                heldItem.setTag(null);
+                player.displayClientMessage(Component.translatable("msg.caa.target_reset")
+                        .withStyle(ChatFormatting.GOLD), true);
+            } else {
+                if (world.isClientSide())
+                    return InteractionResult.SUCCESS;
+                ((BlockItem) heldItem.getItem()).place(new BlockPlaceContext(context));
+            }
         } else {
             if (tag.contains("TargetPos") && tag.contains("TargetDimension")) {
                 if (world.isClientSide())
