@@ -15,20 +15,27 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.world.ForgeChunkManager;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static net.apertyotis.createandesiteabound.CreateAndesiteAbound.MOD_ID;
+
 public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
+
+    private record RemotePos(ResourceLocation dimensionId, BlockPos pos) {}
 
     private ResourceKey<Level> targetDimension;
     private BlockPos targetPos;
     private State state = State.EMPTY;
-    private final Map<String, Integer> remoteSource = new HashMap<>();
+    private final Map<RemotePos, Integer> remoteSource = new HashMap<>();
+    private boolean forceLoading = false;
 
     public enum State {
         EMPTY,
@@ -57,11 +64,7 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
             targetPos = NbtUtils.readBlockPos(nbt.getCompound("TargetPos"));
         }
 
-        remoteSource.clear();
-        CompoundTag sourceTag = nbt.getCompound("Source");
-        for (String key: sourceTag.getAllKeys()) {
-            remoteSource.put(key, sourceTag.getInt(key));
-        }
+        forceLoading = nbt.getBoolean("ForceLoading");
     }
 
     @Override
@@ -75,11 +78,9 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
             nbt.put("TargetPos", NbtUtils.writeBlockPos(targetPos));
         }
 
-        CompoundTag sourceTag = new CompoundTag();
-        for (var entry: remoteSource.entrySet()) {
-            sourceTag.putInt(entry.getKey(), entry.getValue());
+        if (forceLoading) {
+            nbt.putBoolean("ForceLoading", true);
         }
-        nbt.put("Source", sourceTag);
     }
 
     @Override
@@ -88,7 +89,9 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
         if (getLevel() == null || getLevel().isClientSide)
             return;
 
+        updateForceChunk(false);
         notifyTarget(false);
+        validateSource();
 
         int shouldOutput = remoteSource.values()
                 .stream()
@@ -104,8 +107,9 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
     }
 
     @Override
-    public void destroy() {
-        super.destroy();
+    public void invalidate() {
+        super.invalidate();
+        updateForceChunk(true);
         notifyTarget(true);
     }
 
@@ -120,10 +124,31 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
         notifyTarget(false);
     }
 
-    public String getDimPosString() {
-        if (getLevel() == null)
-            return "";
-        return getLevel().dimensionTypeId().location() + "@" + getBlockPos().toShortString();
+    public void validateSource() {
+        if (!(getLevel() instanceof ServerLevel serverLevel))
+            return;
+
+        var it = remoteSource.entrySet().iterator();
+        while (it.hasNext()) {
+            var entry = it.next();
+            ResourceKey<Level> key = ResourceKey.create(Registries.DIMENSION, entry.getKey().dimensionId);
+            ServerLevel otherLevel = serverLevel.getServer().getLevel(key);
+            if (otherLevel == null || !otherLevel.isLoaded(entry.getKey().pos)) {
+                it.remove();
+                continue;
+            }
+
+            BlockState otherState = otherLevel.getBlockState(entry.getKey().pos);
+            if (!(otherState.getBlock() instanceof RedstoneRadarBlock)) {
+                it.remove();
+                continue;
+            }
+
+            int shouldInput = otherState.getValue(RedstoneRadarBlock.INPUT);
+            if (shouldInput != entry.getValue()) {
+                entry.setValue(shouldInput);
+            }
+        }
     }
 
     public void notifyTarget(boolean removeSource) {
@@ -131,6 +156,7 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
             return;
 
         State oldState = state;
+        BlockPos pos = getBlockPos();
         if (targetDimension != null && targetPos != null) {
             ServerLevel otherLevel = getLevel().getServer().getLevel(targetDimension);
             if (otherLevel == null || !otherLevel.isLoaded(targetPos)) {
@@ -139,7 +165,7 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
                 state = State.NOT_RECEIVER;
             } else {
                 state = State.CONNECTED;
-                String key = getDimPosString();
+                RemotePos key = new RemotePos(getLevel().dimension().location(), pos);
                 if (removeSource) {
                     if (target.remoteSource.remove(key) != null)
                         target.scheduleUpdate();
@@ -148,7 +174,6 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
                     target.remoteSource.compute(key, (k, v) -> {
                         if (v == null || v != shouldOutput) {
                             target.scheduleUpdate();
-                            BlockPos pos = getBlockPos();
                             ((ServerLevel) getLevel()).sendParticles(
                                     new ShriekParticleOption(0),
                                     pos.getX() + 0.5d, pos.getY() + 0.75d, pos.getZ() + 0.5d,
@@ -164,6 +189,21 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
             state = State.EMPTY;
         }
         if (oldState != state) {
+            sendData();
+        }
+    }
+
+    public void updateForceChunk(boolean scheduleRemove) {
+        if (!(getLevel() instanceof ServerLevel serverLevel))
+            return;
+
+        BlockPos pos = getBlockPos();
+        ChunkPos chunk = new ChunkPos(pos);
+        if (scheduleRemove) {
+            ForgeChunkManager.forceChunk(serverLevel, MOD_ID, pos, chunk.x, chunk.z, false, true);
+        } else if (getBlockState().getValue(RedstoneRadarBlock.FORCELOAD) != forceLoading) {
+            forceLoading = !forceLoading;
+            ForgeChunkManager.forceChunk(serverLevel, MOD_ID, pos, chunk.x, chunk.z, forceLoading, true);
             sendData();
         }
     }
