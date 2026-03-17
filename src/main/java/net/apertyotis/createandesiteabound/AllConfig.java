@@ -32,12 +32,15 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue SPOUT_SPEED_CHANGE;
         public final ForgeConfigSpec.BooleanValue CHUTE_SPEED_CHANGE;
         public final ForgeConfigSpec.BooleanValue PUMP_SPEED_CHANGE;
+        public final ForgeConfigSpec.BooleanValue DEPOT_SPEED_CHANGE;
+        public final ForgeConfigSpec.BooleanValue VALVE_SPEED_CHANGE;
 
         public final ForgeConfigSpec.BooleanValue BELT_FUNNEL_DETECTION_TWEAK;
         public final ForgeConfigSpec.BooleanValue SPOUT_DOUBLE_CAPACITY;
         public final ForgeConfigSpec.BooleanValue NO_CHUTE_LEAKING;
         public final ForgeConfigSpec.BooleanValue ALWAYS_ALLOW_FLYING;
         public final ForgeConfigSpec.BooleanValue HEURISTIC_ROTATION;
+        public final ForgeConfigSpec.BooleanValue NO_DEPOT_OVERFLOW_DROP;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -72,6 +75,12 @@ public class AllConfig {
             PUMP_SPEED_CHANGE = builder
                     .comment("Multiply the fluid network transfer speed by 8.")
                     .define("pump", true);
+            DEPOT_SPEED_CHANGE = builder
+                    .comment("Set the Depot item movement animation duration to 5 ticks.")
+                    .define("depot", true);
+            VALVE_SPEED_CHANGE = builder
+                    .comment("Set the Valve state toggle duration at full speed to 1 tick.")
+                    .define("valve", true);
             builder.pop();
 
             // 其他非 bugfix 调整
@@ -97,6 +106,11 @@ public class AllConfig {
                     .comment("As a result, vanilla structure block placement and Create schematic printing are unable to correctly rotate these blocks.")
                     .comment("Enabling this feature automatically detects common facing properties and applies rotation/mirror.")
                     .define("heuristic_rotation", true);
+            NO_DEPOT_OVERFLOW_DROP = builder
+                    .comment("Prevent the depot from dropping overflow items.")
+                    .comment("For example when it accumulates too many processing outputs.")
+                    .comment("Or when an Ejector cannot merge received item stacks.")
+                    .define("no_depot_overflow_drop", true);
             builder.pop();
         }
     }
@@ -112,12 +126,15 @@ public class AllConfig {
     public static boolean spout_speed_change;
     public static boolean chute_speed_change;
     public static boolean pump_speed_change;
+    public static boolean depot_speed_change;
+    public static boolean valve_speed_change;
 
     public static boolean belt_funnel_detection_tweak;
     public static boolean spout_double_capacity;
     public static boolean no_chute_leaking;
     public static boolean always_allow_flying;
     public static boolean heuristic_rotation;
+    public static boolean no_depot_overflow_drop;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -134,11 +151,14 @@ public class AllConfig {
         spout_speed_change = COMMON.SPOUT_SPEED_CHANGE.get();
         chute_speed_change = COMMON.CHUTE_SPEED_CHANGE.get();
         pump_speed_change = COMMON.PUMP_SPEED_CHANGE.get();
+        depot_speed_change = COMMON.DEPOT_SPEED_CHANGE.get();
+        valve_speed_change = COMMON.VALVE_SPEED_CHANGE.get();
 
         belt_funnel_detection_tweak = COMMON.BELT_FUNNEL_DETECTION_TWEAK.get();
         spout_double_capacity = COMMON.SPOUT_DOUBLE_CAPACITY.get();
         no_chute_leaking = COMMON.NO_CHUTE_LEAKING.get();
         always_allow_flying = COMMON.ALWAYS_ALLOW_FLYING.get();
         heuristic_rotation = COMMON.HEURISTIC_ROTATION.get();
+        no_depot_overflow_drop = COMMON.NO_DEPOT_OVERFLOW_DROP.get();
     }
 }
