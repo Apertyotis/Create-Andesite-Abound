@@ -2,6 +2,7 @@ package net.apertyotis.createandesiteabound.mixin.create.fluids;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.fluids.FluidNetwork;
 import net.apertyotis.createandesiteabound.AllConfig;
@@ -10,6 +11,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = FluidNetwork.class, remap = false)
 public abstract class FluidNetworkMixin {
@@ -40,11 +43,28 @@ public abstract class FluidNetworkMixin {
                     target = "Lnet/minecraftforge/fluids/capability/IFluidHandler;getTanks()I"
             )
     )
-    private int breakLoop(IFluidHandler instance, Operation<Integer> original,
+    private int breakFindFluidLoop(IFluidHandler instance, Operation<Integer> original,
                           @Local(name = "transfer") FluidStack transfer) {
         if (transfer.isEmpty())
             return original.call(instance);
         else
             return Integer.MIN_VALUE;
+    }
+
+    /**
+     * 阻止管道抽取 0mB 液体<br>
+     * 详见 Create PR <a href="https://github.com/Creators-of-Create/Create/pull/10055">#10055</a>
+     */
+    @ModifyVariable(
+            method = "tick",
+            at = @At("STORE"),
+            name = "action"
+    )
+    private IFluidHandler.FluidAction preventDrainZero(
+            IFluidHandler.FluidAction value, @Local(name="flowSpeed") int flowSpeed, @Cancellable CallbackInfo ci
+    ) {
+        if (flowSpeed <= 0)
+            ci.cancel();
+        return value;
     }
 }
