@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.fluids.OpenEndedPipe;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.fluids.FluidStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,6 +27,8 @@ public abstract class OpenEndedPipeMixin {
             @Local(argsOnly = true) FluidStack fluid,
             @Local(name = "fluidState") FluidState fluidState)
     {
+        if (AllConfig.replace_any_flowing_fluid)
+            return false;
         return fluid.getFluid().getFluidType() != fluidState.getFluidType();
     }
 }

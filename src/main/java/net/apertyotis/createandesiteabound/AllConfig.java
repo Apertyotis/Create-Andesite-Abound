@@ -41,6 +41,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue ALWAYS_ALLOW_FLYING;
         public final ForgeConfigSpec.BooleanValue HEURISTIC_ROTATION;
         public final ForgeConfigSpec.BooleanValue NO_DEPOT_OVERFLOW_DROP;
+        public final ForgeConfigSpec.BooleanValue REPLACE_ANY_FLOWING_FLUID;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -111,6 +112,9 @@ public class AllConfig {
                     .comment("For example when it accumulates too many processing outputs.")
                     .comment("Or when an Ejector cannot merge received item stacks.")
                     .define("no_depot_overflow_drop", true);
+            REPLACE_ANY_FLOWING_FLUID = builder
+                    .comment("Allow pumps to replace any flowing fluid, ignoring the fluid type.")
+                    .define("replace_any_flowing_fluid", true);
             builder.pop();
         }
     }
@@ -135,6 +139,7 @@ public class AllConfig {
     public static boolean always_allow_flying;
     public static boolean heuristic_rotation;
     public static boolean no_depot_overflow_drop;
+    public static boolean replace_any_flowing_fluid;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -160,5 +165,6 @@ public class AllConfig {
         always_allow_flying = COMMON.ALWAYS_ALLOW_FLYING.get();
         heuristic_rotation = COMMON.HEURISTIC_ROTATION.get();
         no_depot_overflow_drop = COMMON.NO_DEPOT_OVERFLOW_DROP.get();
+        replace_any_flowing_fluid = COMMON.REPLACE_ANY_FLOWING_FLUID.get();
     }
 }
