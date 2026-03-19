@@ -116,6 +116,9 @@ public abstract class DepotBehaviourMixin {
             return;
         }
 
+        if (p_18997_.isEmpty())
+            return;
+
         incoming.add(new TransportedItemStack(p_18997_));
     }
 
