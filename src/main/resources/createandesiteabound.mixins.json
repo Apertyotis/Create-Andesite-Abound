@@ -21,6 +21,7 @@
     "create.fluids.hosePulley.HosePulleyFluidHandlerMixin",
     "create.fluids.pipes.FluidValveBlockEntityMixin",
     "create.fluids.spout.SpoutBlockEntityMixin",
+    "create.fluids.tank.FluidTankBlockEntityMixin",
     "create.foundation.fluid.CombinedTankWrapperAccessor",
     "create.foundation.fluid.CombinedTankWrapperMixin",
     "create.kinetics.RotationPropagatorMixin",
