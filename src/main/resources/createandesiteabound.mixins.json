@@ -46,6 +46,7 @@
     "create.processing.basin.BasinRecipeMixin",
     "create.processing.basin.FilteringBehaviourAccessor",
     "create.processing.sequenced.SequencedAssemblyRecipeMixin",
+    "create.trains.CarriageMixin",
     "minecraft.BlockBehaviourMixin",
     "minecraft.GameTypeMixin"
   ],
