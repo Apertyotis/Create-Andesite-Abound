@@ -16,21 +16,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(Dist.CLIENT)
 public class RedstoneRadarHandler {
 
-    static final private Object outlineSlot = new Object();
+    public static final RedstoneRadarHandler REDSTONE_RADAR_HANDLER = new RedstoneRadarHandler();
 
-    @SubscribeEvent
-    public static void onTick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.START)
-            return;
+    private static final Object outlineSlot = new Object();
 
+    public void tick() {
         Level world = Minecraft.getInstance().level;
         Player player = Minecraft.getInstance().player;
         if (world == null || player == null)
@@ -56,7 +49,7 @@ public class RedstoneRadarHandler {
         }
     }
 
-    public static BlockPos getViewPos(Level world, Player player) {
+    public BlockPos getViewPos(Level world, Player player) {
         BlockPos hit = null;
 
         BlockHitResult trace = RaycastHelper.rayTraceRange(world, player, player.getBlockReach());
@@ -72,7 +65,7 @@ public class RedstoneRadarHandler {
         return hit;
     }
 
-    public static void drawOutline(BlockPos selection, boolean selected) {
+    public void drawOutline(BlockPos selection, boolean selected) {
         if (selection == null)
             return;
 

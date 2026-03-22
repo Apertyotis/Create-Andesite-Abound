@@ -1,7 +1,6 @@
 {
   "block.createandesiteabound.redstone_radar": "幽匿发信器",
-  "msg.caa.target_set": "目标已选择",
-  "msg.caa.target_reset": "目标已清除",
+  "item.createandesiteabound.simple_schematic": "简易蓝图",
   "info.caa.goggle.connected": "成功连接到目标",
   "info.caa.goggle.empty": "无目标, 仅接收",
   "info.caa.goggle.forceload_disable": "区块加载功能已关闭",
@@ -14,5 +13,7 @@
   "jei.text.processing_duration": "配方时间: %s 刻",
   "jei.text.processing_duration_with_num": "配方时间: %s 刻 / %s 物品",
   "jei.text.total_energy": "总计消耗: %s FE",
+  "msg.caa.target_reset": "目标已清除",
+  "msg.caa.target_set": "目标已选择",
   "tooltip.caa.has_target_nbt": "已记录坐标:"
 }
