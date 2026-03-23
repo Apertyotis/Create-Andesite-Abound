@@ -1,6 +1,6 @@
 {
   "block.createandesiteabound.redstone_radar": "幽匿发信器",
-  "item.createandesiteabound.simple_schematic": "简易蓝图",
+  "item.createandesiteabound.simple_schematic": "工程集合",
   "info.caa.goggle.connected": "成功连接到目标",
   "info.caa.goggle.empty": "无目标, 仅接收",
   "info.caa.goggle.forceload_disable": "区块加载功能已关闭",

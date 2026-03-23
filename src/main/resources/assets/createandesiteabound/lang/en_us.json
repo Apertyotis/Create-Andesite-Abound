@@ -1,6 +1,6 @@
 {
   "block.createandesiteabound.redstone_radar": "Sculk Transmitter",
-  "item.createandesiteabound.simple_schematic": "Simple Schematic",
+  "item.createandesiteabound.simple_schematic": "Engineering Set",
   "jei.text.processing_duration": "Recipe time: %s ticks",
   "jei.text.processing_duration_with_num": "Recipe time: %s ticks / %s items",
   "jei.text.total_energy": "Total cost: %s FE",

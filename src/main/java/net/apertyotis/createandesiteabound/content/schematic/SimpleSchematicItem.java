@@ -8,18 +8,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedInputStream;
@@ -29,31 +24,44 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 public class SimpleSchematicItem extends Item {
+
     public SimpleSchematicItem(Properties properties) {
         super(properties);
     }
 
     @Override
-    @OnlyIn(value = Dist.CLIENT)
-    public void appendHoverText(ItemStack stack, Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
+    public @NotNull Component getName(@NotNull ItemStack stack) {
+        String name = super.getName(stack).getString();
+        String key = getTranslateKey(stack);
+        if (key == null) {
+            return Component.literal(name)
+                    .withStyle(ChatFormatting.LIGHT_PURPLE);
+        } else {
+            return Component.literal(name)
+                    .withStyle(ChatFormatting.LIGHT_PURPLE)
+                    .append(Component.literal(" - ")
+                            .withStyle(ChatFormatting.GRAY))
+                    .append(Component.translatable(key)
+                            .withStyle(ChatFormatting.GOLD));
+        }
+    }
+
+    public static String getTranslateKey(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag != null) {
             if (tag.contains("File")) {
                 String fileName = tag.getString("File").strip();
                 if (fileName.contains(".nbt")) {
                     String cleanName = fileName.replaceAll("§[0-9a-fk-or]", "");
-                    String key = cleanName.endsWith(".nbt") ? cleanName.substring(0, cleanName.length() - 4) : cleanName;
-                    MutableComponent mutableComponent = Component.translatable(key).withStyle(ChatFormatting.GOLD);
-                    tooltip.add(mutableComponent);
+                    return cleanName.endsWith(".nbt") ? cleanName.substring(0, cleanName.length() - 4) : cleanName;
                 }
             }
         }
 
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        return null;
     }
 
     public static StructurePlaceSettings getSettings(ItemStack blueprint, boolean processNBT) {

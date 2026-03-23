@@ -73,7 +73,7 @@ public class SimpleSchematicHandler extends SchematicHandler {
 
         overlay = new SchematicHotbarSlotOverlay();
         currentTool = SimpleToolType.DEPLOY;
-        selectionScreen = new ToolSelectionScreen(ImmutableList.of(ToolType.DEPLOY), this::equip);
+        selectionScreen = new SimpleToolSelectionScreen(ImmutableList.of(ToolType.DEPLOY), this::equip);
         transformation = new SchematicTransformation();
     }
 
@@ -140,13 +140,13 @@ public class SimpleSchematicHandler extends SchematicHandler {
         if (deployed) {
             setupRenderer();
             ToolType toolBefore = currentTool.getToolType();
-            selectionScreen = new ToolSelectionScreen(ToolType.getTools(true), this::equip);
+            selectionScreen = new SimpleToolSelectionScreen(SimpleToolType.getTools(), this::equip);
             if (toolBefore != null) {
                 selectionScreen.setSelectedElement(toolBefore);
                 equip(toolBefore);
             }
         } else
-            selectionScreen = new ToolSelectionScreen(ImmutableList.of(ToolType.DEPLOY), this::equip);
+            selectionScreen = new SimpleToolSelectionScreen(ImmutableList.of(ToolType.DEPLOY), this::equip);
     }
 
     private void setupRenderer() {
@@ -357,7 +357,7 @@ public class SimpleSchematicHandler extends SchematicHandler {
         }
         bounds = new AABB(0, 0, 0, size.getX(), size.getY(), size.getZ());
         outline = new AABBOutline(bounds);
-        outline.getParams().colored(0x6886c5).lineWidth(1 / 16f);
+        outline.getParams().colored(0x32CD32).lineWidth(1 / 16f);
 
         transformation.init(anchor, settings, bounds);
     }
@@ -365,8 +365,8 @@ public class SimpleSchematicHandler extends SchematicHandler {
     @Override
     public void deploy() {
         if (!deployed) {
-            List<ToolType> tools = ToolType.getTools(true);
-            selectionScreen = new ToolSelectionScreen(tools, this::equip);
+            List<ToolType> tools = SimpleToolType.getTools();
+            selectionScreen = new SimpleToolSelectionScreen(tools, this::equip);
         }
         deployed = true;
         setupRenderer();

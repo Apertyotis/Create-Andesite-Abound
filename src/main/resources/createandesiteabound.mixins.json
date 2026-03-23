@@ -52,6 +52,7 @@
     "minecraft.GameTypeMixin"
   ],
   "client": [
+    "create.schematics.ToolSelectionScreenAccessor",
     "jei.BlockCuttingCategoryMixin",
     "jei.CreateRecipeCategoryMixin",
     "jei.CrushingCategoryMixin",
