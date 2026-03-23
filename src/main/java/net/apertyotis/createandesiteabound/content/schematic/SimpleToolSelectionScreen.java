@@ -54,7 +54,7 @@ public class SimpleToolSelectionScreen extends ToolSelectionScreen {
                 graphics.drawString(font, toolTip.get(0), x - 10, y + 38, 0xEEEEEE + stringAlphaComponent, false);
             if (toolTip.size() > 1)
                 graphics.drawString(font, toolTip.get(1), x - 10, y + 50, 0xCCDDFF + stringAlphaComponent, false);
-            if (toolTip.size() > 2)
+            if (toolTip.size() > 2 && !tools.get(selection).equals(ToolType.PRINT))
                 graphics.drawString(font, toolTip.get(2), x - 10, y + 60, 0xCCDDFF + stringAlphaComponent, false);
             if (toolTip.size() > 3)
                 graphics.drawString(font, toolTip.get(3), x - 10, y + 72, 0xCCCCDD + stringAlphaComponent, false);

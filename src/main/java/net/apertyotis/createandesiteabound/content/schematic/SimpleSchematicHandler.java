@@ -49,7 +49,6 @@ public class SimpleSchematicHandler extends SchematicHandler {
 
     public static final SimpleSchematicHandler SIMPLE_SCHEMATIC_HANDLER = new SimpleSchematicHandler();
 
-    private String displayedSchematic;
     private SchematicTransformation transformation;
     private AABB bounds;
     private boolean deployed;
@@ -101,19 +100,17 @@ public class SimpleSchematicHandler extends SchematicHandler {
         // 检查玩家手持物，设置渲染状态
         ItemStack stack = findBlueprintInHand(player);
         if (stack == null) {
-            active = false;
             syncCooldown = 0;
             if (activeSchematicItem != null && itemLost(player)) {
                 activeHotbarSlot = 0;
                 activeSchematicItem = null;
-                setInactive();
             }
+            setInactive();
             return;
         }
 
         // 有新的蓝图需要渲染，初始化
-        // noinspection DataFlowIssue
-        if (!active || !stack.getTag().getString("File").equals(displayedSchematic)) {
+        if (!active || !ItemStack.isSameItemSameTags(stack, activeSchematicItem)) {
             setInactive();
             init(stack);
         }
@@ -132,8 +129,6 @@ public class SimpleSchematicHandler extends SchematicHandler {
     }
 
     private void init(ItemStack stack) {
-        // noinspection DataFlowIssue
-        displayedSchematic = stack.getTag().getString("File");
         active = true;
         // 从 nbt 加载并设置渲染状态
         loadSettings(stack);
