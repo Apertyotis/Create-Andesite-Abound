@@ -14,7 +14,10 @@ import java.util.*;
 @Mixin(value = Carriage.class, remap = false)
 public abstract class CarriageMixin {
 
-    // 修复火车保存乘客数据时使用了不正确的方法的问题
+    /**
+     * 修复火车错误保存乘客数据的问题<br>
+     * @see net.minecraft.world.entity.Entity#saveAsPassenger(CompoundTag) 
+     */
     @WrapOperation(
             method = "write",
             at = @At(
