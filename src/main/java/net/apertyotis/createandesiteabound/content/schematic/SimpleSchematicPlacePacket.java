@@ -1,5 +1,6 @@
 package net.apertyotis.createandesiteabound.content.schematic;
 
+import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.schematics.SchematicPrinter;
 import com.simibubi.create.content.schematics.packet.SchematicPlacePacket;
 import com.simibubi.create.foundation.utility.BlockHelper;
@@ -49,6 +50,8 @@ public class SimpleSchematicPlacePacket extends SchematicPlacePacket {
                     BlockHelper.placeSchematicBlock(world, state, pos, null, data);
                 }, (pos, entity) -> world.addFreshEntity(entity));
             }
+
+            AllSoundEvents.SCHEMATICANNON_FINISH.playFrom(player);
 
             if (!player.isCreative()) {
                 player.getMainHandItem().shrink(1);
