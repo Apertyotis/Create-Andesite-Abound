@@ -20,6 +20,20 @@ public abstract class SuperGlueSelectionHandlerMixin {
                     target = "Ljava/util/Set;contains(Ljava/lang/Object;)Z"
             )
     )
+    private boolean noCannotReachWarning(Set<BlockPos> instance, Object o, Operation<Boolean> original) {
+        if (!AllConfig.super_glue_always_can_reach) {
+            return original.call(instance, o);
+        }
+        return true;
+    }
+
+    @WrapOperation(
+            method = "onMouseInput",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Ljava/util/Set;contains(Ljava/lang/Object;)Z"
+            )
+    )
     private boolean alwaysCanReach(Set<BlockPos> instance, Object o, Operation<Boolean> original) {
         if (!AllConfig.super_glue_always_can_reach) {
             return original.call(instance, o);

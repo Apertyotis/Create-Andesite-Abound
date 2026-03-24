@@ -10,6 +10,7 @@
   "mixins": [
     "create.contraption.ControlledContraptionEntityMixin",
     "create.contraption.glue.SuperGlueSelectionHandlerMixin",
+    "create.contraption.glue.SuperGlueSelectionPacketMixin",
     "create.contraption.psi.PortableItemInterfaceBlockEntityMixin",
     "create.contraption.psi.PortableStorageInterfaceMovementMixin",
     "create.equipment.BacktankBlockEntityMixin",
