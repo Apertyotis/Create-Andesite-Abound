@@ -41,6 +41,7 @@
     "create.kinetics.saw.SawBlockEntityMixin",
     "create.logistics.ChuteBlockEntityMixin",
     "create.logistics.DepotBehaviourMixin",
+    "create.logistics.ItemVaultBlockEntityMixin",
     "create.processing.basin.BasinBlockEntityMixin",
     "create.processing.basin.BasinOperatingBlockEntityAccessor",
     "create.processing.basin.BasinOperatingBlockEntityMixin",
