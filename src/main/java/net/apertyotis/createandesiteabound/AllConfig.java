@@ -42,6 +42,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue HEURISTIC_ROTATION;
         public final ForgeConfigSpec.BooleanValue NO_DEPOT_OVERFLOW_DROP;
         public final ForgeConfigSpec.BooleanValue REPLACE_ANY_FLOWING_FLUID;
+        public final ForgeConfigSpec.BooleanValue SUPER_GLUE_ALWAYS_CAN_REACH;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -115,6 +116,10 @@ public class AllConfig {
             REPLACE_ANY_FLOWING_FLUID = builder
                     .comment("Allow pumps to replace any flowing fluid, ignoring the fluid type.")
                     .define("replace_any_flowing_fluid", true);
+            SUPER_GLUE_ALWAYS_CAN_REACH = builder
+                    .comment("When setting a selection, Super Glue no longer requires the blocks to be connected.")
+                    .comment("This does not affect the actual connection logic.")
+                    .define("super_glue_always_can_reach", true);
             builder.pop();
         }
     }
@@ -140,6 +145,7 @@ public class AllConfig {
     public static boolean heuristic_rotation;
     public static boolean no_depot_overflow_drop;
     public static boolean replace_any_flowing_fluid;
+    public static boolean super_glue_always_can_reach;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -166,5 +172,6 @@ public class AllConfig {
         heuristic_rotation = COMMON.HEURISTIC_ROTATION.get();
         no_depot_overflow_drop = COMMON.NO_DEPOT_OVERFLOW_DROP.get();
         replace_any_flowing_fluid = COMMON.REPLACE_ANY_FLOWING_FLUID.get();
+        super_glue_always_can_reach = COMMON.SUPER_GLUE_ALWAYS_CAN_REACH.get();
     }
 }
