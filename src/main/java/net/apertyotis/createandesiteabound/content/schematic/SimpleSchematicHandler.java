@@ -98,6 +98,7 @@ public class SimpleSchematicHandler extends SchematicHandler {
         renderers.forEach(SchematicRenderer::tick);
 
         // 检查玩家手持物，设置渲染状态
+        ItemStack stackBefore = activeSchematicItem;
         ItemStack stack = findBlueprintInHand(player);
         if (stack == null) {
             syncCooldown = 0;
@@ -110,7 +111,7 @@ public class SimpleSchematicHandler extends SchematicHandler {
         }
 
         // 有新的蓝图需要渲染，初始化
-        if (!active || !ItemStack.isSameItemSameTags(stack, activeSchematicItem)) {
+        if (!active || !ItemStack.isSameItemSameTags(stack, stackBefore)) {
             setInactive();
             init(stack);
         }
