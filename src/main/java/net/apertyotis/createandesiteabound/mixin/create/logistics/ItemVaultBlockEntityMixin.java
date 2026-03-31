@@ -55,7 +55,7 @@ public abstract class ItemVaultBlockEntityMixin implements IPartialSafeNBT {
      * 详见 Create Commit <a href="https://github.com/Creators-of-Create/Create/commit/9476f42da8adc1b91ba05bb2d67d939ac809e2aa">9476f42</a><br>
      * <br>
      * 并修复保险库内容变化时不自动保存的问题<br>
-     * 详见Create Commit <a href="https://github.com/Creators-of-Create/Create/commit/e67d8da904c650255eaeb8c86d39ad2885d4afe3">e67d8da</a>
+     * 详见 Create Commit <a href="https://github.com/Creators-of-Create/Create/commit/e67d8da904c650255eaeb8c86d39ad2885d4afe3">e67d8da</a>
      */
     @Inject(method = "updateComparators", at = @At("HEAD"), cancellable = true)
     private void updateComparatorsForSurface(CallbackInfo ci) {
