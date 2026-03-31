@@ -56,6 +56,7 @@
   ],
   "client": [
     "create.schematics.ToolSelectionScreenAccessor",
+    "jei.BasinCategoryMixin",
     "jei.BlockCuttingCategoryMixin",
     "jei.CreateRecipeCategoryMixin",
     "jei.CrushingCategoryMixin",
