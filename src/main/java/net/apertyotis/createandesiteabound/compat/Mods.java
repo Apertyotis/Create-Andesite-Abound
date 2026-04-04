@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public enum Mods {
-    createaddition;
+    CreateAddition;
 
     private final String id;
 

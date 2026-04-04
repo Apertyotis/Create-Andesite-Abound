@@ -28,6 +28,9 @@ public class SimpleSchematicPlacePacket extends SchematicPlacePacket {
             ServerPlayer player = context.getSender();
             if (player == null)
                 return;
+            ItemStack heldItem = player.getMainHandItem();
+            if (heldItem.isEmpty() || !ItemStack.isSameItemSameTags(heldItem, stack))
+                return;
 
             Level world = player.level();
             SchematicPrinter printer = new SchematicPrinter();
@@ -54,7 +57,7 @@ public class SimpleSchematicPlacePacket extends SchematicPlacePacket {
             AllSoundEvents.SCHEMATICANNON_FINISH.playFrom(player);
 
             if (!player.isCreative()) {
-                player.getMainHandItem().shrink(1);
+                heldItem.shrink(1);
             }
         });
         return true;
