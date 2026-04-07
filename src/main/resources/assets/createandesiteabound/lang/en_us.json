@@ -16,5 +16,7 @@
   "info.caa.goggle.status": "Status:",
   "msg.caa.target_set": "Target Selected",
   "msg.caa.target_reset": "Selection Canceled",
-  "tooltip.caa.has_target_nbt": "Record:"
+  "tooltip.caa.has_target_nbt": "Record:",
+  "caa.hint.hose_pulley.cant_infinite": "This fluid doesn’t support bottomless supply!",
+  "caa.hint.hose_pulley.lower_hose": "Sufficient fluid filled. Lower the hose for infinite extraction."
 }
