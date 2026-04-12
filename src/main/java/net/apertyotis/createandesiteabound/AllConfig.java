@@ -43,6 +43,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue NO_DEPOT_OVERFLOW_DROP;
         public final ForgeConfigSpec.BooleanValue REPLACE_ANY_FLOWING_FLUID;
         public final ForgeConfigSpec.BooleanValue SUPER_GLUE_ALWAYS_CAN_REACH;
+        public final ForgeConfigSpec.BooleanValue HARVESTER_NOT_CONSUME_SEED;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -120,6 +121,9 @@ public class AllConfig {
                     .comment("When setting a selection, Super Glue no longer requires the blocks to be connected.")
                     .comment("This does not affect the actual connection logic.")
                     .define("super_glue_always_can_reach", true);
+            HARVESTER_NOT_CONSUME_SEED = builder
+                    .comment("Prevent harvester from consuming seed when replanting.")
+                    .define("harvester_not_consume_seed", true);
             builder.pop();
         }
     }
@@ -146,6 +150,7 @@ public class AllConfig {
     public static boolean no_depot_overflow_drop;
     public static boolean replace_any_flowing_fluid;
     public static boolean super_glue_always_can_reach;
+    public static boolean harvester_not_consume_seed;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -173,5 +178,6 @@ public class AllConfig {
         no_depot_overflow_drop = COMMON.NO_DEPOT_OVERFLOW_DROP.get();
         replace_any_flowing_fluid = COMMON.REPLACE_ANY_FLOWING_FLUID.get();
         super_glue_always_can_reach = COMMON.SUPER_GLUE_ALWAYS_CAN_REACH.get();
+        harvester_not_consume_seed = COMMON.HARVESTER_NOT_CONSUME_SEED.get();
     }
 }

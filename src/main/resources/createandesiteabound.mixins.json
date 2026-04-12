@@ -11,6 +11,7 @@
     "create.contraption.ControlledContraptionEntityMixin",
     "create.contraption.glue.SuperGlueSelectionHandlerMixin",
     "create.contraption.glue.SuperGlueSelectionPacketMixin",
+    "create.contraption.haverster.HarvesterMovementBehaviourMixin",
     "create.contraption.psi.PortableItemInterfaceBlockEntityMixin",
     "create.contraption.psi.PortableStorageInterfaceMovementMixin",
     "create.equipment.BacktankBlockEntityMixin",

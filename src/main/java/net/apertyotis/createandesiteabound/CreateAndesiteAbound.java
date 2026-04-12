@@ -2,7 +2,6 @@ package net.apertyotis.createandesiteabound;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -28,7 +27,6 @@ public class CreateAndesiteAbound {
         AllBlockEntityType.register();
         AllPackets.registerPackets();
 
-        MinecraftForge.EVENT_BUS.register(this);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AllConfig.COMMON_SPEC);
     }
 }
