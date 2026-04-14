@@ -44,6 +44,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue REPLACE_ANY_FLOWING_FLUID;
         public final ForgeConfigSpec.BooleanValue SUPER_GLUE_ALWAYS_CAN_REACH;
         public final ForgeConfigSpec.BooleanValue HARVESTER_NOT_CONSUME_SEED;
+        public final ForgeConfigSpec.BooleanValue DISABLE_DIG_SPEED_PENALTY;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -124,6 +125,9 @@ public class AllConfig {
             HARVESTER_NOT_CONSUME_SEED = builder
                     .comment("Prevent harvester from consuming seed when replanting.")
                     .define("harvester_not_consume_seed", true);
+            DISABLE_DIG_SPEED_PENALTY = builder
+                    .comment("When players are in the air or water, they will no longer be subject to a five-time increase in digging time penalty")
+                    .define("disable_dig_speed_penalty", true);
             builder.pop();
         }
     }
@@ -151,6 +155,7 @@ public class AllConfig {
     public static boolean replace_any_flowing_fluid;
     public static boolean super_glue_always_can_reach;
     public static boolean harvester_not_consume_seed;
+    public static boolean disable_dig_speed_penalty;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -179,5 +184,6 @@ public class AllConfig {
         replace_any_flowing_fluid = COMMON.REPLACE_ANY_FLOWING_FLUID.get();
         super_glue_always_can_reach = COMMON.SUPER_GLUE_ALWAYS_CAN_REACH.get();
         harvester_not_consume_seed = COMMON.HARVESTER_NOT_CONSUME_SEED.get();
+        disable_dig_speed_penalty = COMMON.DISABLE_DIG_SPEED_PENALTY.get();
     }
 }

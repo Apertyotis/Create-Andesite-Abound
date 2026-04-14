@@ -56,7 +56,8 @@
     "create.schematics.SchematicPrinterMixin",
     "create.trains.CarriageMixin",
     "minecraft.BlockBehaviourMixin",
-    "minecraft.GameTypeMixin"
+    "minecraft.GameTypeMixin",
+    "minecraft.PlayerMixin"
   ],
   "client": [
     "create.schematics.ToolSelectionScreenAccessor",
