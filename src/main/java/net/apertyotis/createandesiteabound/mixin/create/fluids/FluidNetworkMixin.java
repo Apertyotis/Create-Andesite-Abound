@@ -1,5 +1,8 @@
 package net.apertyotis.createandesiteabound.mixin.create.fluids;
 
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Cancellable;
@@ -11,7 +14,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = FluidNetwork.class, remap = false)
@@ -55,16 +57,12 @@ public abstract class FluidNetworkMixin {
      * 阻止管道抽取 0mB 液体<br>
      * 详见 Create PR <a href="https://github.com/Creators-of-Create/Create/pull/10055">#10055</a>
      */
-    @ModifyVariable(
-            method = "tick",
-            at = @At("STORE"),
-            name = "action"
-    )
-    private IFluidHandler.FluidAction preventDrainZero(
-            IFluidHandler.FluidAction value, @Local(name="flowSpeed") int flowSpeed, @Cancellable CallbackInfo ci
-    ) {
-        if (flowSpeed <= 0)
+    @Definition(id = "flowSpeed", local = @Local(type = int.class, name = "flowSpeed"))
+    @Expression("flowSpeed - ?")
+    @ModifyExpressionValue(method = "tick", at = @At("MIXINEXTRAS:EXPRESSION"))
+    private int preventDrainZero(int original, @Cancellable CallbackInfo ci) {
+        if (original <= 0)
             ci.cancel();
-        return value;
+        return original;
     }
 }
