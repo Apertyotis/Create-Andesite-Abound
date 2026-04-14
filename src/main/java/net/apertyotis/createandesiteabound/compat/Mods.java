@@ -1,22 +1,55 @@
 package net.apertyotis.createandesiteabound.compat;
 
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
+import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+import org.apache.maven.artifact.versioning.VersionRange;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 public enum Mods {
-    CreateAddition;
+    CreateAddition,
+    Design_Decor;
 
     private final String id;
+    private final String[] mixins;
+
+    private Boolean loaded;
+
+    private static Map<String, ModInfo> modInfoMap = null;
 
     Mods() {
         id = name().toLowerCase(Locale.ROOT);
+        mixins = null;
+    }
+
+    Mods(String... mixins) {
+        id = name().toLowerCase(Locale.ROOT);
+        this.mixins = mixins;
+    }
+
+    // 在 mixin 应用阶段判断 mod 加载信息
+    public static ModInfo getModInfo(String id) {
+        if (modInfoMap == null) {
+            modInfoMap = new HashMap<>();
+            for (ModInfo mod: FMLLoader.getLoadingModList().getMods()) {
+                modInfoMap.put(mod.getModId(), mod);
+            }
+        }
+
+        return modInfoMap.get(id);
     }
 
     public boolean isLoaded() {
-        return ModList.get().isLoaded(id);
+        if (loaded == null)
+            loaded = getModInfo(id) != null;
+
+        return loaded;
     }
 
     /**
@@ -28,5 +61,13 @@ public enum Mods {
         if (isLoaded())
             return Optional.of(toRun.get().get());
         return Optional.empty();
+    }
+
+    public String[] getMixins() {
+        return mixins;
+    }
+
+    public String getPath() {
+        return id;
     }
 }

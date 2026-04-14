@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "net.apertyotis.createandesiteabound.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "net.apertyotis.createandesiteabound.mixin.CAAMixinPlugin",
   "refmap": "createandesiteabound.refmap.json",
   "mixinextras": {
     "minVersion": "0.5.2"
@@ -55,6 +56,7 @@
     "create.processing.sequenced.SequencedAssemblyRecipeMixin",
     "create.schematics.SchematicPrinterMixin",
     "create.trains.CarriageMixin",
+    "design_decor.LargeBoilerMixin",
     "minecraft.BlockBehaviourMixin",
     "minecraft.GameTypeMixin",
     "minecraft.PlayerMixin"
