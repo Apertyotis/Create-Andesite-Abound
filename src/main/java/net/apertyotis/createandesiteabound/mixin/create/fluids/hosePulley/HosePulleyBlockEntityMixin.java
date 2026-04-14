@@ -39,12 +39,18 @@ public abstract class HosePulleyBlockEntityMixin {
     @Unique
     public boolean caa$drainerInfinite;
 
+    @Inject(method = "sendData", at = @At("TAIL"))
+    private void sendInfinite(CallbackInfo ci) {
+        caa$fillerInfinite = filler.isInfinite();
+        caa$drainerInfinite = drainer.isInfinite();
+    }
+
     // 向客户端发送更详细的infinite信息，以便于显示准确的护目镜提示
     @Inject(method = "write", at = @At("TAIL"))
     private void writeInfinite(CompoundTag compound, boolean clientPacket, CallbackInfo ci) {
         if (clientPacket) {
-            compound.putBoolean("FillerInfinite", filler.isInfinite());
-            compound.putBoolean("DrainerInfinite", drainer.isInfinite());
+            compound.putBoolean("FillerInfinite", caa$fillerInfinite);
+            compound.putBoolean("DrainerInfinite", caa$drainerInfinite);
         }
     }
 
