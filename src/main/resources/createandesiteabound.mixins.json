@@ -59,7 +59,9 @@
     "design_decor.LargeBoilerMixin",
     "minecraft.BlockBehaviourMixin",
     "minecraft.GameTypeMixin",
-    "minecraft.PlayerMixin"
+    "minecraft.PlayerMixin",
+    "minecraft.items.ItemHandlerHelperMixin",
+    "minecraft.items.ItemStackMixin"
   ],
   "client": [
     "create.schematics.ToolSelectionScreenAccessor",

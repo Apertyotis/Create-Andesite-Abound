@@ -45,6 +45,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue SUPER_GLUE_ALWAYS_CAN_REACH;
         public final ForgeConfigSpec.BooleanValue HARVESTER_NOT_CONSUME_SEED;
         public final ForgeConfigSpec.BooleanValue DISABLE_DIG_SPEED_PENALTY;
+        public final ForgeConfigSpec.BooleanValue DONT_COMPARE_ITEM_CAPABILITY;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -128,6 +129,9 @@ public class AllConfig {
             DISABLE_DIG_SPEED_PENALTY = builder
                     .comment("When players are in the air or water, they will no longer be subject to a five-time increase in digging time penalty")
                     .define("disable_dig_speed_penalty", true);
+            DONT_COMPARE_ITEM_CAPABILITY = builder
+                    .comment("Prevent forge initializing the item capabilities when comparing item stacks.")
+                    .define("dont_compare_item_capability", true);
             builder.pop();
         }
     }
@@ -156,6 +160,7 @@ public class AllConfig {
     public static boolean super_glue_always_can_reach;
     public static boolean harvester_not_consume_seed;
     public static boolean disable_dig_speed_penalty;
+    public static boolean dont_compare_item_capability;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -185,5 +190,6 @@ public class AllConfig {
         super_glue_always_can_reach = COMMON.SUPER_GLUE_ALWAYS_CAN_REACH.get();
         harvester_not_consume_seed = COMMON.HARVESTER_NOT_CONSUME_SEED.get();
         disable_dig_speed_penalty = COMMON.DISABLE_DIG_SPEED_PENALTY.get();
+        dont_compare_item_capability = COMMON.DONT_COMPARE_ITEM_CAPABILITY.get();
     }
 }
