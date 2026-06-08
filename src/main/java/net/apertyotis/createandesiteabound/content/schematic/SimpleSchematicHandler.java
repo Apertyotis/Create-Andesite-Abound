@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.AllKeys;
 import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.content.schematics.SchematicProcessor;
 import com.simibubi.create.content.schematics.SchematicWorld;
 import com.simibubi.create.content.schematics.client.*;
 import com.simibubi.create.content.schematics.client.tools.ToolType;
@@ -12,7 +13,6 @@ import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import com.simibubi.create.foundation.utility.Couple;
 import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.NBTHelper;
 import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
@@ -24,9 +24,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -55,9 +52,6 @@ public class SimpleSchematicHandler extends SchematicHandler {
     private boolean active;
     private SimpleToolType currentTool;
 
-    private static final int SYNC_DELAY = 10;
-    private int syncCooldown;
-    private int activeHotbarSlot;
     private ItemStack activeSchematicItem;
     private AABBOutline outline;
 
@@ -83,8 +77,6 @@ public class SimpleSchematicHandler extends SchematicHandler {
         Player player = mc.player;
         if (player == null || mc.gameMode == null || mc.gameMode.getPlayerMode() == GameType.SPECTATOR) {
             if (active) {
-                syncCooldown = 0;
-                activeHotbarSlot = 0;
                 activeSchematicItem = null;
                 setInactive();
             }
@@ -100,49 +92,61 @@ public class SimpleSchematicHandler extends SchematicHandler {
         // 检查玩家手持物，设置渲染状态
         ItemStack stackBefore = activeSchematicItem;
         ItemStack stack = findBlueprintInHand(player);
+        // 未手持蓝图时，关闭渲染并返回
         if (stack == null) {
-            syncCooldown = 0;
             if (activeSchematicItem != null && itemLost(player)) {
-                activeHotbarSlot = 0;
                 activeSchematicItem = null;
             }
             setInactive();
             return;
         }
 
-        // 有新的蓝图需要渲染，初始化
-        if (!active || !ItemStack.isSameItemSameTags(stack, stackBefore)) {
+        // 玩家手持全新的蓝图物品时，重置部署位置等所有状态
+        if (stackBefore == null || !ItemStack.isSameItemSameTags(stack, stackBefore)) {
             setInactive();
-            init(stack);
+            active = true;
+            deployed = false;
+
+            // noinspection DataFlowIssue
+            StructureTemplate template = SimpleSchematicItem.loadSchematic(
+                    Minecraft.getInstance().level.holderLookup(Registries.BLOCK), stack);
+            Vec3i size = template.getSize();
+            bounds = new AABB(0, 0, 0, size.getX(), size.getY(), size.getZ());
+
+            outline = new AABBOutline(bounds);
+            outline.getParams().colored(0x32CD32).lineWidth(1 / 16f);
+
+            StructurePlaceSettings settings = new StructurePlaceSettings();
+            settings.addProcessor(SchematicProcessor.INSTANCE);
+            transformation = new SchematicTransformation();
+            transformation.init(BlockPos.ZERO, settings, bounds);
+
+            selectionScreen = new SimpleToolSelectionScreen(ImmutableList.of(ToolType.DEPLOY), this::equip);
         }
+        // 玩家主手切换回上次的蓝图物品时
+        else if (!active) {
+            setInactive();
+            active = true;
+
+            setupRenderer();
+            if (deployed) {
+                ToolType toolBefore = currentTool.getToolType();
+                selectionScreen = new SimpleToolSelectionScreen(SimpleToolType.getTools(), this::equip);
+                if (toolBefore != null) {
+                    selectionScreen.setSelectedElement(toolBefore);
+                    equip(toolBefore);
+                }
+            } else {
+                selectionScreen = new SimpleToolSelectionScreen(ImmutableList.of(ToolType.DEPLOY), this::equip);
+            }
+        }
+
         if (!active)
             return;
-
-        // 延迟发送玩家操作
-        if (syncCooldown > 0)
-            syncCooldown--;
-        if (syncCooldown == 1)
-            sync();
 
         // 工具菜单动画 tick
         selectionScreen.update();
         currentTool.getTool().updateSelection();
-    }
-
-    private void init(ItemStack stack) {
-        active = true;
-        // 从 nbt 加载并设置渲染状态
-        loadSettings(stack);
-        if (deployed) {
-            setupRenderer();
-            ToolType toolBefore = currentTool.getToolType();
-            selectionScreen = new SimpleToolSelectionScreen(SimpleToolType.getTools(), this::equip);
-            if (toolBefore != null) {
-                selectionScreen.setSelectedElement(toolBefore);
-                equip(toolBefore);
-            }
-        } else
-            selectionScreen = new SimpleToolSelectionScreen(ImmutableList.of(ToolType.DEPLOY), this::equip);
     }
 
     private void setupRenderer() {
@@ -243,10 +247,12 @@ public class SimpleSchematicHandler extends SchematicHandler {
 
     @Override
     public void render(ForgeGui gui, GuiGraphics graphics, float partialTicks, int width, int height) {
-        if (Minecraft.getInstance().options.hideGui || !active)
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.options.hideGui || !active)
             return;
         if (activeSchematicItem != null)
-            this.overlay.renderOn(graphics, activeHotbarSlot);
+            // noinspection DataFlowIssue
+            this.overlay.renderOn(graphics, mc.player.getInventory().selected);
         currentTool.getTool()
                 .renderOverlay(gui, graphics, partialTicks, width, height);
         selectionScreen.renderPassive(graphics, partialTicks);
@@ -299,7 +305,6 @@ public class SimpleSchematicHandler extends SchematicHandler {
             return null;
 
         activeSchematicItem = stack;
-        activeHotbarSlot = player.getInventory().selected;
         return stack;
     }
 
@@ -314,48 +319,9 @@ public class SimpleSchematicHandler extends SchematicHandler {
     }
 
     @Override
-    public void markDirty() {
-        syncCooldown = SYNC_DELAY;
-    }
-
-    @Override
-    public void sync() {
-        if (activeSchematicItem == null)
-            return;
-        AllPackets.getChannel().sendToServer(new SimpleSchematicSyncPacket(
-                activeHotbarSlot, transformation.toSettings(), transformation.getAnchor(), deployed));
-    }
-
-    @Override
     public void equip(ToolType tool) {
         this.currentTool = SimpleToolType.of(tool);
         currentTool.getTool().init();
-    }
-
-    @Override
-    public void loadSettings(ItemStack blueprint) {
-        CompoundTag tag = blueprint.getTag();
-        BlockPos anchor = BlockPos.ZERO;
-        StructurePlaceSettings settings = SimpleSchematicItem.getSettings(blueprint, true);
-        transformation = new SchematicTransformation();
-
-        // noinspection DataFlowIssue
-        deployed = tag.getBoolean("Deployed");
-        if (deployed)
-            anchor = NbtUtils.readBlockPos(tag.getCompound("Anchor"));
-
-        Vec3i size = NBTHelper.readVec3i(tag.getList("Bounds", Tag.TAG_INT));
-        if (size.equals(Vec3i.ZERO)) {
-            Level world = Minecraft.getInstance().level;
-            // noinspection DataFlowIssue
-            StructureTemplate template = SimpleSchematicItem.loadSchematic(world.holderLookup(Registries.BLOCK), blueprint);
-            size = template.getSize();
-        }
-        bounds = new AABB(0, 0, 0, size.getX(), size.getY(), size.getZ());
-        outline = new AABBOutline(bounds);
-        outline.getParams().colored(0x32CD32).lineWidth(1 / 16f);
-
-        transformation.init(anchor, settings, bounds);
     }
 
     @Override
@@ -370,12 +336,11 @@ public class SimpleSchematicHandler extends SchematicHandler {
 
     @Override
     public void printInstantly() {
-        AllPackets.getChannel().sendToServer(new SimpleSchematicPlacePacket(activeSchematicItem.copy()));
-        CompoundTag tag = activeSchematicItem.getOrCreateTag();
-        tag.putBoolean("Deployed", false);
-        activeSchematicItem.setTag(tag);
-        setInactive();
-        markDirty();
+        // 发送打印操作
+        AllPackets.getChannel().sendToServer(new SimpleSchematicPlacePacket(
+                activeSchematicItem, transformation.getAnchor(), transformation.toSettings()));
+        // 重置部署位置状态
+        activeSchematicItem = null;
     }
 
     @Override
@@ -396,11 +361,6 @@ public class SimpleSchematicHandler extends SchematicHandler {
     @Override
     public boolean isDeployed() {
         return deployed;
-    }
-
-    @Override
-    public ItemStack getActiveSchematicItem() {
-        return activeSchematicItem;
     }
 
     @Override

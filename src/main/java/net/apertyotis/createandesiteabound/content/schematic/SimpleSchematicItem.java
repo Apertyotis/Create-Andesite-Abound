@@ -1,6 +1,5 @@
 package net.apertyotis.createandesiteabound.content.schematic;
 
-import com.simibubi.create.content.schematics.SchematicProcessor;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderGetter;
@@ -11,9 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.NotNull;
 
@@ -62,33 +58,6 @@ public class SimpleSchematicItem extends Item {
         }
 
         return null;
-    }
-
-    public static StructurePlaceSettings getSettings(ItemStack blueprint, boolean processNBT) {
-        StructurePlaceSettings settings = new StructurePlaceSettings();
-        CompoundTag tag = blueprint.getTag();
-        if (tag != null) {
-            String rotation = tag.getString("Rotation");
-            String mirror = tag.getString("Mirror");
-
-            for (Rotation i: Rotation.values()) {
-                if (i.name().equals(rotation)) {
-                    settings.setRotation(i);
-                    break;
-                }
-            }
-
-            for (Mirror i: Mirror.values()) {
-                if (i.name().equals(mirror)) {
-                    settings.setMirror(i);
-                    break;
-                }
-            }
-        }
-        if (processNBT)
-            settings.addProcessor(SchematicProcessor.INSTANCE);
-
-        return settings;
     }
 
     public static StructureTemplate loadSchematic(HolderGetter<Block> lookup, ItemStack blueprint) {

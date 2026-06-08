@@ -2,7 +2,6 @@ package net.apertyotis.createandesiteabound;
 
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicPlacePacket;
-import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicSyncPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -18,10 +17,9 @@ import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
 public enum AllPackets {
 
-    PLACE_SCHEMATIC(SimpleSchematicPlacePacket.class, SimpleSchematicPlacePacket::new, PLAY_TO_SERVER),
-    SYNC_SCHEMATIC(SimpleSchematicSyncPacket.class, SimpleSchematicSyncPacket::new, PLAY_TO_SERVER);
+    PLACE_SCHEMATIC(SimpleSchematicPlacePacket.class, SimpleSchematicPlacePacket::new, PLAY_TO_SERVER);
 
-    public static final ResourceLocation CHANNEL_NAME = new ResourceLocation(CreateAndesiteAbound.MOD_ID, "main");
+    public static final ResourceLocation CHANNEL_NAME = ResourceLocation.fromNamespaceAndPath(CreateAndesiteAbound.MOD_ID, "main");
     public static final int NETWORK_VERSION = 3;
     public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);
     private static SimpleChannel channel;

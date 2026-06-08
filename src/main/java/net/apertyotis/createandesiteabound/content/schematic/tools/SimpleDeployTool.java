@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.schematics.client.tools.DeployTool;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicHandler;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 public class SimpleDeployTool extends DeployTool {
     @Override
@@ -15,5 +17,18 @@ public class SimpleDeployTool extends DeployTool {
     @Override
     public void renderOnSchematic(PoseStack ms, SuperRenderTypeBuffer buffer) {
         ISimpleSchematicTool.renderOnSchematic(ms, buffer, schematicHandler, renderSelectedFace, selectedFace);
+    }
+
+    @Override
+    public boolean handleRightClick() {
+        if (selectedPos == null)
+            return super.handleRightClick();
+        Vec3 center = schematicHandler.getBounds().getCenter();
+        BlockPos target = selectedPos.offset(-((int) center.x), 0, -((int) center.z));
+
+        schematicHandler.getTransformation().startAt(target);
+        schematicHandler.deploy();
+
+        return true;
     }
 }
