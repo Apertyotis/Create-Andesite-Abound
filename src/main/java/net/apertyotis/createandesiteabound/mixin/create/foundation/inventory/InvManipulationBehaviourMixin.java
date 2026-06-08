@@ -17,6 +17,10 @@ import java.util.function.Predicate;
 
 @Mixin(value = InvManipulationBehaviour.class, remap = false)
 public abstract class InvManipulationBehaviourMixin {
+    /**
+     * 取消漏斗取物时多余的一次判断（导致一次完整的取物需要判断三遍）<br>
+     * 详见 Create PR<a href="https://github.com/Creators-of-Create/Create/pull/9706">#9706</a>
+     */
     @WrapOperation(
             method = "extract(" +
                     "Lcom/simibubi/create/foundation/item/ItemHelper$ExtractionCountMode;" +

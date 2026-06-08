@@ -9,6 +9,7 @@
     "minVersion": "0.5.2"
   },
   "mixins": [
+    "create.contraption.ContraptionInvWrapperMixin",
     "create.contraption.ControlledContraptionEntityMixin",
     "create.contraption.glue.SuperGlueSelectionHandlerMixin",
     "create.contraption.glue.SuperGlueSelectionPacketMixin",
@@ -32,6 +33,7 @@
     "create.foundation.fluid.CombinedTankWrapperAccessor",
     "create.foundation.fluid.CombinedTankWrapperMixin",
     "create.foundation.inventory.InvManipulationBehaviourMixin",
+    "create.foundation.item.ItemHelperMixin",
     "create.kinetics.RotationPropagatorMixin",
     "create.kinetics.belt.BeltBlockEntityMixin",
     "create.kinetics.belt.BeltFunnelInteractionHandlerMixin",
