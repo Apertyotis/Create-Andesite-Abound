@@ -80,7 +80,7 @@ public class RedstoneRadarItem extends BlockItem {
             return;
 
         BlockPos targetPos = NbtUtils.readBlockPos(tag.getCompound("TargetPos"));
-        ResourceLocation id = new ResourceLocation(tag.getString("TargetDimension"));
+        ResourceLocation id = ResourceLocation.parse(tag.getString("TargetDimension"));
         String dimensionDescId = "dimension." + id.getNamespace() + "." + id.getPath();
 
         tooltip.add(Component.translatable("tooltip.caa.has_target_nbt")

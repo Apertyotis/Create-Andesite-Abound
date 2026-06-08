@@ -17,6 +17,7 @@ public class CreateAndesiteAbound {
 
     static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID);
 
+    @SuppressWarnings("removal")
     public CreateAndesiteAbound() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 

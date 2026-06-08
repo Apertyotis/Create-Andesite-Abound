@@ -88,7 +88,7 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof RedstoneRadarBlockEntity rrbe) {
             BlockPos targetPos = NbtUtils.readBlockPos(tag.getCompound("TargetPos"));
-            ResourceLocation id = new ResourceLocation(tag.getString("TargetDimension"));
+            ResourceLocation id = ResourceLocation.parse(tag.getString("TargetDimension"));
             ResourceKey<Level> targetDimension = ResourceKey.create(Registries.DIMENSION, id);
             rrbe.setTarget(targetDimension, targetPos);
         }
@@ -160,7 +160,7 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
 
                 if (tag.getTagType("dimension") != Tag.TAG_STRING)
                     return InteractionResult.PASS;
-                ResourceLocation id = new ResourceLocation(tag.getString("dimension"));
+                ResourceLocation id = ResourceLocation.parse(tag.getString("dimension"));
                 dimension = ResourceKey.create(Registries.DIMENSION, id);
             } catch (ClassCastException ignored) {
                 return InteractionResult.PASS;
