@@ -46,6 +46,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue HARVESTER_NOT_CONSUME_SEED;
         public final ForgeConfigSpec.BooleanValue DISABLE_DIG_SPEED_PENALTY;
         public final ForgeConfigSpec.BooleanValue DONT_COMPARE_ITEM_CAPABILITY;
+        public final ForgeConfigSpec.BooleanValue BETTER_PSI_ON_CARRIAGE;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -132,6 +133,9 @@ public class AllConfig {
             DONT_COMPARE_ITEM_CAPABILITY = builder
                     .comment("Prevent forge initializing the item capabilities when comparing item stacks.")
                     .define("dont_compare_item_capability", true);
+            BETTER_PSI_ON_CARRIAGE = builder
+                    .comment("PSIs on trains are now only activated when the train arrives at a station.")
+                    .define("better_psi_on_carriage", true);
             builder.pop();
         }
     }
@@ -161,6 +165,7 @@ public class AllConfig {
     public static boolean harvester_not_consume_seed;
     public static boolean disable_dig_speed_penalty;
     public static boolean dont_compare_item_capability;
+    public static boolean better_psi_on_carriage;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -191,5 +196,6 @@ public class AllConfig {
         harvester_not_consume_seed = COMMON.HARVESTER_NOT_CONSUME_SEED.get();
         disable_dig_speed_penalty = COMMON.DISABLE_DIG_SPEED_PENALTY.get();
         dont_compare_item_capability = COMMON.DONT_COMPARE_ITEM_CAPABILITY.get();
+        better_psi_on_carriage = COMMON.BETTER_PSI_ON_CARRIAGE.get();
     }
 }

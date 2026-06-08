@@ -9,6 +9,7 @@
     "minVersion": "0.5.2"
   },
   "mixins": [
+    "create.contraption.AbstractContraptionEntityMixin",
     "create.contraption.ContraptionInvWrapperMixin",
     "create.contraption.ControlledContraptionEntityMixin",
     "create.contraption.glue.SuperGlueSelectionHandlerMixin",
