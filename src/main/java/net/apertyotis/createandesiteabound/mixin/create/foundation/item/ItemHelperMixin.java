@@ -59,5 +59,6 @@ public abstract class ItemHelperMixin {
                 }
             }
         }
+        cir.setReturnValue(ItemStack.EMPTY);
     }
 }
