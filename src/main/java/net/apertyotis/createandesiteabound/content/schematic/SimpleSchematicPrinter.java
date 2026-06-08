@@ -27,7 +27,7 @@ public class SimpleSchematicPrinter extends SchematicPrinter {
             Level world, boolean processNBT
     ) {
         // noinspection DataFlowIssue
-        if (!blueprint.hasTag() || !blueprint.getTag().getBoolean("Deployed"))
+        if (!blueprint.hasTag() || !blueprint.getTag().contains("File"))
             return;
 
         StructureTemplate activeTemplate = SimpleSchematicItem.loadSchematic(

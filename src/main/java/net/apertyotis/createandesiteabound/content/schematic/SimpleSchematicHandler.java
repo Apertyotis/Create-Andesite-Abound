@@ -248,11 +248,14 @@ public class SimpleSchematicHandler extends SchematicHandler {
     @Override
     public void render(ForgeGui gui, GuiGraphics graphics, float partialTicks, int width, int height) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.options.hideGui || !active)
+        Player player = mc.player;
+        if (mc.options.hideGui || !active || player == null)
             return;
-        if (activeSchematicItem != null)
-            // noinspection DataFlowIssue
-            this.overlay.renderOn(graphics, mc.player.getInventory().selected);
+        // 由于不再记录蓝图物品所在槽位，因此需要额外判断来防止切换物品后的短暂错误渲染
+        if (activeSchematicItem != null && ItemStack.isSameItemSameTags(player.getMainHandItem(), activeSchematicItem)) {
+            this.overlay.renderOn(graphics, player.getInventory().selected);
+        }
+
         currentTool.getTool()
                 .renderOverlay(gui, graphics, partialTicks, width, height);
         selectionScreen.renderPassive(graphics, partialTicks);
