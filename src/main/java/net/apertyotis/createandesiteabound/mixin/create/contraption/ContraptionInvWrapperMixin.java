@@ -21,8 +21,8 @@ public class ContraptionInvWrapperMixin extends CombinedInvWrapper {
     @Unique
     private int[] caa$slotOffsets;     // Starting slot for each storage
 
-    @Inject(method = "<init>([Lnet/minecraftforge/items/IItemHandlerModifiable;)V", at = @At("RETURN"))
-    private void MountedItemStorageWrapper(IItemHandlerModifiable[] itemHandler, CallbackInfo ci) {
+    @Inject(method = "<init>(Z[Lnet/minecraftforge/items/IItemHandlerModifiable;)V", at = @At("RETURN"))
+    private void MountedItemStorageWrapper(boolean isExternal, IItemHandlerModifiable[] itemHandler, CallbackInfo ci) {
         // Build lookup arrays
         int totalSlots = getSlots();
         caa$slotToStorage = new int[totalSlots];
