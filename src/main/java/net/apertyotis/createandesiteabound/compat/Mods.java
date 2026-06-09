@@ -1,10 +1,7 @@
 package net.apertyotis.createandesiteabound.compat;
 
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
-import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
-import org.apache.maven.artifact.versioning.VersionRange;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -13,8 +10,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public enum Mods {
-    CreateAddition,
-    Design_Decor;
+    CreateAddition(),
+    Design_Decor("LargeBoilerMixin");
 
     private final String id;
     private final String[] mixins;
