@@ -62,11 +62,11 @@
     "create.schematics.SchematicWorldAccessor",
     "create.trains.CarriageMixin",
     "design_decor.LargeBoilerMixin",
-    "minecraft.BlockBehaviourMixin",
-    "minecraft.GameTypeMixin",
-    "minecraft.PlayerMixin",
+    "minecraft.block.BlockBehaviourMixin",
     "minecraft.items.ItemHandlerHelperMixin",
-    "minecraft.items.ItemStackMixin"
+    "minecraft.items.ItemStackMixin",
+    "minecraft.player.GameTypeMixin",
+    "minecraft.player.PlayerMixin"
   ],
   "client": [
     "create.schematics.ToolSelectionScreenAccessor",

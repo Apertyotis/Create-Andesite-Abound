@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.minecraft;
+package net.apertyotis.createandesiteabound.mixin.minecraft.block;
 
 import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.core.Direction;

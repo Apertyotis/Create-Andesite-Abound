@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.minecraft;
+package net.apertyotis.createandesiteabound.mixin.minecraft.player;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

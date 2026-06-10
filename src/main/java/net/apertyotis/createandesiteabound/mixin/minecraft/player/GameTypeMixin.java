@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.minecraft;
+package net.apertyotis.createandesiteabound.mixin.minecraft.player;
 
 import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.world.entity.player.Abilities;
