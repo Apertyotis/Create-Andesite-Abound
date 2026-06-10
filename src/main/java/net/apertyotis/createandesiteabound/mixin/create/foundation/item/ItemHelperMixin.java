@@ -39,8 +39,8 @@ public abstract class ItemHelperMixin {
                 if (slotRecord.getTotalAmount() >= amount) {
                     cir.setReturnValue(extracted.copyWithCount(amount));
                     if (!simulate) {
-                        for (int slot: slotRecord.getSlotsIndex()) {
-                            amount -= inv.extractItem(slot, amount, false).getCount();
+                        for (int j = 0; j < slotRecord.size(); j++) {
+                            amount -= inv.extractItem(slotRecord.get(j), amount, false).getCount();
                         }
                     }
                     return;

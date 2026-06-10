@@ -68,8 +68,12 @@ public class VisitedItemStackTracker {
             return totalAmount;
         }
 
-        public int[] getSlotsIndex() {
-            return slots.data;
+        public int size() {
+            return slots.size();
+        }
+
+        public int get(int index) {
+            return slots.data[index];
         }
     }
 }
