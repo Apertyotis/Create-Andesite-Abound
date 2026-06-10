@@ -84,6 +84,7 @@
     "jei.SawingCategoryMixin",
     "jei.SequencedAssemblyCategoryMixin",
     "jei.SpoutCategoryMixin",
+    "minecraft.player.LocalPlayerMixin",
     "renderer.FluidRendererMixin"
   ],
   "injectors": {

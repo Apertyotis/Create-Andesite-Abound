@@ -48,6 +48,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue DONT_COMPARE_ITEM_CAPABILITY;
         public final ForgeConfigSpec.BooleanValue BETTER_PSI_ON_CARRIAGE;
         public final ForgeConfigSpec.BooleanValue PLAYER_CAN_BREATH_UNDERWATER;
+        public final ForgeConfigSpec.BooleanValue KEEP_FLYING_ON_GROUND;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -140,6 +141,9 @@ public class AllConfig {
             PLAYER_CAN_BREATH_UNDERWATER = builder
                     .comment("Player won't drown underwater.")
                     .define("player_can_breath_underwater", true);
+            KEEP_FLYING_ON_GROUND = builder
+                    .comment("Prevents players from automatically exiting flight mode when touching the ground.")
+                    .define("keep_flying_on_ground", true);
             builder.pop();
         }
     }
@@ -171,6 +175,7 @@ public class AllConfig {
     public static boolean dont_compare_item_capability;
     public static boolean better_psi_on_carriage;
     public static boolean player_can_breath_underwater;
+    public static boolean keep_flying_on_ground;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -203,5 +208,6 @@ public class AllConfig {
         dont_compare_item_capability = COMMON.DONT_COMPARE_ITEM_CAPABILITY.get();
         better_psi_on_carriage = COMMON.BETTER_PSI_ON_CARRIAGE.get();
         player_can_breath_underwater = COMMON.PLAYER_CAN_BREATH_UNDERWATER.get();
+        keep_flying_on_ground = COMMON.KEEP_FLYING_ON_GROUND.get();
     }
 }
