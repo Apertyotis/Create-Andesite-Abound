@@ -47,6 +47,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue DISABLE_DIG_SPEED_PENALTY;
         public final ForgeConfigSpec.BooleanValue DONT_COMPARE_ITEM_CAPABILITY;
         public final ForgeConfigSpec.BooleanValue BETTER_PSI_ON_CARRIAGE;
+        public final ForgeConfigSpec.BooleanValue PLAYER_CAN_BREATH_UNDERWATER;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -136,6 +137,9 @@ public class AllConfig {
             BETTER_PSI_ON_CARRIAGE = builder
                     .comment("PSIs on trains are now only activated when the train arrives at a station.")
                     .define("better_psi_on_carriage", true);
+            PLAYER_CAN_BREATH_UNDERWATER = builder
+                    .comment("Player won't drown underwater.")
+                    .define("player_can_breath_underwater", true);
             builder.pop();
         }
     }
@@ -166,6 +170,7 @@ public class AllConfig {
     public static boolean disable_dig_speed_penalty;
     public static boolean dont_compare_item_capability;
     public static boolean better_psi_on_carriage;
+    public static boolean player_can_breath_underwater;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -197,5 +202,6 @@ public class AllConfig {
         disable_dig_speed_penalty = COMMON.DISABLE_DIG_SPEED_PENALTY.get();
         dont_compare_item_capability = COMMON.DONT_COMPARE_ITEM_CAPABILITY.get();
         better_psi_on_carriage = COMMON.BETTER_PSI_ON_CARRIAGE.get();
+        player_can_breath_underwater = COMMON.PLAYER_CAN_BREATH_UNDERWATER.get();
     }
 }
