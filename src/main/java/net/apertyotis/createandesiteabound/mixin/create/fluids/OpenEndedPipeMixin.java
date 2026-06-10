@@ -19,7 +19,7 @@ public abstract class OpenEndedPipeMixin {
      */
     @SuppressWarnings("DefaultAnnotationParam")
     @Definition(id = "getType", method = "Lnet/minecraft/world/level/material/FluidState;getType()Lnet/minecraft/world/level/material/Fluid;", remap = true)
-    @Definition(id = "getFluid", method = "Lnet/minecraftforge/fluids/FluidStack;getFluid()Lnet/minecraft/world/level/material/Fluid;", remap = true)
+    @Definition(id = "getFluid", method = "Lnet/minecraftforge/fluids/FluidStack;getFluid()Lnet/minecraft/world/level/material/Fluid;")
     @Expression("?.getType() != ?.getFluid()")
     @ModifyExpressionValue(method = "provideFluidToSpace", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean redirectFluidTypeComparison(
