@@ -56,24 +56,12 @@ public class VisitedItemStackTracker {
     }
 
     public static class SlotAmountRecord {
-        private final IntArray slots = new IntArray();
-        private int totalAmount = 0;
+        public final IntArray slots = new IntArray();
+        public int totalAmount = 0;
 
-        void add(int slot, int amount) {
+        public void add(int slot, int amount) {
             slots.add(slot);
             totalAmount += amount;
-        }
-
-        public int getTotalAmount() {
-            return totalAmount;
-        }
-
-        public int size() {
-            return slots.size();
-        }
-
-        public int get(int index) {
-            return slots.data[index];
         }
     }
 }
