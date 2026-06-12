@@ -61,6 +61,8 @@
     "create.schematics.SchematicPrinterAccessor",
     "create.schematics.SchematicWorldAccessor",
     "create.trains.CarriageMixin",
+    "create.trains.SignalEdgeGroupMixin",
+    "create.trains.TrainMixin",
     "design_decor.LargeBoilerMixin",
     "minecraft.block.BlockBehaviourMixin",
     "minecraft.items.ItemHandlerHelperMixin",
