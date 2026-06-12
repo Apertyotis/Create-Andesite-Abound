@@ -21,9 +21,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 
 
@@ -34,9 +31,6 @@ public abstract class TrainMixin {
 
     @Unique
     private int caa$msgType;
-
-    @Unique
-    private List<String> caa$relevantTrains = new ArrayList<>();
 
     @Inject(
             method = "lambda$frontSignalListener$6",
@@ -53,21 +47,6 @@ public abstract class TrainMixin {
                 return;
 
             // 列车已预定区段，但意外遇到红灯，此时应该释放预留区段锁
-            UUID groupId = signal.getGroup(couple.getSecond().getSecond());
-            Iterator<UUID> iter = train.reservedSignalBlocks.iterator();
-            while (true) {
-                SignalEdgeGroup signalEdgeGroup = Create.RAILWAYS.signalEdgeGroups.get(groupId);
-                if (signalEdgeGroup != null) {
-                    for (Train other: signalEdgeGroup.trains) {
-                        caa$relevantTrains.add(other.name.getString());
-                    }
-                }
-                if (iter.hasNext())
-                    groupId = iter.next();
-                else
-                    break;
-            }
-
             train.reservedSignalBlocks.clear();
             caa$isError = true;
             caa$msgType = 0;
@@ -81,10 +60,6 @@ public abstract class TrainMixin {
             if (((SignalEdgeGroupEx) signalEdgeGroup).caa$isOccupiedUnless(train)) {
                 caa$isError = true;
                 caa$msgType = 1;
-                caa$relevantTrains.add(train.name.getString());
-                for (Train other: signalEdgeGroup.trains) {
-                    caa$relevantTrains.add(other.name.getString());
-                }
             }
         }
     }
@@ -101,29 +76,16 @@ public abstract class TrainMixin {
         if (!(owner instanceof Player player))
             return;
 
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < caa$relevantTrains.size(); i++) {
-            builder.append(caa$relevantTrains.get(i));
-            if (i + 1 < caa$relevantTrains.size())
-                builder.append(", ");
-        }
-        caa$relevantTrains.clear();
+        player.displayClientMessage(Component.translatable("create.train.status", train.name)
+                .withStyle(ChatFormatting.GOLD), false);
 
-        switch (caa$msgType) {
-            case 0:
-                player.displayClientMessage(Component.translatable("info.caa.train.occupied", train.name.getString())
-                        .withStyle(ChatFormatting.GOLD), false);
-                player.displayClientMessage(
-                        Component.translatable("info.caa.train.relevant", builder.toString()), false);
-                break;
-            case 1:
-                player.displayClientMessage(Component.translatable("info.caa.train.intrude", train.name.getString())
-                        .withStyle(ChatFormatting.GOLD), false);
-                player.displayClientMessage(
-                        Component.translatable("info.caa.train.relevant", builder.toString()), false);
-                break;
-            default:
-                break;
-        }
+        String key = switch (caa$msgType) {
+            case 0 -> "info.caa.train.occupied";
+            case 1 -> "info.caa.train.intrude";
+            default -> "";
+        };
+
+        player.displayClientMessage(Component.literal(" - ").withStyle(ChatFormatting.GRAY)
+                .append(Component.translatable(key).withStyle(st -> st.withColor(0xFFD3B4))), false);
     }
 }
