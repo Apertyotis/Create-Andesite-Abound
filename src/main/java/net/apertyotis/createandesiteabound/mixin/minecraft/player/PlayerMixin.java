@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @SuppressWarnings("DefaultAnnotationParam")
 @Mixin(value = Player.class, remap = true)
-public class PlayerMixin {
+public abstract class PlayerMixin {
     // 禁用水中挖掘速度惩罚
     @WrapOperation(
             method = "getDigSpeed",

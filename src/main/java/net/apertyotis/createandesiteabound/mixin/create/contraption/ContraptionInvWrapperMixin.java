@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * 详见 Create PR<a href="https://github.com/Creators-of-Create/Create/pull/9706">#9706</a>
  */
 @Mixin(value = ContraptionInvWrapper.class, remap = false)
-public class ContraptionInvWrapperMixin extends CombinedInvWrapper {
+public abstract class ContraptionInvWrapperMixin extends CombinedInvWrapper {
     // Lookup arrays
     @Unique
     private int[] caa$slotToStorage;   // Maps each slot to its storage index

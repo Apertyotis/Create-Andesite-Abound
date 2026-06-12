@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = ItemHandlerHelper.class, remap = false)
-public class ItemHandlerHelperMixin {
+public abstract class ItemHandlerHelperMixin {
     // 防止 forge 在比较两个物品堆叠是否相同时初始化物品 capability
     // 既为了避免传送带吞吐物品时对大量新物品无意义地初始化能力
     // 也是因为作为纯函数，比较物品不应该出现创建能力的副作用

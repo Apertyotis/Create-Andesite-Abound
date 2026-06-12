@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = LocalPlayer.class)
-public class LocalPlayerMixin {
+public abstract class LocalPlayerMixin {
     @WrapOperation(
             method = "aiStep",
             at = @At(

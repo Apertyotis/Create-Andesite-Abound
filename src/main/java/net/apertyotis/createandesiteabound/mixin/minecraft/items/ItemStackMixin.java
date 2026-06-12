@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = ItemStack.class)
-public class ItemStackMixin {
+public abstract class ItemStackMixin {
     @SuppressWarnings("UnstableApiUsage")
     @WrapOperation(
             method = "isSameItemSameTags",

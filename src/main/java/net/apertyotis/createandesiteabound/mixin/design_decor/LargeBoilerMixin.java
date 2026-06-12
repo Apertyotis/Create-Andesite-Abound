@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
         IndustrialIronLargeBoilerBlock.class,
         ZincLargeBoilerBlock.class
 }, remap = false)
-public class LargeBoilerMixin {
+public abstract class LargeBoilerMixin {
     // 更宽松的检查逻辑
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true, remap = true)
     private void simpleCheck(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom, CallbackInfo ci) {
