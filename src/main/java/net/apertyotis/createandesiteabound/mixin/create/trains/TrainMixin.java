@@ -81,6 +81,7 @@ public abstract class TrainMixin {
             if (((SignalEdgeGroupEx) signalEdgeGroup).caa$isOccupiedUnless(train)) {
                 caa$isError = true;
                 caa$msgType = 1;
+                caa$relevantTrains.add(train.name.getString());
                 for (Train other: signalEdgeGroup.trains) {
                     caa$relevantTrains.add(other.name.getString());
                 }
@@ -100,29 +101,29 @@ public abstract class TrainMixin {
         if (!(owner instanceof Player player))
             return;
 
-        StringBuilder builder = new StringBuilder(Component.translatable("info.caa.train.relevant").getString());
+        StringBuilder builder = new StringBuilder();
         for (int i = 0; i < caa$relevantTrains.size(); i++) {
             builder.append(caa$relevantTrains.get(i));
-            if (i < caa$relevantTrains.size())
+            if (i + 1 < caa$relevantTrains.size())
                 builder.append(", ");
         }
         caa$relevantTrains.clear();
 
         switch (caa$msgType) {
-        case 0:
-            player.displayClientMessage(
-                    Component.translatable("info.caa.train.occupied", train.name.getString())
-                    .withStyle(ChatFormatting.RED), false);
-            player.displayClientMessage(Component.literal(builder.toString()), false);
-            break;
-        case 1:
-            player.displayClientMessage(Component.translatable("info.caa.train.intrude", train.name.getString())
-                    .withStyle(ChatFormatting.RED), false);
-
-            player.displayClientMessage(Component.literal(builder.toString()), false);
-            break;
-        default:
-            break;
+            case 0:
+                player.displayClientMessage(Component.translatable("info.caa.train.occupied", train.name.getString())
+                        .withStyle(ChatFormatting.GOLD), false);
+                player.displayClientMessage(
+                        Component.translatable("info.caa.train.relevant", builder.toString()), false);
+                break;
+            case 1:
+                player.displayClientMessage(Component.translatable("info.caa.train.intrude", train.name.getString())
+                        .withStyle(ChatFormatting.GOLD), false);
+                player.displayClientMessage(
+                        Component.translatable("info.caa.train.relevant", builder.toString()), false);
+                break;
+            default:
+                break;
         }
     }
 }
