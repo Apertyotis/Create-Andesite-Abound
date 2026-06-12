@@ -1,9 +1,9 @@
 package net.apertyotis.createandesiteabound.foundation;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.antlr.runtime.misc.IntArray;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +56,7 @@ public class VisitedItemStackTracker {
     }
 
     public static class SlotAmountRecord {
-        public final IntArray slots = new IntArray();
+        public final IntArrayList slots = new IntArrayList();
         public int totalAmount = 0;
 
         public void add(int slot, int amount) {
