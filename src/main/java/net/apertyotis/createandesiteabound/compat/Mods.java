@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public enum Mods {
-    CreateAddition(),
+    CreateAddition("GameEventsMixin", "LiquidBlazeBurnerBlockMixin"),
     Design_Decor("LargeBoilerMixin");
 
     private final String id;
