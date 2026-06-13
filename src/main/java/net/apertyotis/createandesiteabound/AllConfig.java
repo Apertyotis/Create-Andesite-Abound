@@ -42,13 +42,13 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue HEURISTIC_ROTATION;
         public final ForgeConfigSpec.BooleanValue NO_DEPOT_OVERFLOW_DROP;
         public final ForgeConfigSpec.BooleanValue REPLACE_ANY_FLOWING_FLUID;
-        public final ForgeConfigSpec.BooleanValue SUPER_GLUE_ALWAYS_CAN_REACH;
         public final ForgeConfigSpec.BooleanValue HARVESTER_NOT_CONSUME_SEED;
         public final ForgeConfigSpec.BooleanValue DISABLE_DIG_SPEED_PENALTY;
         public final ForgeConfigSpec.BooleanValue DONT_COMPARE_ITEM_CAPABILITY;
         public final ForgeConfigSpec.BooleanValue BETTER_PSI_ON_CARRIAGE;
         public final ForgeConfigSpec.BooleanValue PLAYER_CAN_BREATH_UNDERWATER;
         public final ForgeConfigSpec.BooleanValue KEEP_FLYING_ON_GROUND;
+        public final ForgeConfigSpec.BooleanValue HACHIMI_GLUE;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -122,10 +122,6 @@ public class AllConfig {
             REPLACE_ANY_FLOWING_FLUID = builder
                     .comment("Allow pumps to replace any flowing fluid, ignoring the fluid type.")
                     .define("replace_any_flowing_fluid", true);
-            SUPER_GLUE_ALWAYS_CAN_REACH = builder
-                    .comment("When setting a selection, Super Glue no longer requires the blocks to be connected.")
-                    .comment("This does not affect the actual connection logic.")
-                    .define("super_glue_always_can_reach", true);
             HARVESTER_NOT_CONSUME_SEED = builder
                     .comment("Prevent harvester from consuming seed when replanting.")
                     .define("harvester_not_consume_seed", true);
@@ -144,6 +140,9 @@ public class AllConfig {
             KEEP_FLYING_ON_GROUND = builder
                     .comment("Prevents players from automatically exiting flight mode when touching the ground.")
                     .define("keep_flying_on_ground", true);
+            HACHIMI_GLUE = builder
+                    .comment("Make super glue as convenient as honey glue from Aeronautic.")
+                    .define("hachimi_glue", true);
             builder.pop();
         }
     }
@@ -169,13 +168,13 @@ public class AllConfig {
     public static boolean heuristic_rotation;
     public static boolean no_depot_overflow_drop;
     public static boolean replace_any_flowing_fluid;
-    public static boolean super_glue_always_can_reach;
     public static boolean harvester_not_consume_seed;
     public static boolean disable_dig_speed_penalty;
     public static boolean dont_compare_item_capability;
     public static boolean better_psi_on_carriage;
     public static boolean player_can_breath_underwater;
     public static boolean keep_flying_on_ground;
+    public static boolean hachimi_glue;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -202,12 +201,12 @@ public class AllConfig {
         heuristic_rotation = COMMON.HEURISTIC_ROTATION.get();
         no_depot_overflow_drop = COMMON.NO_DEPOT_OVERFLOW_DROP.get();
         replace_any_flowing_fluid = COMMON.REPLACE_ANY_FLOWING_FLUID.get();
-        super_glue_always_can_reach = COMMON.SUPER_GLUE_ALWAYS_CAN_REACH.get();
         harvester_not_consume_seed = COMMON.HARVESTER_NOT_CONSUME_SEED.get();
         disable_dig_speed_penalty = COMMON.DISABLE_DIG_SPEED_PENALTY.get();
         dont_compare_item_capability = COMMON.DONT_COMPARE_ITEM_CAPABILITY.get();
         better_psi_on_carriage = COMMON.BETTER_PSI_ON_CARRIAGE.get();
         player_can_breath_underwater = COMMON.PLAYER_CAN_BREATH_UNDERWATER.get();
         keep_flying_on_ground = COMMON.KEEP_FLYING_ON_GROUND.get();
+        hachimi_glue = COMMON.HACHIMI_GLUE.get();
     }
 }

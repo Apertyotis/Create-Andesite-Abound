@@ -10,6 +10,7 @@
   "info.caa.goggle.not_receiver": "目标方块不是幽匿发信器",
   "info.caa.goggle.status": "信号状态:",
   "info.caa.goggle.target": "目标位置:",
+  "info.caa.option.hachimi_disabled": "服务器未启用\"强蜜胶\"选项.",
   "info.caa.train.occupied": "预定的信号区间被意外抢占，已释放互斥锁",
   "info.caa.train.intrude": "闯入其他列车预定的信号区间",
   "jei.text.max_charge_rate": "充电速率: %s FE / 刻",

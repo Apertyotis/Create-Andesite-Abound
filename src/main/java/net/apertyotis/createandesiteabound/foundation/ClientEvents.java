@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
+import net.apertyotis.createandesiteabound.content.hachimi_glue.HachimiGlueHandler;
 import net.apertyotis.createandesiteabound.content.radar.RedstoneRadarHandler;
 import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicHandler;
 import net.minecraft.client.Minecraft;
@@ -37,6 +38,7 @@ public class ClientEvents {
 
         RedstoneRadarHandler.REDSTONE_RADAR_HANDLER.tick();
         SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.tick();
+        HachimiGlueHandler.HACHIMI_GLUE_HANDLER.tick();
     }
 
     @SubscribeEvent
@@ -57,7 +59,8 @@ public class ClientEvents {
 
         double delta = event.getScrollDelta();
 
-        if (SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.mouseScrolled(delta))
+        if (SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.mouseScrolled(delta) ||
+                HachimiGlueHandler.HACHIMI_GLUE_HANDLER.mouseScrolled(delta))
             event.setCanceled(true);
     }
 

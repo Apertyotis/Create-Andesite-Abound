@@ -29,7 +29,7 @@ public abstract class SuperGlueSelectionPacketMixin {
             )
     )
     private boolean ignoreGlueGroup(Set<BlockPos> instance, Object o, Operation<Boolean> original) {
-        if (!AllConfig.super_glue_always_can_reach) {
+        if (!AllConfig.hachimi_glue) {
             return original.call(instance, o);
         }
         return !from.equals(to);

@@ -1,6 +1,7 @@
 package net.apertyotis.createandesiteabound;
 
 import com.simibubi.create.foundation.networking.SimplePacketBase;
+import net.apertyotis.createandesiteabound.content.hachimi_glue.HachimiGlueModificationPacket;
 import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicPlacePacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +18,8 @@ import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
 public enum AllPackets {
 
-    PLACE_SCHEMATIC(SimpleSchematicPlacePacket.class, SimpleSchematicPlacePacket::new, PLAY_TO_SERVER);
+    PLACE_SCHEMATIC(SimpleSchematicPlacePacket.class, SimpleSchematicPlacePacket::new, PLAY_TO_SERVER),
+    MODIFY_GLUE(HachimiGlueModificationPacket.class, HachimiGlueModificationPacket::new, PLAY_TO_SERVER);
 
     @SuppressWarnings("removal")
     public static final ResourceLocation CHANNEL_NAME = new ResourceLocation(CreateAndesiteAbound.MOD_ID, "main");

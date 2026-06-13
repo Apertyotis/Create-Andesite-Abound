@@ -14,6 +14,7 @@
   "info.caa.goggle.target": "Target Position:",
   "info.caa.goggle.empty": "No target, receive only",
   "info.caa.goggle.status": "Status:",
+  "info.caa.option.hachimi_disabled": "The \"Hachimi Glue\" option is disabled on this server.",
   "info.caa.train.occupied": "Detected an unexpected occupation of a reserved signal segment. The reservation lock has been released.",
   "info.caa.train.intrude": "Intruded a reserved signal segment.",
   "msg.caa.target_set": "Target Selected",

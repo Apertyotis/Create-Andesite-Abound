@@ -12,7 +12,6 @@
     "create.contraption.AbstractContraptionEntityMixin",
     "create.contraption.ContraptionInvWrapperMixin",
     "create.contraption.ControlledContraptionEntityMixin",
-    "create.contraption.glue.SuperGlueSelectionHandlerMixin",
     "create.contraption.glue.SuperGlueSelectionPacketMixin",
     "create.contraption.haverster.HarvesterMovementBehaviourMixin",
     "create.contraption.psi.PortableItemInterfaceBlockEntityMixin",
@@ -75,6 +74,8 @@
     "minecraft.player.PlayerMixin"
   ],
   "client": [
+    "create.contraption.glue.SuperGlueSelectionHandlerAccessor",
+    "create.contraption.glue.SuperGlueSelectionHandlerMixin",
     "create.schematics.ToolSelectionScreenAccessor",
     "jei.BasinCategoryMixin",
     "jei.BlockCuttingCategoryMixin",
