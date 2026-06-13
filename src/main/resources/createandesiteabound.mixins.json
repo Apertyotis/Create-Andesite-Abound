@@ -67,6 +67,7 @@
     "createaddition.GameEventsMixin",
     "createaddition.LiquidBlazeBurnerBlockMixin",
     "design_decor.LargeBoilerMixin",
+    "design_decor.RailingBlockMixin",
     "minecraft.block.BlockBehaviourMixin",
     "minecraft.items.ItemHandlerHelperMixin",
     "minecraft.items.ItemStackMixin",
