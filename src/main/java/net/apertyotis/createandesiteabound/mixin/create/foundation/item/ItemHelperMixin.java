@@ -57,8 +57,8 @@ public abstract class ItemHelperMixin {
                         !test.test(stackIn))
                     continue;
 
-                ItemStack extracted = inv.extractItem(i, stackIn.getCount(), simulate);
-                if (!extracted.isEmpty())
+                ItemStack extracted = inv.extractItem(i, stackIn.getCount(), true);
+                if (extracted.isEmpty())
                     continue;
 
                 if (result.isEmpty()) {
