@@ -1,6 +1,7 @@
 package net.apertyotis.createandesiteabound.mixin.create.trains;
 
 import com.simibubi.create.Create;
+import com.simibubi.create.content.trains.entity.CarriageBogey;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.TrackNode;
 import com.simibubi.create.content.trains.signal.SignalBoundary;
@@ -11,9 +12,12 @@ import com.simibubi.create.foundation.utility.Pair;
 import net.apertyotis.createandesiteabound.foundation.SignalEdgeGroupEx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -85,7 +89,16 @@ public abstract class TrainMixin {
             default -> "";
         };
 
+        CarriageBogey bogey = train.carriages.get(0).leadingBogey();
+        Vec3 pos = train.carriages.get(0).leadingBogey().getAnchorPosition();
+        ResourceKey<Level> dimension = bogey.getDimension();
+        Component position = Component.literal((pos == null ? "???" :
+            "(%.1f, %.1f, %.1f)".formatted(pos.x, pos.y, pos.z)) +
+            " [" + (dimension == null ? "???" : dimension.location()) + "]");
+
         player.displayClientMessage(Component.literal(" - ").withStyle(ChatFormatting.GRAY)
-                .append(Component.translatable(key).withStyle(st -> st.withColor(0xFFD3B4))), false);
+                .append(Component.translatable(key).withStyle(st ->
+                    st.withColor(0xFFD3B4).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, position)))),
+            false);
     }
 }
