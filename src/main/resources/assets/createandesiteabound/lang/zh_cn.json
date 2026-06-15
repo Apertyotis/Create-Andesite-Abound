@@ -21,5 +21,22 @@
   "msg.caa.target_set": "目标已选择",
   "tooltip.caa.has_target_nbt": "已记录坐标:",
   "caa.hint.hose_pulley.cant_infinite": "这种流体不能无限供应!",
-  "caa.hint.hose_pulley.lower_hose": "液体已足量, 下降软管到底部可无限抽取"
+  "caa.hint.hose_pulley.lower_hose": "液体已足量, 下降软管到底部可无限抽取",
+  "caa.schedule.threshold.measure": "单位",
+  "caa.schedule.threshold.items": "个",
+  "caa.schedule.threshold.stacks": "组",
+  "caa.schedule.threshold.buckets": "桶",
+  "caa.schedule.threshold.milibuckets": "毫桶",
+  "caa.gui.threshold.precision_mode": "精准模式",
+  "caa.gui.threshold.currently": "当前为 %s",
+  "caa.gui.threshold.incompatible": "不兼容的方块",
+  "caa.gui.threshold.invert_signal": "反转信号",
+  "caa.gui.threshold.lower_threshold": "……小于等于：",
+  "caa.gui.threshold.not_attached": "未附加到方块",
+  "caa.gui.threshold.power_off_when": "关闭红石信号的条件为……",
+  "caa.gui.threshold.power_on_when": "开启红石信号的条件为……",
+  "caa.gui.threshold.pulley_y_level": "%sy",
+  "caa.gui.threshold.range": "（%s 到 %s）",
+  "caa.gui.threshold.range_max": "（最大 %s）",
+  "caa.gui.threshold.upper_threshold": "……大于等于："
 }

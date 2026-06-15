@@ -21,5 +21,22 @@
   "msg.caa.target_reset": "Selection Canceled",
   "tooltip.caa.has_target_nbt": "Record:",
   "caa.hint.hose_pulley.cant_infinite": "This fluid doesn’t support bottomless supply!",
-  "caa.hint.hose_pulley.lower_hose": "Sufficient fluid filled. Lower the hose for infinite extraction."
+  "caa.hint.hose_pulley.lower_hose": "Sufficient fluid filled. Lower the hose for infinite extraction.",
+  "caa.schedule.threshold.measure": "Unit",
+  "caa.schedule.threshold.items": "Items",
+  "caa.schedule.threshold.stacks": "Stacks",
+  "caa.schedule.threshold.buckets": "Buckets",
+  "caa.schedule.threshold.milibuckets": "Milibuckets",
+  "caa.gui.threshold.precision_mode": "Precision Mode",
+  "caa.gui.threshold.currently": "Currently %s",
+  "caa.gui.threshold.incompatible": "Incompatible block",
+  "caa.gui.threshold.invert_signal": "Invert Signal",
+  "caa.gui.threshold.lower_threshold": "...at or below:",
+  "caa.gui.threshold.not_attached": "Not attached to a block",
+  "caa.gui.threshold.power_off_when": "Power off when...",
+  "caa.gui.threshold.power_on_when": "Power on when...",
+  "caa.gui.threshold.pulley_y_level": "%sy",
+  "caa.gui.threshold.range": "(%s to %s)",
+  "caa.gui.threshold.range_max": "(max. %s)",
+  "caa.gui.threshold.upper_threshold": "...at or above:"
 }
