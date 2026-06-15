@@ -67,7 +67,7 @@ public abstract class ThresholdSwitchScreenMixin extends AbstractSimiScreen {
     @Unique
     private SelectionScrollInput caa$inStacksOrBuckets;
 
-    @Inject(method = "init", at = @At("TAIL"))
+    @Inject(method = "init", at = @At("TAIL"), remap = true)
     private void initEx(CallbackInfo ci) {
         int x = guiLeft;
         int y = guiTop;
@@ -137,7 +137,7 @@ public abstract class ThresholdSwitchScreenMixin extends AbstractSimiScreen {
         addRenderableWidgets(caa$changeModeButton, caa$inStacksOrBuckets, caa$onAbove, caa$offBelow);
     }
 
-    @Inject(method = "tick", at = @At("TAIL"))
+    @Inject(method = "tick", at = @At("TAIL"), remap = true)
     private void afterTick(CallbackInfo ci) {
         if (!caa$precision)
             return;
