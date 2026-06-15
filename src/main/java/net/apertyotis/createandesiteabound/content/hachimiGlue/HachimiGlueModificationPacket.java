@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.hachimi_glue;
+package net.apertyotis.createandesiteabound.content.hachimiGlue;
 
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.foundation.networking.SimplePacketBase;

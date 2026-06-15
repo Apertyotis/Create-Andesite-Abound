@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = LiquidBlazeBurnerBlock.class, remap = false)
+@Mixin(value = LiquidBlazeBurnerBlock.class)
 public abstract class LiquidBlazeBurnerBlockMixin {
     // 防止非创造玩家对流体烈焰人燃烧室使用创造蛋糕
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)

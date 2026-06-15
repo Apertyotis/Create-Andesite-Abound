@@ -1,7 +1,7 @@
 package net.apertyotis.createandesiteabound;
 
 import com.simibubi.create.foundation.networking.SimplePacketBase;
-import net.apertyotis.createandesiteabound.content.hachimi_glue.HachimiGlueModificationPacket;
+import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueModificationPacket;
 import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicPlacePacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

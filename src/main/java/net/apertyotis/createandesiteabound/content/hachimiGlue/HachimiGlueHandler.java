@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.hachimi_glue;
+package net.apertyotis.createandesiteabound.content.hachimiGlue;
 
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllKeys;
@@ -95,7 +95,8 @@ public class HachimiGlueHandler {
             boundingBox = null;
             cooldown = 0;
         }
-        if (selected == null)
+        // selected != selectedOld 时，延迟 1gt 渲染，等待（距离足够近时）原版强力胶选择逻辑判断完成
+        if (selected == null || selected != selectedOld)
             return;
 
         AABB bb = boundingBox == null ? selected.getBoundingBox() : boundingBox;

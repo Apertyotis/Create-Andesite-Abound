@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
-import net.apertyotis.createandesiteabound.content.hachimi_glue.HachimiGlueHandler;
+import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueHandler;
 import net.apertyotis.createandesiteabound.content.radar.RedstoneRadarHandler;
 import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicHandler;
 import net.minecraft.client.Minecraft;

@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 // 使用正确的方式设定栏杆的掉落物
-@Mixin(value = RailingBlock.class, remap = false)
+@Mixin(value = RailingBlock.class)
 public abstract class RailingBlockMixin extends Block {
     public RailingBlockMixin(Properties pProperties) {
         super(pProperties);

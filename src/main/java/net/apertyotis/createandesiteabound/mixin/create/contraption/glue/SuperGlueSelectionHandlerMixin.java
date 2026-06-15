@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.contraptions.glue.SuperGlueSelectionHandler;
 import net.apertyotis.createandesiteabound.AllConfig;
-import net.apertyotis.createandesiteabound.content.hachimi_glue.HachimiGlueHandler;
+import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueHandler;
 import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
