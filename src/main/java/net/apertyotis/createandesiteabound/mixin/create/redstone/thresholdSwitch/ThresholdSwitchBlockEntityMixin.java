@@ -232,7 +232,10 @@ public abstract class ThresholdSwitchBlockEntityMixin implements ThresholdSwitch
                             .filter(compat -> compat.isFromThisMod(targetBlockEntity))
                             .map(compat -> compat.getSpaceInSlot(inv, finalSlot))
                             .findFirst()
-                            .orElseGet(() -> (long) Math.min(stackInSlot.getMaxStackSize(), inv.getSlotLimit(finalSlot)));
+                            .orElseGet(() -> {
+                                int maxStack = stackInSlot.isEmpty() ? 64 : stackInSlot.getMaxStackSize();
+                                return (long) Math.min(maxStack, inv.getSlotLimit(finalSlot));
+                            });
 
                         int count = stackInSlot.getCount();
                         if (space == 0)

@@ -57,8 +57,6 @@ public abstract class ThresholdSwitchScreenMixin extends AbstractSimiScreen {
     @Unique
     private LerpedFloat caa$cursor;
     @Unique
-    private ChangeModeButton caa$changeModeButton;
-    @Unique
     private boolean caa$precision = false;
     @Unique
     private ScrollInput caa$offBelow;
@@ -77,10 +75,11 @@ public abstract class ThresholdSwitchScreenMixin extends AbstractSimiScreen {
         boolean highlightTopRow = blockEntity.isInverted() ^ blockEntity.isPowered();
         caa$cursor = LerpedFloat.linear().startWithValue(highlightTopRow ? 0 : 1);
 
-        caa$changeModeButton = new ChangeModeButton(x + background.width - 85, y + background.height - 24, AllIcons.I_TARGET);
-        caa$changeModeButton.withCallback(() -> caa$setMode(!caa$precision));
-        caa$changeModeButton.setToolTip(Component.translatable("caa.gui.threshold.precision_mode"));
-        caa$changeModeButton.down = ex.caa$isPrecision();
+        ChangeModeButton changeModeButton =
+            new ChangeModeButton(x + background.width - 85, y + background.height - 24, AllIcons.I_TARGET)
+                .withCallback(() -> caa$setMode(!caa$precision));
+        changeModeButton.setToolTip(Component.translatable("caa.gui.threshold.precision_mode"));
+        changeModeButton.down = ex.caa$isPrecision();
 
         List<Component> selections = ex.caa$getTypeOfCurrentTarget() == ThresholdType.ITEM ?
             List.of(Component.translatable("caa.schedule.threshold.items"),
@@ -91,6 +90,7 @@ public abstract class ThresholdSwitchScreenMixin extends AbstractSimiScreen {
         caa$inStacksOrBuckets = (SelectionScrollInput) new SelectionScrollInput(x + 100, y + 21, 52, 36)
             .forOptions(selections)
             .titled(Component.translatable("caa.schedule.threshold.measure"))
+            .calling(state -> lastModification = 0)
             .setState(ex.caa$inStacksOrBuckets() ? 1 : 0);
 
         caa$offBelow = new ScrollInput(x + 48, y + 47, 48, 18)
@@ -134,7 +134,7 @@ public abstract class ThresholdSwitchScreenMixin extends AbstractSimiScreen {
 
         caa$setMode(ex.caa$isPrecision());
 
-        addRenderableWidgets(caa$changeModeButton, caa$inStacksOrBuckets, caa$onAbove, caa$offBelow);
+        addRenderableWidgets(changeModeButton, caa$inStacksOrBuckets, caa$onAbove, caa$offBelow);
     }
 
     @Inject(method = "tick", at = @At("TAIL"), remap = true)
@@ -312,6 +312,7 @@ public abstract class ThresholdSwitchScreenMixin extends AbstractSimiScreen {
 
     @Unique
     private void caa$setMode(boolean mode) {
+        lastModification = 0;
         caa$precision = mode;
         if (!mode) {
             caa$inStacksOrBuckets.active = caa$inStacksOrBuckets.visible = false;

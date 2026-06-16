@@ -60,6 +60,7 @@
     "create.processing.burner.BlazeBurnerBlockMixin",
     "create.processing.sequenced.SequencedAssemblyRecipeMixin",
     "create.redstone.thresholdSwitch.ConfigureThresholdSwitchPacketMixin",
+    "create.redstone.thresholdSwitch.SophisticatedStorageMixin",
     "create.redstone.thresholdSwitch.ThresholdSwitchBlockEntityMixin",
     "create.schematics.SchematicPrinterAccessor",
     "create.schematics.SchematicWorldAccessor",
