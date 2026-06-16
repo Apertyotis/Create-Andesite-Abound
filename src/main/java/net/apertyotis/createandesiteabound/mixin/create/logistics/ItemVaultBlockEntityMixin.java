@@ -24,15 +24,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ItemVaultBlockEntityMixin implements IPartialSafeNBT {
 
     /**
-     * 修复蓝图打印单格保险库容量为0的问题<br>
-     * 详见 Create PR<a href="https://github.com/Creators-of-Create/Create/pull/10084">#10084</a>
+     * 修复蓝图打印单格保险库容量为 0 的问题<br>
+     * 详见 Create PR<a href="https://github.com/Creators-of-Create/Create/pull/10084">#10084</a><br>
+     * 另见 Create PR <a href="https://github.com/Creators-of-Create/Create/pull/10525">#10525</a>
      */
     @Override
     public void writeSafe(CompoundTag compound) {
         ItemVaultBlockEntity vault = (ItemVaultBlockEntity)(Object) this;
         if (vault.isController()) {
-            compound.putInt("Size", vault.getWidth());
-            compound.putInt("Length", vault.getHeight());
+            compound.putInt("Size", 1);
+            compound.putInt("Length", 1);
         }
     }
 
