@@ -113,6 +113,7 @@ public abstract class ThresholdSwitchBlockEntityMixin implements ThresholdSwitch
         caa$onWhenAbove = onAbove;
         ((ThresholdSwitchBlockEntity)(Object) this).setInverted(invert);
         caa$inStacksOrBuckets = inStacksOrBuckets;
+        invVersionTracker.awaitNewVersion(observedInventory);
     }
 
     @Override
