@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.schematic;
+package net.apertyotis.createandesiteabound.content.schematic.deploy;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -16,7 +16,7 @@ import com.simibubi.create.foundation.utility.Lang;
 import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
-import net.apertyotis.createandesiteabound.content.schematic.tools.SimpleToolType;
+import net.apertyotis.createandesiteabound.content.schematic.deploy.tools.SimpleToolType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;

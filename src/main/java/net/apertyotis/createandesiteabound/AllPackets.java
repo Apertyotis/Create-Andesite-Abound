@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound;
 
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueModificationPacket;
-import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicPlacePacket;
+import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicPlacePacket;
 import net.apertyotis.createandesiteabound.content.thresholdSwitch.ConfigurePreciseThresholdSwitchPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

@@ -1,7 +1,7 @@
 package net.apertyotis.createandesiteabound;
 
 import com.tterrag.registrate.util.entry.ItemEntry;
-import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicItem;
+import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicItem;
 
 import static net.apertyotis.createandesiteabound.CreateAndesiteAbound.REGISTRATE;
 

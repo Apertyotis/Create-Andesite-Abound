@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.schematic;
+package net.apertyotis.createandesiteabound.content.schematic.deploy;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;

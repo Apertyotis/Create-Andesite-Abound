@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.schematic.tools;
+package net.apertyotis.createandesiteabound.content.schematic.deploy.tools;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.AllKeys;
