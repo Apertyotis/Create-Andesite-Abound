@@ -29,11 +29,11 @@ public abstract class ItemHelperMixin {
             VisitedItemStackTracker tracker = new VisitedItemStackTracker();
             for (int i = 0; i < inv.getSlots(); i++) {
                 ItemStack stackIn = inv.getStackInSlot(i);
-                if (stackIn.isEmpty() || stackIn.getMaxStackSize() < amount || !test.test(stackIn))
+                if (stackIn.isEmpty() || stackIn.getMaxStackSize() < amount)
                     continue;
 
-                ItemStack extracted = inv.extractItem(i, stackIn.getCount(), true);
-                if (extracted.isEmpty())
+                ItemStack extracted = inv.extractItem(i, Math.min(stackIn.getCount(), amount), true);
+                if (extracted.isEmpty() || !test.test(extracted))
                     continue;
 
                 VisitedItemStackTracker.SlotAmountRecord slotRecord = tracker.update(extracted, i);
@@ -53,12 +53,11 @@ public abstract class ItemHelperMixin {
             int maxExtractAmount = amount;
             for (int i = 0; i < inv.getSlots(); i++) {
                 ItemStack stackIn = inv.getStackInSlot(i);
-                if (stackIn.isEmpty() || (!result.isEmpty() && !ItemHandlerHelper.canItemStacksStack(result, stackIn)) ||
-                        !test.test(stackIn))
+                if (stackIn.isEmpty() || (!result.isEmpty() && !ItemHandlerHelper.canItemStacksStack(result, stackIn)))
                     continue;
 
-                ItemStack extracted = inv.extractItem(i, stackIn.getCount(), true);
-                if (extracted.isEmpty())
+                ItemStack extracted = inv.extractItem(i, Math.min(stackIn.getCount(), maxExtractAmount), true);
+                if (extracted.isEmpty() || !test.test(extracted))
                     continue;
 
                 if (result.isEmpty()) {
