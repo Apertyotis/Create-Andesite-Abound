@@ -1,6 +1,5 @@
 package net.apertyotis.createandesiteabound.content.schematic.pack;
 
-import com.simibubi.create.content.fluids.tank.FluidTankBlock;
 import com.simibubi.create.content.schematics.SchematicWorld;
 import com.simibubi.create.foundation.utility.Pair;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;

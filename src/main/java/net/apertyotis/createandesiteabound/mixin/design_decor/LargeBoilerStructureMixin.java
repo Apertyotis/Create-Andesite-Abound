@@ -10,13 +10,7 @@ import com.mangomilk.design_decor.blocks.large_boiler.gold.GoldBoilerStructure;
 import com.mangomilk.design_decor.blocks.large_boiler.industrial_iron.IndustrialIronBoilerStructure;
 import com.mangomilk.design_decor.blocks.large_boiler.zinc.ZincBoilerStructure;
 import net.apertyotis.createandesiteabound.compat.design_decor.LargeBoilerStructure;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 
 @Mixin(value = {
     AluminumBoilerStructure.class,
