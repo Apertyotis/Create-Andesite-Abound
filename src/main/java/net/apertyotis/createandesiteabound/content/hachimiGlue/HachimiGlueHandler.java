@@ -119,10 +119,10 @@ public class HachimiGlueHandler {
     }
 
     public boolean mouseScrolled(double delta) {
-        if (!AllKeys.ctrlDown())
+        if (!AllKeys.ctrlDown() || selected == null)
             return false;
-        if (selected == null || selectedFace == null)
-            return false;
+        if (selectedFace == null)
+            return true;
 
         AABB bb = boundingBox == null ? selected.getBoundingBox() : boundingBox;
         Vec3 projectedView = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();

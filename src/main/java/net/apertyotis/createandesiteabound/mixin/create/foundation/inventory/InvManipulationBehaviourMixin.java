@@ -48,4 +48,18 @@ public abstract class InvManipulationBehaviourMixin {
         cir.setReturnValue(stack);
         return stack;
     }
+
+    // 调整筛选条件的判断顺序，先考虑是否满足过滤器，再考虑是否能插入目标存储
+    @WrapOperation(
+        method = "getFilterTest",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/util/function/Predicate;and(Ljava/util/function/Predicate;)Ljava/util/function/Predicate;"
+        )
+    )
+    private Predicate<ItemStack> revertedAnd(
+        Predicate<ItemStack> insertTest, Predicate<ItemStack> filterTest, Operation<Predicate<ItemStack>> original
+    ) {
+        return filterTest.and(insertTest);
+    }
 }
