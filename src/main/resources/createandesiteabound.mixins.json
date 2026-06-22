@@ -73,6 +73,7 @@
     "createaddition.LiquidBlazeBurnerBlockMixin",
     "createaddition.ModularAccumulatorBlockEntityMixin",
     "design_decor.LargeBoilerMixin",
+    "design_decor.LargeBoilerStructureMixin",
     "design_decor.RailingBlockMixin",
     "minecraft.block.BlockBehaviourMixin",
     "minecraft.items.ItemHandlerHelperMixin",

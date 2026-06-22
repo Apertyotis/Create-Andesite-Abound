@@ -11,7 +11,8 @@ import java.util.function.Supplier;
 
 public enum Mods {
     CreateAddition("GameEventsMixin", "LiquidBlazeBurnerBlockMixin", "ModularAccumulatorBlockEntityMixin"),
-    Design_Decor("LargeBoilerMixin", "RailingBlockMixin");
+    Design_Decor("LargeBoilerMixin", "RailingBlockMixin", "LargeBoilerStructureMixin"),
+    VintageImprovements();
 
     private final String id;
     private final String[] mixins;
