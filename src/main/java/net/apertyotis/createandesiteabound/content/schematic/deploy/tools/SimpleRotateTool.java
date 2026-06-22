@@ -1,11 +1,11 @@
-package net.apertyotis.createandesiteabound.content.schematic.tools;
+package net.apertyotis.createandesiteabound.content.schematic.deploy.tools;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.schematics.client.tools.RotateTool;
 import com.simibubi.create.foundation.outliner.LineOutline;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
-import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicHandler;
+import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicHandler;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 

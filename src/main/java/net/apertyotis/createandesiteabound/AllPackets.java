@@ -2,7 +2,8 @@ package net.apertyotis.createandesiteabound;
 
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueModificationPacket;
-import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicPlacePacket;
+import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicPlacePacket;
+import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerPacket;
 import net.apertyotis.createandesiteabound.content.thresholdSwitch.ConfigurePreciseThresholdSwitchPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +21,7 @@ import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 public enum AllPackets {
 
     PLACE_SCHEMATIC(SimpleSchematicPlacePacket.class, SimpleSchematicPlacePacket::new, PLAY_TO_SERVER),
+    RECYCLE_SCHEMATIC(SimplePackerPacket.class, SimplePackerPacket::new, PLAY_TO_SERVER),
     MODIFY_GLUE(HachimiGlueModificationPacket.class, HachimiGlueModificationPacket::new, PLAY_TO_SERVER),
     CONFIGURE_THRESHOLD_SWITCH_EX(ConfigurePreciseThresholdSwitchPacket.class, ConfigurePreciseThresholdSwitchPacket::new, PLAY_TO_SERVER);
 

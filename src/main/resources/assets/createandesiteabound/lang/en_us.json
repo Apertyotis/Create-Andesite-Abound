@@ -2,6 +2,7 @@
   "block.createandesiteabound.redstone_radar": "Sculk Transmitter",
   "item.createandesiteabound.simple_schematic": "Engineering Set",
   "item.createandesiteabound.simple_schematic.dash": " - ",
+  "item.createandesiteabound.simple_packer": "Boxed Slime",
   "jei.text.processing_duration": "Recipe time: %s ticks",
   "jei.text.processing_duration_with_num": "Recipe time: %s ticks / %s items",
   "jei.text.total_energy": "Total cost: %s FE",
@@ -38,5 +39,12 @@
   "caa.gui.threshold.pulley_y_level": "%sy",
   "caa.gui.threshold.range": "(%s to %s)",
   "caa.gui.threshold.range_max": "(max. %s)",
-  "caa.gui.threshold.upper_threshold": "...at or above:"
+  "caa.gui.threshold.upper_threshold": "...at or above:",
+  "caa.packer.abort": "Removed selection.",
+  "caa.packer.dimensions": "Selection Dimensions: %sx%sx%s",
+  "caa.packer.firstPos": "First position set.",
+  "caa.packer.noTarget": "Hold [Ctrl] to select Air blocks.",
+  "caa.packer.secondPos": "Second position set.",
+  "caa.packer.error.size": "Selection size does not match any schematic.",
+  "caa.packer.error.block": "Invalid structure. Check for missing blocks."
 }

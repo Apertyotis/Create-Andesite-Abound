@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.schematic;
+package net.apertyotis.createandesiteabound.content.schematic.deploy;
 
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.foundation.networking.SimplePacketBase;

@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.schematic;
+package net.apertyotis.createandesiteabound.content.schematic.deploy;
 
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.minecraft.ChatFormatting;

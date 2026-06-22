@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.schematic.tools;
+package net.apertyotis.createandesiteabound.content.schematic.deploy.tools;
 
 import com.simibubi.create.content.schematics.client.tools.*;
 

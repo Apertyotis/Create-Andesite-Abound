@@ -1,6 +1,6 @@
 package net.apertyotis.createandesiteabound.foundation;
 
-import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicHandler;
+import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicHandler;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import org.jetbrains.annotations.NotNull;

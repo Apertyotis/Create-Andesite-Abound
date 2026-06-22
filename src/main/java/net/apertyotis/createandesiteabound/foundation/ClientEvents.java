@@ -6,7 +6,8 @@ import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueHandler;
 import net.apertyotis.createandesiteabound.content.radar.RedstoneRadarHandler;
-import net.apertyotis.createandesiteabound.content.schematic.SimpleSchematicHandler;
+import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicHandler;
+import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
@@ -38,6 +39,7 @@ public class ClientEvents {
 
         RedstoneRadarHandler.REDSTONE_RADAR_HANDLER.tick();
         SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.tick();
+        SimplePackerHandler.SIMPLE_PACKER_HANDLER.tick();
         HachimiGlueHandler.HACHIMI_GLUE_HANDLER.tick();
     }
 
@@ -60,8 +62,11 @@ public class ClientEvents {
         double delta = event.getScrollDelta();
 
         if (SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.mouseScrolled(delta) ||
-                HachimiGlueHandler.HACHIMI_GLUE_HANDLER.mouseScrolled(delta))
+            SimplePackerHandler.SIMPLE_PACKER_HANDLER.mouseScrolled(delta) ||
+            HachimiGlueHandler.HACHIMI_GLUE_HANDLER.mouseScrolled(delta))
+        {
             event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent
@@ -72,8 +77,11 @@ public class ClientEvents {
         int button = event.getButton();
         boolean pressed = event.getAction() != 0;
 
-        if (SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.onMouseInput(button, pressed))
+        if (SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.onMouseInput(button, pressed) ||
+            SimplePackerHandler.SIMPLE_PACKER_HANDLER.onMouseInput(button, pressed))
+        {
             event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent

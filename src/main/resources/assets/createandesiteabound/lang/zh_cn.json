@@ -2,6 +2,7 @@
   "block.createandesiteabound.redstone_radar": "幽匿发信器",
   "item.createandesiteabound.simple_schematic": "工程集合",
   "item.createandesiteabound.simple_schematic.dash": "  -",
+  "item.createandesiteabound.simple_packer": "盒装史莱姆",
   "info.caa.goggle.connected": "成功连接到目标",
   "info.caa.goggle.empty": "无目标, 仅接收",
   "info.caa.goggle.forceload_disable": "区块加载功能已关闭",
@@ -38,5 +39,12 @@
   "caa.gui.threshold.pulley_y_level": "%sy",
   "caa.gui.threshold.range": "（%s 到 %s）",
   "caa.gui.threshold.range_max": "（最大 %s）",
-  "caa.gui.threshold.upper_threshold": "……大于等于："
+  "caa.gui.threshold.upper_threshold": "……大于等于：",
+  "caa.packer.abort": "删除选择",
+  "caa.packer.dimensions": "选区大小：%sx%sx%s",
+  "caa.packer.firstPos": "第一个位置",
+  "caa.packer.noTarget": "按住 [Ctrl] 选择空气方块",
+  "caa.packer.secondPos": "第二个位置",
+  "caa.packer.error.size": "选区大小与任何蓝图均不匹配",
+  "caa.packer.error.block": "结构无效, 检查是否缺失方块"
 }
