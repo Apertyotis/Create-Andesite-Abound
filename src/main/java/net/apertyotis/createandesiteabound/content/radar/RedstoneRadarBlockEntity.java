@@ -52,6 +52,7 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
 
+    @SuppressWarnings("removal")
     @Override
     public void read(CompoundTag nbt, boolean clientPacket) {
         super.read(nbt, clientPacket);
@@ -59,7 +60,7 @@ public class RedstoneRadarBlockEntity extends SmartBlockEntity implements IHaveG
         state = State.values()[nbt.getInt("State")];
 
         if (nbt.contains("TargetDimension") && nbt.contains("TargetPos")) {
-            ResourceLocation id = ResourceLocation.parse(nbt.getString("TargetDimension"));
+            ResourceLocation id = new ResourceLocation(nbt.getString("TargetDimension"));
             targetDimension = ResourceKey.create(Registries.DIMENSION, id);
             targetPos = NbtUtils.readBlockPos(nbt.getCompound("TargetPos"));
         }

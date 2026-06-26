@@ -77,6 +77,7 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
         return false;
     }
 
+    @SuppressWarnings("removal")
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         if (world.isClientSide())
@@ -88,7 +89,7 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
         BlockEntity be = world.getBlockEntity(pos);
         if (be instanceof RedstoneRadarBlockEntity rrbe) {
             BlockPos targetPos = NbtUtils.readBlockPos(tag.getCompound("TargetPos"));
-            ResourceLocation id = ResourceLocation.parse(tag.getString("TargetDimension"));
+            ResourceLocation id = new ResourceLocation(tag.getString("TargetDimension"));
             ResourceKey<Level> targetDimension = ResourceKey.create(Registries.DIMENSION, id);
             rrbe.setTarget(targetDimension, targetPos);
         }
@@ -127,6 +128,7 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
         super.createBlockStateDefinition(builder.add(NORTH, EAST, SOUTH, WEST, INPUT, OUTPUT, FORCELOAD));
     }
 
+    @SuppressWarnings("removal")
     @Override
     public @NotNull InteractionResult use(
             BlockState state, Level world, BlockPos pos,
@@ -160,7 +162,7 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
 
                 if (tag.getTagType("dimension") != Tag.TAG_STRING)
                     return InteractionResult.PASS;
-                ResourceLocation id = ResourceLocation.parse(tag.getString("dimension"));
+                ResourceLocation id = new ResourceLocation(tag.getString("dimension"));
                 dimension = ResourceKey.create(Registries.DIMENSION, id);
             } catch (ClassCastException ignored) {
                 return InteractionResult.PASS;

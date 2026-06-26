@@ -72,6 +72,7 @@ public class RedstoneRadarItem extends BlockItem {
         return InteractionResult.SUCCESS;
     }
 
+    @SuppressWarnings("removal")
     @Override
     public void appendHoverText(ItemStack stack, Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         CompoundTag tag = stack.getTag();
@@ -80,7 +81,7 @@ public class RedstoneRadarItem extends BlockItem {
             return;
 
         BlockPos targetPos = NbtUtils.readBlockPos(tag.getCompound("TargetPos"));
-        ResourceLocation id = ResourceLocation.parse(tag.getString("TargetDimension"));
+        ResourceLocation id = new ResourceLocation(tag.getString("TargetDimension"));
         String dimensionDescId = "dimension." + id.getNamespace() + "." + id.getPath();
 
         tooltip.add(Component.translatable("tooltip.caa.has_target_nbt")
