@@ -6,6 +6,8 @@ import com.simibubi.create.CreateClient;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import com.simibubi.create.foundation.utility.RaycastHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
+import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+import com.simibubi.create.foundation.utility.animation.PhysicalFloat;
 import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.minecraft.client.Minecraft;
@@ -36,12 +38,33 @@ public class SimplePackerHandler {
     private Direction selectedFace;
     private int range = 10;
 
+    public final PhysicalFloat slimeli_ = PhysicalFloat.create().withDrag(0.3);
+    private float lastPassiveScroll = 0;
+    private float passiveScroll = 0;
+
+    public final LerpedFloat height = LerpedFloat.linear();
+
+    public float getScroll(float partialTicks) {
+        return slimeli_.getValue(partialTicks) + Mth.lerp(partialTicks, lastPassiveScroll, passiveScroll);
+    }
+
     public void tick() {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         Level level = mc.level;
+
+        if (!mc.isPaused()) {
+            passiveScroll %= 360;
+            lastPassiveScroll = passiveScroll;
+            passiveScroll -= 2.87675f;
+            slimeli_.tick();
+            height.tickChaser();
+        }
+
         if (level == null || player == null || !AllItems.SIMPLE_PACKER.isIn(player.getMainHandItem()))
             return;
+
+        height.chase(AllKeys.ctrlDown() ? 0.8f : 0, 0.25f, LerpedFloat.Chaser.EXP);
 
         if (AllKeys.ACTIVATE_TOOL.isPressed()) {
             float pt = AnimationTickHolder.getPartialTicks();
@@ -132,6 +155,8 @@ public class SimplePackerHandler {
 
         player.displayClientMessage(Component.translatable("caa.packer.dimensions",
             (int) bb.getXsize() + 1, (int) bb.getYsize() + 1, (int) bb.getZsize() + 1), true);
+
+        slimeli_.bump(3, delta * 8);
 
         return true;
     }

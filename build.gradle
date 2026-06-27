@@ -171,10 +171,7 @@ dependencies {
     implementation fg.deobf("curse.maven:createaddition-439890:5099752")
 
     implementation fg.deobf("local:design_decor-1.20.1:0.4.0b")
-    implementation fg.deobf("local:Steam_Rails-1.20.1:1.6.7")
-    implementation fg.deobf("local:StorageDrawers-1.20.1:12.14.3")
     implementation fg.deobf("local:vintageimprovements-1.20.1:0.3.6.0")
-    implementation fg.deobf("local:create_connected-1.20.1:0.9.4")
 
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.2"))
