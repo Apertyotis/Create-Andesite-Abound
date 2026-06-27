@@ -4,7 +4,6 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicItem;
 import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerItem;
-import net.minecraft.world.item.Item;
 
 import static net.apertyotis.createandesiteabound.CreateAndesiteAbound.REGISTRATE;
 
