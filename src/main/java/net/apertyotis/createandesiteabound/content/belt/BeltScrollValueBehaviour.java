@@ -66,8 +66,8 @@ public class BeltScrollValueBehaviour extends BulkScrollValueBehaviour {
     }
 
     /**
-     * 改设定无视玩家是否按下 Ctrl，始终对整条传送带生效<br>
-     * @See
+     * 改设定无视玩家是否按下 Ctrl，始终对整条传送带生效，渲染逻辑通过 mixin 修改<br>
+     * @see net.apertyotis.createandesiteabound.mixin.create.foundation.blockEntity.ScrollValueRendererMixin
      */
     @Override
     public void setValueSettings(Player player, ValueSettings vs, boolean ctrlHeld) {
