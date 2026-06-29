@@ -2,6 +2,8 @@ package net.apertyotis.createandesiteabound;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.TooltipHelper.Palette;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -16,6 +18,11 @@ public class CreateAndesiteAbound {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID);
+
+    static {
+        REGISTRATE.setTooltipModifierFactory(item ->
+            new ItemDescription.Modifier(item, Palette.STANDARD_CREATE));
+    }
 
     @SuppressWarnings("removal")
     public CreateAndesiteAbound() {

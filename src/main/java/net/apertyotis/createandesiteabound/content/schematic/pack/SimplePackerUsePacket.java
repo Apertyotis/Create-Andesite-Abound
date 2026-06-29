@@ -1,6 +1,7 @@
 package net.apertyotis.createandesiteabound.content.schematic.pack;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.compat.Mods;
@@ -23,17 +24,17 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimplePackerPacket extends SimplePacketBase {
+public class SimplePackerUsePacket extends SimplePacketBase {
 
     public BlockPos anchor;
     public BlockPos size;
 
-    public SimplePackerPacket(BlockPos anchor, BlockPos size) {
+    public SimplePackerUsePacket(BlockPos anchor, BlockPos size) {
         this.anchor = anchor;
         this.size = size;
     }
 
-    public SimplePackerPacket(FriendlyByteBuf buffer) {
+    public SimplePackerUsePacket(FriendlyByteBuf buffer) {
         anchor = buffer.readBlockPos();
         size = buffer.readBlockPos();
     }
@@ -50,17 +51,21 @@ public class SimplePackerPacket extends SimplePacketBase {
             ServerPlayer player = context.getSender();
             if (player == null)
                 return;
+            ItemStack stack = player.getMainHandItem();
+            if (!AllItems.SIMPLE_PACKER.isIn(stack))
+                return;
+            // noinspection DataFlowIssue
+            if (stack.hasTag() && stack.getTag().getBoolean("Closure")) {
+
+                return;
+            }
+
             Level world = player.level();
             StructureMetaCache.matchAnyStructure(world, anchor, size, (path, blockReader) -> {
                 List<BlockPos> destroyLater = new ArrayList<>();
                 for (var entry: blockReader.getBlockMap().entrySet()) {
                     BlockPos targetPos = anchor.offset(entry.getKey());
-                    Block block = entry.getValue().getBlock();
-                    if (AllBlocks.WATER_WHEEL_STRUCTURAL.is(block) ||
-                        block instanceof LargeBoilerStructure ||
-                        Mods.VintageImprovements.runIfInstalled(() -> () -> CentrifugeStructuralBlock.is(block))
-                            .orElse(false)
-                    ) {
+                    if (StructureHelper.shouldDestroyLater(entry.getValue().getBlock())) {
                         destroyLater.add(targetPos);
                         continue;
                     }
@@ -80,6 +85,7 @@ public class SimplePackerPacket extends SimplePacketBase {
                 tag.putString("File", path.toString().replace("\\", "/"));
                 schematic.setTag(tag);
                 player.getInventory().placeItemBackInInventory(schematic);
+                AllSoundEvents.CONFIRM.playFrom(player);
             }, result -> {
                 String key = switch (result) {
                     case SUCCESS -> "";
@@ -88,6 +94,7 @@ public class SimplePackerPacket extends SimplePacketBase {
                 };
                 if (key.isEmpty())
                     return;
+                AllSoundEvents.DENY.playFrom(player);
                 player.displayClientMessage(Component.translatable(key)
                     .withStyle(ChatFormatting.RED), true);
             });

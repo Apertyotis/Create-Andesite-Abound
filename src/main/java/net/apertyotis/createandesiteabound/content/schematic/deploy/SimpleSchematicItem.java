@@ -2,6 +2,7 @@ package net.apertyotis.createandesiteabound.content.schematic.deploy;
 
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
@@ -34,14 +35,18 @@ public class SimpleSchematicItem extends Item {
         String key = getTranslateKey(stack);
         if (key == null) {
             return Component.literal(name)
-                    .withStyle(ChatFormatting.LIGHT_PURPLE);
+                .withStyle(ChatFormatting.LIGHT_PURPLE);
         } else {
+            String trans = I18n.get(key);
+            String deli = trans.startsWith("【") || trans.startsWith("「") ?
+                "item.createandesiteabound.simple_schematic.dash.variant" :
+                "item.createandesiteabound.simple_schematic.dash";
             return Component.literal(name)
-                    .withStyle(ChatFormatting.LIGHT_PURPLE)
-                    .append(Component.translatable("item.createandesiteabound.simple_schematic.dash")
-                            .withStyle(ChatFormatting.GRAY))
-                    .append(Component.translatable(key)
-                            .withStyle(ChatFormatting.GOLD));
+                .withStyle(ChatFormatting.LIGHT_PURPLE)
+                .append(Component.translatable(deli)
+                    .withStyle(ChatFormatting.GRAY))
+                .append(Component.literal(trans)
+                    .withStyle(ChatFormatting.GOLD));
         }
     }
 

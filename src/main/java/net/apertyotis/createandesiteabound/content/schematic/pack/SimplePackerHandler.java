@@ -61,10 +61,10 @@ public class SimplePackerHandler {
             height.tickChaser();
         }
 
-        if (level == null || player == null || !AllItems.SIMPLE_PACKER.isIn(player.getMainHandItem()))
+        if (mc.screen != null || level == null || player == null || !AllItems.SIMPLE_PACKER.isIn(player.getMainHandItem()))
             return;
 
-        height.chase(AllKeys.ctrlDown() ? 0.8f : 0, 0.25f, LerpedFloat.Chaser.EXP);
+        height.chase(AllKeys.ACTIVATE_TOOL.isPressed() ? 0.8f : 0, 0.25f, LerpedFloat.Chaser.EXP);
 
         if (AllKeys.ACTIVATE_TOOL.isPressed()) {
             float pt = AnimationTickHolder.getPartialTicks();
@@ -116,7 +116,7 @@ public class SimplePackerHandler {
     }
 
     public boolean mouseScrolled(double delta) {
-        if (!AllKeys.ctrlDown())
+        if (!AllKeys.ACTIVATE_TOOL.isPressed())
             return false;
 
         Minecraft mc = Minecraft.getInstance();
@@ -125,6 +125,7 @@ public class SimplePackerHandler {
         if (level == null || player == null || !AllItems.SIMPLE_PACKER.isIn(player.getMainHandItem()))
             return false;
 
+        slimeli_.bump(3, delta * 8);
         if (secondPos == null)
             range = Mth.clamp(range + (int) delta, 1, 100);
         if (selectedFace == null)
@@ -156,13 +157,11 @@ public class SimplePackerHandler {
         player.displayClientMessage(Component.translatable("caa.packer.dimensions",
             (int) bb.getXsize() + 1, (int) bb.getYsize() + 1, (int) bb.getZsize() + 1), true);
 
-        slimeli_.bump(3, delta * 8);
-
         return true;
     }
 
     public boolean onMouseInput(int button, boolean pressed) {
-        if (!pressed || button != 1)
+        if (!pressed || (button != 0 && button != 1))
             return false;
 
         Minecraft mc = Minecraft.getInstance();
@@ -170,6 +169,11 @@ public class SimplePackerHandler {
         Level level = mc.level;
         if (level == null || player == null || !AllItems.SIMPLE_PACKER.isIn(player.getMainHandItem()))
             return false;
+
+        if (button == 0) {
+            AllPackets.getChannel().sendToServer(new SimplePackerAttackPacket());
+            return true;
+        }
 
         if (player.isShiftKeyDown()) {
             firstPos = null;
@@ -180,7 +184,7 @@ public class SimplePackerHandler {
 
         if (secondPos != null) {
             BoundingBox bounds = BoundingBox.fromCorners(firstPos, secondPos);
-            AllPackets.getChannel().sendToServer(new SimplePackerPacket(
+            AllPackets.getChannel().sendToServer(new SimplePackerUsePacket(
                 new BlockPos(bounds.minX(), bounds.minY(), bounds.minZ()),
                 new BlockPos(bounds.getLength().offset(1, 1, 1))
             ));

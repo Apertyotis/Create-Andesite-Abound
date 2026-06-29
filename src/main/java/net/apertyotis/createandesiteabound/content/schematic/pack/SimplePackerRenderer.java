@@ -14,22 +14,29 @@ import net.minecraft.world.item.ItemStack;
 
 import static net.apertyotis.createandesiteabound.CreateAndesiteAbound.MOD_ID;
 
+@SuppressWarnings("removal")
 public class SimplePackerRenderer extends CustomRenderedItemModelRenderer {
-    @SuppressWarnings("removal")
     private static final PartialModel SLIMELI_ =
         new PartialModel(new ResourceLocation(MOD_ID, "item/simple_packer/slimeli_"));
+    private static final PartialModel CLOSURE =
+        new PartialModel(new ResourceLocation(MOD_ID, "item/simple_packer/closure"));
 
     @Override
     protected void render(
         ItemStack stack, CustomRenderedItemModel model, PartialItemModelRenderer renderer,
         ItemDisplayContext transformType, PoseStack ms, MultiBufferSource buffer, int light, int overlay
     ) {
-        renderer.render(model.getOriginalModel(), light);
-        float partial = AnimationTickHolder.getPartialTicks();
-        float degree = SimplePackerHandler.SIMPLE_PACKER_HANDLER.getScroll(partial);
-        float yOffset = SimplePackerHandler.SIMPLE_PACKER_HANDLER.height.getValue(partial);
-        ms.mulPose(Axis.YP.rotationDegrees(degree));
-        ms.translate(0, yOffset, 0);
-        renderer.render(SLIMELI_.get(), light);
+        // noinspection DataFlowIssue
+        if (stack.hasTag() && stack.getTag().getBoolean("Closure")) {
+            renderer.render(CLOSURE.get(), light);
+        } else {
+            renderer.render(model.getOriginalModel(), light);
+            float partial = AnimationTickHolder.getPartialTicks();
+            float degree = SimplePackerHandler.SIMPLE_PACKER_HANDLER.getScroll(partial);
+            float yOffset = SimplePackerHandler.SIMPLE_PACKER_HANDLER.height.getValue(partial);
+            ms.mulPose(Axis.YP.rotationDegrees(degree));
+            ms.translate(0, yOffset, 0);
+            renderer.render(SLIMELI_.get(), light);
+        }
     }
 }
