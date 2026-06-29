@@ -40,6 +40,7 @@
     "create.kinetics.belt.BeltFunnelInteractionHandlerMixin",
     "create.kinetics.belt.BeltInventoryAccessor",
     "create.kinetics.belt.BeltInventoryMixin",
+    "create.kinetics.belt.BeltMovementHandlerMixin",
     "create.kinetics.belt.BeltTunnelInteractionHandlerMixin",
     "create.kinetics.crusher.CrushingWheelControllerBlockEntityMixin",
     "create.kinetics.deployer.BeltDeployerCallbacksMixin",
@@ -84,6 +85,9 @@
   "client": [
     "create.contraption.glue.SuperGlueSelectionHandlerAccessor",
     "create.contraption.glue.SuperGlueSelectionHandlerMixin",
+    "create.foundation.blockEntity.ScrollValueRendererMixin",
+    "create.kinetics.belt.BeltInstanceMixin",
+    "create.kinetics.belt.BeltRendererMixin",
     "create.redstone.thresholdSwitch.ThresholdSwitchScreenMixin",
     "create.schematics.ToolSelectionScreenAccessor",
     "jei.BasinCategoryMixin",
