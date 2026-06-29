@@ -49,100 +49,104 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue PLAYER_CAN_BREATH_UNDERWATER;
         public final ForgeConfigSpec.BooleanValue KEEP_FLYING_ON_GROUND;
         public final ForgeConfigSpec.BooleanValue HACHIMI_GLUE;
+        public final ForgeConfigSpec.IntValue ITEM_ENTITY_LIFESPAN;
 
         Common(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
             builder.comment("Recipe Time Normalization").push("normalization");
             DEPLOYER_SPEED_CHANGE = builder
-                    .comment("Set the Deployer’s full-speed processing time to 5 ticks.")
-                    .define("deployer", true);
+                .comment("Set the Deployer’s full-speed processing time to 5 ticks.")
+                .define("deployer", true);
             CRUSHING_WHEEL_SPEED_CHANGE = builder
-                    .comment("Set the Crushing Wheel’s full-speed processing time equals to recipe time and default value to 30 ticks.")
-                    .define("crushing_wheel", true);
+                .comment("Set the Crushing Wheel’s full-speed processing time equals to recipe time and default value to 30 ticks.")
+                .define("crushing_wheel", true);
             ITEM_DRAIN_SPEED_CHANGE = builder
-                    .comment("Set the Item Drain's rolling time to 10 ticks and recipe time to 10 ticks.")
-                    .define("item_drain", true);
+                .comment("Set the Item Drain's rolling time to 10 ticks and recipe time to 10 ticks.")
+                .define("item_drain", true);
             MILLSTONE_SPEED_CHANGE = builder
-                    .comment("Set the Millstone's full-speed processing time equals to recipe time.")
-                    .define("millstone", true);
+                .comment("Set the Millstone's full-speed processing time equals to recipe time.")
+                .define("millstone", true);
             MIXER_SPEED_CHANGE = builder
-                    .comment("Set the Mechanical Mixer's default full-speed processing time to 15 ticks.")
-                    .define("mixer", true);
+                .comment("Set the Mechanical Mixer's default full-speed processing time to 15 ticks.")
+                .define("mixer", true);
             PRESS_SPEED_CHANGE = builder
-                    .comment("Set the Mechanical Press's full-speed processing time to 10 ticks.")
-                    .define("press", true);
+                .comment("Set the Mechanical Press's full-speed processing time to 10 ticks.")
+                .define("press", true);
             SAW_SPEED_CHANGE = builder
-                    .comment("Set the Mechanical Saw's full-speed processing time to 10 ticks each bulk.")
-                    .define("saw", true);
+                .comment("Set the Mechanical Saw's full-speed processing time to 10 ticks each bulk.")
+                .define("saw", true);
             SPOUT_SPEED_CHANGE = builder
-                    .comment("Set the Spout's processing time to 20 ticks.")
-                    .define("spout", true);
+                .comment("Set the Spout's processing time to 20 ticks.")
+                .define("spout", true);
             CHUTE_SPEED_CHANGE = builder
-                    .comment("Set the Chute's default transport time to 5 ticks.")
-                    .define("chute", true);
+                .comment("Set the Chute's default transport time to 5 ticks.")
+                .define("chute", true);
             PUMP_SPEED_CHANGE = builder
-                    .comment("Multiply the fluid network transfer speed by 8.")
-                    .define("pump", true);
+                .comment("Multiply the fluid network transfer speed by 8.")
+                .define("pump", true);
             DEPOT_SPEED_CHANGE = builder
-                    .comment("Set the Depot item movement animation duration to 5 ticks.")
-                    .define("depot", true);
+                .comment("Set the Depot item movement animation duration to 5 ticks.")
+                .define("depot", true);
             VALVE_SPEED_CHANGE = builder
-                    .comment("Set the Valve state toggle duration at full speed to 1 tick.")
-                    .define("valve", true);
+                .comment("Set the Valve state toggle duration at full speed to 1 tick.")
+                .define("valve", true);
             builder.pop();
 
             // 其他非 bugfix 调整
             builder.comment("Behaviour Tweaks").push("tweaks");
             BELT_FUNNEL_DETECTION_TWEAK = builder
-                    .comment("Allows funnels to extract items positioned exactly at the center of a belt.")
-                    .comment("Previously, funnels could only extract items past the center.")
-                    .comment("When a opposing funnel blocks items at the center, all side-facing belt funnels stop extracting, which is unintuitive.")
-                    .define("belt_funnel_detection_tweak", true);
+                .comment("Allows funnels to extract items positioned exactly at the center of a belt.")
+                .comment("Previously, funnels could only extract items past the center.")
+                .comment("When a opposing funnel blocks items at the center, all side-facing belt funnels stop extracting, which is unintuitive.")
+                .define("belt_funnel_detection_tweak", true);
             SPOUT_DOUBLE_CAPACITY = builder
-                    .comment("Set the spout's fluid capacity to 2000 mB.")
-                    .define("spout_double_capacity", true);
+                .comment("Set the spout's fluid capacity to 2000 mB.")
+                .define("spout_double_capacity", true);
             NO_CHUTE_LEAKING = builder
-                    .comment("Prevent Diagonal Chutes from interacting with containers below.")
-                    .comment("Because visually, Diagonal Chutes have no opening at the bottom.")
-                    .define("no_chute_leaking", true);
+                .comment("Prevent Diagonal Chutes from interacting with containers below.")
+                .comment("Because visually, Diagonal Chutes have no opening at the bottom.")
+                .define("no_chute_leaking", true);
             ALWAYS_ALLOW_FLYING = builder
-                    .comment("Allow all players flying.")
-                    .define("always_allow_flying",true);
+                .comment("Allow all players flying.")
+                .define("always_allow_flying",true);
             HEURISTIC_ROTATION = builder
-                    .comment("Allow rotation for blocks without a custom rotate implementation.")
-                    .comment("Many mod authors do not override rotate and mirror when adding directional blocks.")
-                    .comment("As a result, vanilla structure block placement and Create schematic printing are unable to correctly rotate these blocks.")
-                    .comment("Enabling this feature automatically detects common facing properties and applies rotation/mirror.")
-                    .define("heuristic_rotation", true);
+                .comment("Allow rotation for blocks without a custom rotate implementation.")
+                .comment("Many mod authors do not override rotate and mirror when adding directional blocks.")
+                .comment("As a result, vanilla structure block placement and Create schematic printing are unable to correctly rotate these blocks.")
+                .comment("Enabling this feature automatically detects common facing properties and applies rotation/mirror.")
+                .define("heuristic_rotation", true);
             NO_DEPOT_OVERFLOW_DROP = builder
-                    .comment("Prevent the depot from dropping overflow items.")
-                    .comment("For example when it accumulates too many processing outputs.")
-                    .comment("Or when an Ejector cannot merge received item stacks.")
-                    .define("no_depot_overflow_drop", true);
+                .comment("Prevent the depot from dropping overflow items.")
+                .comment("For example when it accumulates too many processing outputs.")
+                .comment("Or when an Ejector cannot merge received item stacks.")
+                .define("no_depot_overflow_drop", true);
             REPLACE_ANY_FLOWING_FLUID = builder
-                    .comment("Allow pumps to replace any flowing fluid, ignoring the fluid type.")
-                    .define("replace_any_flowing_fluid", true);
+                .comment("Allow pumps to replace any flowing fluid, ignoring the fluid type.")
+                .define("replace_any_flowing_fluid", true);
             HARVESTER_NOT_CONSUME_SEED = builder
-                    .comment("Prevent harvester from consuming seed when replanting.")
-                    .define("harvester_not_consume_seed", true);
+                .comment("Prevent harvester from consuming seed when replanting.")
+                .define("harvester_not_consume_seed", true);
             DISABLE_DIG_SPEED_PENALTY = builder
-                    .comment("When players are in the air or water, they will no longer be subject to a five-time increase in digging time penalty")
-                    .define("disable_dig_speed_penalty", true);
+                .comment("When players are in the air or water, they will no longer be subject to a five-time increase in digging time penalty")
+                .define("disable_dig_speed_penalty", true);
             DONT_COMPARE_ITEM_CAPABILITY = builder
-                    .comment("Prevent forge initializing the item capabilities when comparing item stacks.")
-                    .define("dont_compare_item_capability", true);
+                .comment("Prevent forge initializing the item capabilities when comparing item stacks.")
+                .define("dont_compare_item_capability", true);
             BETTER_PSI_ON_CARRIAGE = builder
-                    .comment("PSIs on trains are now only activated when the train arrives at a station.")
-                    .define("better_psi_on_carriage", true);
+                .comment("PSIs on trains are now only activated when the train arrives at a station.")
+                .define("better_psi_on_carriage", true);
             PLAYER_CAN_BREATH_UNDERWATER = builder
-                    .comment("Player won't drown underwater.")
-                    .define("player_can_breath_underwater", true);
+                .comment("Player won't drown underwater.")
+                .define("player_can_breath_underwater", true);
             KEEP_FLYING_ON_GROUND = builder
-                    .comment("Prevents players from automatically exiting flight mode when touching the ground.")
-                    .define("keep_flying_on_ground", true);
+                .comment("Prevents players from automatically exiting flight mode when touching the ground.")
+                .define("keep_flying_on_ground", true);
             HACHIMI_GLUE = builder
-                    .comment("Make super glue as convenient as honey glue from Aeronautic.")
-                    .define("hachimi_glue", true);
+                .comment("Make super glue as convenient as honey glue from Aeronautic.")
+                .define("hachimi_glue", true);
+            ITEM_ENTITY_LIFESPAN = builder
+                .comment("Override the lifespan of Item Entities created from non-player drops.")
+                .defineInRange("item_entity_lifespan", 1200, 0, Integer.MAX_VALUE);
             builder.pop();
         }
     }
@@ -175,6 +179,7 @@ public class AllConfig {
     public static boolean player_can_breath_underwater;
     public static boolean keep_flying_on_ground;
     public static boolean hachimi_glue;
+    public static int item_entity_lifespan;
 
     // 重载配置时，更新缓存
     @SubscribeEvent
@@ -208,5 +213,6 @@ public class AllConfig {
         player_can_breath_underwater = COMMON.PLAYER_CAN_BREATH_UNDERWATER.get();
         keep_flying_on_ground = COMMON.KEEP_FLYING_ON_GROUND.get();
         hachimi_glue = COMMON.HACHIMI_GLUE.get();
+        item_entity_lifespan = COMMON.ITEM_ENTITY_LIFESPAN.get();
     }
 }
