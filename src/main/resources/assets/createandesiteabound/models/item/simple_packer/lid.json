@@ -1,0 +1,35 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "createandesiteabound:item/simple_packer/packed_slime_crate"
+	},
+	"elements": [
+		{
+			"from": [0, 12.5, 0],
+			"to": [16, 15.5, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 12.5, 0]},
+			"faces": {
+				"north": {"uv": [12, 1.5, 16, 2.25], "texture": "#0"},
+				"east": {"uv": [12, 1.5, 16, 2.25], "texture": "#0"},
+				"south": {"uv": [12, 1.5, 16, 2.25], "texture": "#0"},
+				"west": {"uv": [12, 1.5, 16, 2.25], "texture": "#0"},
+				"up": {"uv": [4, 4, 8, 8], "texture": "#0"},
+				"down": {"uv": [8, 0, 12, 4], "texture": "#0"}
+			}
+		},
+		{
+			"from": [14, 15.5, 14],
+			"to": [2, 14.75, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 15.5, 14]},
+			"faces": {
+				"north": {"uv": [4, 8, 7, 8.25], "texture": "#0"},
+				"east": {"uv": [4, 8, 7, 8.25], "texture": "#0"},
+				"south": {"uv": [4, 8, 7, 8.25], "texture": "#0"},
+				"west": {"uv": [4, 8, 7, 8.25], "texture": "#0"},
+				"up": {"uv": [4, 8.25, 7, 11.25], "texture": "#0"}
+			}
+		}
+	]
+}

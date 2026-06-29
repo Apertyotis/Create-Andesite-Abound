@@ -1,12 +1,8 @@
 package net.apertyotis.createandesiteabound.content.schematic.pack;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.apertyotis.createandesiteabound.AllItems;
-import net.apertyotis.createandesiteabound.compat.Mods;
-import net.apertyotis.createandesiteabound.compat.design_decor.LargeBoilerStructure;
-import net.apertyotis.createandesiteabound.compat.vintageimprovements.CentrifugeStructuralBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkEvent;
