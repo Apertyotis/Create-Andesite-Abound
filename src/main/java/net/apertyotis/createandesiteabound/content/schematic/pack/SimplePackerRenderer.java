@@ -35,11 +35,13 @@ public class SimplePackerRenderer extends CustomRenderedItemModelRenderer {
         ItemStack stack, CustomRenderedItemModel model, PartialItemModelRenderer renderer,
         ItemDisplayContext transformType, PoseStack ms, MultiBufferSource buffer, int light, int overlay
     ) {
-        renderer.render(model.getOriginalModel(), light);
         CompoundTag tag = stack.hasTag() ? stack.getTag() : null;
         if (tag != null && tag.getBoolean("Closure")) {
+            ms.translate(0, -1f / 16, 0);
+            renderer.render(model.getOriginalModel(), light);
             renderer.render(LID.get(), light);
         } else {
+            renderer.render(model.getOriginalModel(), light);
             float partial = AnimationTickHolder.getPartialTicks();
             float degree = SimplePackerHandler.SIMPLE_PACKER_HANDLER.getScroll(partial);
             float yOffset = SimplePackerHandler.SIMPLE_PACKER_HANDLER.height.getValue(partial);
