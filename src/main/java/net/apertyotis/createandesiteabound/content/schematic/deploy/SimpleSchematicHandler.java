@@ -17,13 +17,14 @@ import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.tools.SimpleToolType;
+import net.apertyotis.createandesiteabound.content.schematic.pack.StructureHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -39,6 +40,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Vector;
 
@@ -107,10 +110,9 @@ public class SimpleSchematicHandler extends SchematicHandler {
             active = true;
             deployed = false;
 
-            // noinspection DataFlowIssue
-            StructureTemplate template = SimpleSchematicItem.loadSchematic(
-                    Minecraft.getInstance().level.holderLookup(Registries.BLOCK), stack);
-            Vec3i size = template.getSize();
+            StructureTemplate template = SimpleSchematicItem
+                .loadSchematic(Minecraft.getInstance().level, stack, "");
+            Vec3i size = template == null ? Vec3i.ZERO : template.getSize();
             bounds = new AABB(0, 0, 0, size.getX(), size.getY(), size.getZ());
 
             outline = new AABBOutline(bounds);
@@ -156,8 +158,10 @@ public class SimpleSchematicHandler extends SchematicHandler {
             return;
 
         // 加载蓝图 nbt
-        StructureTemplate schematic =
-                SimpleSchematicItem.loadSchematic(clientWorld.holderLookup(Registries.BLOCK), activeSchematicItem);
+        StructureTemplate schematic = SimpleSchematicItem
+            .loadSchematic(clientWorld, activeSchematicItem, "");
+        if (schematic == null)
+            return;
         Vec3i size = schematic.getSize();
         if (size.equals(Vec3i.ZERO))
             return;
@@ -341,7 +345,15 @@ public class SimpleSchematicHandler extends SchematicHandler {
     public void printInstantly() {
         // 发送打印操作
         AllPackets.getChannel().sendToServer(new SimpleSchematicPlacePacket(
-                activeSchematicItem, transformation.getAnchor(), transformation.toSettings()));
+            activeSchematicItem, transformation.getAnchor(), transformation.toSettings()));
+        CompoundTag tag = activeSchematicItem.getOrCreateTag();
+        Player player = Minecraft.getInstance().player;
+        if (tag.getBoolean("Temp") && (player == null || !player.isCreative())) {
+            try {
+                Files.deleteIfExists(StructureHelper.getOrCreateClientTempSchematicPath()
+                    .resolve(tag.getString("File")));
+            } catch (IOException ignored) {}
+        }
         // 重置部署位置状态
         activeSchematicItem = null;
     }

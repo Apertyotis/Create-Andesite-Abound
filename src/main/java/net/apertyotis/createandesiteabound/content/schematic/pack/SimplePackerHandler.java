@@ -3,6 +3,7 @@ package net.apertyotis.createandesiteabound.content.schematic.pack;
 import com.simibubi.create.AllKeys;
 import com.simibubi.create.AllSpecialTextures;
 import com.simibubi.create.CreateClient;
+import com.simibubi.create.foundation.gui.ScreenOpener;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import com.simibubi.create.foundation.utility.RaycastHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
@@ -18,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -26,6 +28,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
+import java.nio.file.Path;
 
 public class SimplePackerHandler {
     public static final SimplePackerHandler SIMPLE_PACKER_HANDLER = new SimplePackerHandler();
@@ -60,6 +64,9 @@ public class SimplePackerHandler {
             slimeli_.tick();
             height.tickChaser();
         }
+
+        if (mc.screen instanceof SimplePackerScreen)
+            height.chase(AllKeys.ACTIVATE_TOOL.isPressed() ? 0.8f : 0, 0.25f, LerpedFloat.Chaser.EXP);
 
         if (mc.screen != null || level == null || player == null || !AllItems.SIMPLE_PACKER.isIn(player.getMainHandItem()))
             return;
@@ -176,20 +183,18 @@ public class SimplePackerHandler {
         }
 
         if (player.isShiftKeyDown()) {
-            firstPos = null;
-            secondPos = null;
+            discard();
             player.displayClientMessage(Component.translatable("caa.packer.abort"), true);
             return true;
         }
 
         if (secondPos != null) {
-            BoundingBox bounds = BoundingBox.fromCorners(firstPos, secondPos);
-            AllPackets.getChannel().sendToServer(new SimplePackerUsePacket(
-                new BlockPos(bounds.minX(), bounds.minY(), bounds.minZ()),
-                new BlockPos(bounds.getLength().offset(1, 1, 1))
-            ));
-            firstPos = null;
-            secondPos = null;
+            ItemStack stack = player.getMainHandItem();
+            // noinspection DataFlowIssue
+            if (stack.hasTag() && stack.getTag().getBoolean("Closure"))
+                ScreenOpener.open(new SimplePackerScreen());
+            else
+                confirm(null);
             return true;
         }
 
@@ -207,5 +212,24 @@ public class SimplePackerHandler {
         firstPos = selectedPos;
         player.displayClientMessage(Component.translatable("caa.packer.firstPos"), true);
         return true;
+    }
+
+    public void confirm(String filename) {
+        BoundingBox bounds = BoundingBox.fromCorners(firstPos, secondPos);
+        BlockPos anchor = new BlockPos(bounds.minX(), bounds.minY(), bounds.minZ());
+        BlockPos size = new BlockPos(bounds.getLength().offset(1, 1, 1));
+        Minecraft mc = Minecraft.getInstance();
+        if (filename != null && mc.level != null) {
+            Path path = StructureHelper.getOrCreateClientTempSchematicPath();
+            filename = StructureHelper.getValidFilename(path, filename, false);
+            StructureHelper.saveTempSchematic(path, filename, mc.level, anchor, size);
+        }
+        AllPackets.getChannel().sendToServer(new SimplePackerUsePacket(
+            anchor, size, filename == null ? "" : filename));
+        discard();
+    }
+
+    public void discard() {
+        firstPos = secondPos = null;
     }
 }

@@ -10,7 +10,6 @@ import net.apertyotis.createandesiteabound.mixin.create.schematics.SchematicPrin
 import net.apertyotis.createandesiteabound.mixin.create.schematics.SchematicWorldAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -24,14 +23,18 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public class SimpleSchematicPrinter extends SchematicPrinter {
     public void loadSimpleSchematic(
             ItemStack blueprint, BlockPos anchor, Rotation rotation, Mirror mirror,
-            Level world, boolean processNBT
+            Level world, boolean processNBT, String playerName
     ) {
+        SchematicPrinterAccessor accessor = (SchematicPrinterAccessor) this;
         // noinspection DataFlowIssue
         if (!blueprint.hasTag() || !blueprint.getTag().contains("File"))
             return;
 
-        StructureTemplate activeTemplate = SimpleSchematicItem.loadSchematic(
-                world.holderLookup(Registries.BLOCK), blueprint);
+        StructureTemplate activeTemplate = SimpleSchematicItem.loadSchematic(world, blueprint, playerName);
+        if (activeTemplate == null) {
+            accessor.setIsErrored(true);
+            return;
+        }
         SchematicWorld blockReader = new SchematicWorld(anchor, world);
         StructurePlaceSettings settings = new StructurePlaceSettings();
         settings.setRotation(rotation);
@@ -39,14 +42,12 @@ public class SimpleSchematicPrinter extends SchematicPrinter {
         if (processNBT)
             settings.addProcessor(SchematicProcessor.INSTANCE);
 
-        SchematicPrinterAccessor accessor = (SchematicPrinterAccessor) this;
-
         accessor.setSchematicAnchor(anchor);
         accessor.setBlockReader(blockReader);
 
         try {
             activeTemplate.placeInWorld(
-                    blockReader, anchor, anchor, settings, blockReader.getRandom(), Block.UPDATE_CLIENTS);
+                blockReader, anchor, anchor, settings, blockReader.getRandom(), Block.UPDATE_CLIENTS);
         } catch (Exception e) {
             CreateAndesiteAbound.LOGGER.error("Failed to load Schematic for Printing", e);
             accessor.setSchematicLoaded(true);
@@ -55,11 +56,11 @@ public class SimpleSchematicPrinter extends SchematicPrinter {
         }
 
         BlockPos extraBounds = StructureTemplate.calculateRelativePosition(
-                settings, new BlockPos(activeTemplate.getSize()).offset(-1, -1, -1));
+            settings, new BlockPos(activeTemplate.getSize()).offset(-1, -1, -1));
         ((SchematicWorldAccessor) blockReader).setBounds(BBHelper.encapsulate(blockReader.getBounds(), extraBounds));
 
         StructureTransform transform = new StructureTransform(settings.getRotationPivot(), Direction.Axis.Y,
-                settings.getRotation(), settings.getMirror());
+            settings.getRotation(), settings.getMirror());
         for (BlockEntity be : blockReader.getBlockEntities())
             transform.apply(be);
 

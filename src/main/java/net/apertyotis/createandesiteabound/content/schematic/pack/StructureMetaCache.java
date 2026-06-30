@@ -10,6 +10,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -88,6 +89,8 @@ public class StructureMetaCache {
                     BlockPos.ZERO, settings, blockReader.getRandom(), Block.UPDATE_CLIENTS);
                 boolean match = true;
                 for (var blockEntry: blockReader.getBlockMap().entrySet()) {
+                    if (blockEntry.getValue().is(Blocks.AIR))
+                        continue;
                     BlockPos targetPos = anchor.offset(blockEntry.getKey());
                     BlockInWorld inWorld = blockCache.computeIfAbsent(targetPos.asLong(),
                         k -> new BlockInWorld(world, targetPos, false));
@@ -97,7 +100,8 @@ public class StructureMetaCache {
                     }
                 }
                 if (match) {
-                    Path file = cacheEntry.getKey().subpath(1, cacheEntry.getKey().getNameCount());
+                    Path parent = StructureHelper.getOrCreateSchematicPath();
+                    Path file = cacheEntry.getKey().subpath(parent.getNameCount(), cacheEntry.getKey().getNameCount());
                     success.accept(file, blockReader);
                     return;
                 }
@@ -109,19 +113,10 @@ public class StructureMetaCache {
     }
 
     private static void updateAllCache(HolderLookup<Block> lookup) {
-        Path root = Path.of("schematics");
-        Path skip = root.resolve("uploaded");
+        Path root = StructureHelper.getOrCreateSchematicPath();
         Set<Path> visited = new HashSet<>();
         try {
             Files.walkFileTree(root, new SimpleFileVisitor<>(){
-                @ParametersAreNonnullByDefault
-                @Override
-                public @NotNull FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-                    if (dir.equals(skip))
-                        return FileVisitResult.SKIP_SUBTREE;
-                    return FileVisitResult.CONTINUE;
-                }
-
                 @ParametersAreNonnullByDefault
                 @Override
                 public @NotNull FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
