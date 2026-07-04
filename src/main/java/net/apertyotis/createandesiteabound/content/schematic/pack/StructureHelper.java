@@ -235,7 +235,7 @@ public class StructureHelper {
             if (state.is(Blocks.AIR))
                 continue;
             if (shouldDestroyLater(state.getBlock())) {
-                destroyLater.add(pos);
+                destroyLater.add(new BlockPos(pos));
                 continue;
             }
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 50);

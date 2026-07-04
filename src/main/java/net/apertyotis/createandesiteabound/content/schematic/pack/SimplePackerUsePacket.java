@@ -73,7 +73,8 @@ public class SimplePackerUsePacket extends SimplePacketBase {
 
                     BlockPos corner = anchor.offset(size).offset(-1, -1, -1);
                     StructureHelper.destroyStructure(world, BlockPos.betweenClosed(anchor, corner));
-                    for (SuperGlueEntity glue: SuperGlueEntity.collectCropped(world, new AABB(anchor, corner))) {
+                    AABB bounds = new AABB(anchor, anchor.offset(size));
+                    for (SuperGlueEntity glue: world.getEntitiesOfClass(SuperGlueEntity.class, bounds)) {
                         glue.discard();
                     }
                 } else {
