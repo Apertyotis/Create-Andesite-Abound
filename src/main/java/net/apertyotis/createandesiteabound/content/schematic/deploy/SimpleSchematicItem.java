@@ -4,6 +4,8 @@ import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.apertyotis.createandesiteabound.content.schematic.pack.StructureHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +13,7 @@ import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -48,13 +51,19 @@ public class SimpleSchematicItem extends Item {
             return Component.literal(name)
                 .withStyle(ChatFormatting.LIGHT_PURPLE);
         } else {
+            String separator;
             String trans = I18n.get(key);
-            String deli = trans.startsWith("【") || trans.startsWith("「") ?
-                "item.createandesiteabound.simple_schematic.dash.variant" :
-                "item.createandesiteabound.simple_schematic.dash";
+            if (trans.startsWith("【") || trans.startsWith("「")) {
+                Font font = Minecraft.getInstance().font;
+                int a = Mth.ceil((double) font.width(" ") / font.width("【") * 2);
+                separator = "  -" + (a >= 2 ? "" : " ".repeat( 2 - a));
+            } else {
+                separator = "  -  ";
+            }
+
             return Component.literal(name)
                 .withStyle(ChatFormatting.LIGHT_PURPLE)
-                .append(Component.translatable(deli)
+                .append(Component.literal(separator)
                     .withStyle(ChatFormatting.GRAY))
                 .append(Component.literal(trans)
                     .withStyle(ChatFormatting.GOLD));

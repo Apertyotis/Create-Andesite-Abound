@@ -5,9 +5,15 @@ import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Iterate;
+import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.LangBuilder;
 import net.apertyotis.createandesiteabound.mixin.create.foundation.fluid.CombinedTankWrapperAccessor;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -24,6 +31,12 @@ import java.util.Optional;
 
 @Mixin(value = BasinBlockEntity.class, remap = false)
 public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
+
+    @Shadow
+    protected List<ItemStack> spoutputBuffer;
+
+    @Shadow
+    protected List<FluidStack> spoutputFluidBuffer;
 
     // 创建空构造函数来通过编译器语法检查，没有实际作用
     public BasinBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -123,6 +136,42 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
                     "[Create: Andesite Abound Mixin] Handler type contract violated: expected SmartFluidTankBehaviour.InternalFluidHandler, got "
                             + targetTank.getClass().getName()
             );
+        }
+    }
+
+    // 添加工作盆自动输出内容的护目镜显示
+    @Inject(method = "addToGoggleTooltip", at = @At("TAIL"))
+    private void addOutputBufferTooltip(List<Component> tooltip, boolean isPlayerSneaking, CallbackInfoReturnable<Boolean> cir) {
+        if (spoutputBuffer.isEmpty() && spoutputFluidBuffer.isEmpty())
+            return;
+
+        new LangBuilder("")
+            .add(Component.translatable("info.caa.goggle.basin_spoutput"))
+            .forGoggles(tooltip);
+
+        for (ItemStack item: spoutputBuffer) {
+            if (item.isEmpty())
+                continue;
+            Lang.text("")
+                .add(Components.translatable(item.getDescriptionId())
+                    .withStyle(ChatFormatting.GRAY))
+                .add(Lang.text(" x" + item.getCount())
+                    .style(ChatFormatting.GREEN))
+                .forGoggles(tooltip, 1);
+        }
+
+        LangBuilder mb = Lang.translate("generic.unit.millibuckets");
+        for (FluidStack fluid: spoutputFluidBuffer) {
+            if (fluid.isEmpty())
+                continue;
+            Lang.text("")
+                .add(Lang.fluidName(fluid)
+                    .add(Lang.text(" "))
+                    .style(ChatFormatting.GRAY)
+                    .add(Lang.number(fluid.getAmount())
+                        .add(mb)
+                        .style(ChatFormatting.BLUE)))
+                .forGoggles(tooltip, 1);
         }
     }
 }
