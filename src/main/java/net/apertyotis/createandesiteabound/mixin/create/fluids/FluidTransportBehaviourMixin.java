@@ -7,6 +7,8 @@ import com.simibubi.create.content.fluids.pipes.StraightPipeBlockEntity;
 import net.apertyotis.createandesiteabound.foundation.FluidTransportBehaviourEx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,6 +17,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = FluidTransportBehaviour.class, remap = false)
@@ -57,6 +60,20 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
             FluidTransportBehaviour pipeBehaviour = FluidPropagator.getPipe(level, caa$filterPos);
             if (pipeBehaviour != null)
                 cir.setReturnValue(pipeBehaviour.canPullFluidFrom(fluid, state, direction));
+        }
+    }
+
+    @Inject(method = "read", at = @At("TAIL"))
+    private void readFilterPos(CompoundTag nbt, boolean clientPacket, CallbackInfo ci) {
+        if (nbt.contains("FilterPos")) {
+            caa$filterPos = NbtUtils.readBlockPos(nbt.getCompound("FilterPos"));
+        }
+    }
+
+    @Inject(method = "write", at = @At("TAIL"))
+    private void writeFilterPos(CompoundTag nbt, boolean clientPacket, CallbackInfo ci) {
+        if (caa$filterPos != null) {
+            nbt.put("FilterPos", NbtUtils.writeBlockPos(caa$filterPos));
         }
     }
 }
