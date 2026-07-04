@@ -46,7 +46,6 @@ public class HachimiGlueModificationPacket extends SimplePacketBase {
                         .withStyle(ChatFormatting.RED), true);
                 return;
             }
-            // noinspection resource
             Entity entity = player.level().getEntity(entityId);
             if (!(entity instanceof SuperGlueEntity glue))
                 return;

@@ -66,46 +66,55 @@ public abstract class ThresholdSwitchBlockEntityMixin implements ThresholdSwitch
     @Unique
     private int caa$currentAmount = -1;
 
+    @Unique
     @Override
     public boolean caa$inStacksOrBuckets() {
         return caa$inStacksOrBuckets;
     }
 
+    @Unique
     @Override
     public boolean caa$isPrecision() {
         return caa$precision;
     }
 
+    @Unique
     @Override
     public int caa$getMinAmount() {
         return caa$minAmount;
     }
 
+    @Unique
     @Override
     public int caa$getCurrentAmount() {
         return caa$currentAmount;
     }
 
+    @Unique
     @Override
     public int caa$getMaxAmount() {
         return caa$maxAmount;
     }
 
+    @Unique
     @Override
     public int caa$getOnWhenAbove() {
         return caa$onWhenAbove;
     }
 
+    @Unique
     @Override
     public int caa$getOffWhenBelow() {
         return caa$offWhenBelow;
     }
 
+    @Unique
     @Override
     public void caa$setPrecision(boolean precision) {
         caa$precision = precision;
     }
 
+    @Unique
     @Override
     public void caa$configure(int offBelow, int onAbove, boolean invert, boolean inStacksOrBuckets) {
         caa$precision = true;
@@ -116,6 +125,7 @@ public abstract class ThresholdSwitchBlockEntityMixin implements ThresholdSwitch
         invVersionTracker.awaitNewVersion(observedInventory);
     }
 
+    @Unique
     @Override
     public ThresholdType caa$getTypeOfCurrentTarget() {
         if (observedInventory.hasInventory())
@@ -130,6 +140,7 @@ public abstract class ThresholdSwitchBlockEntityMixin implements ThresholdSwitch
         return ThresholdType.UNSUPPORTED;
     }
 
+    @Unique
     @Override
     public ItemStack caa$getDisplayItemForScreen() {
         Level level = ((BlockEntity)(Object) this).getLevel();
@@ -138,6 +149,7 @@ public abstract class ThresholdSwitchBlockEntityMixin implements ThresholdSwitch
         return new ItemStack(level.getBlockState(caa$getTargetPos()).getBlock());
     }
 
+    @Unique
     @Override
     public MutableComponent caa$format(int value, boolean stacksOrBuckets) {
         ThresholdType type = caa$getTypeOfCurrentTarget();

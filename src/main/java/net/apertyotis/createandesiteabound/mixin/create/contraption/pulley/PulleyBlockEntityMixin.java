@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(value = PulleyBlockEntity.class, remap = false)
 public abstract class PulleyBlockEntityMixin implements ThresholdSwitchObservableEx {
@@ -15,11 +16,13 @@ public abstract class PulleyBlockEntityMixin implements ThresholdSwitchObservabl
     @Shadow
     public abstract float getInterpolatedOffset(float partialTicks);
 
+    @Unique
     @Override
     public int caa$getCurrentValue() {
         return ((BlockEntity)(Object) this).getBlockPos().getY() - (int) getInterpolatedOffset(.5f);
     }
 
+    @Unique
     @Override
     public int caa$getMinValue() {
         Level level = ((BlockEntity)(Object) this).getLevel();
@@ -28,11 +31,13 @@ public abstract class PulleyBlockEntityMixin implements ThresholdSwitchObservabl
         return level.getMinBuildHeight();
     }
 
+    @Unique
     @Override
     public int caa$getMaxValue() {
         return ((BlockEntity)(Object) this).getBlockPos().getY();
     }
 
+    @Unique
     @Override
     public MutableComponent caa$format(int value) {
         return Component.translatable("caa.gui.threshold.pulley_y_level", value);
