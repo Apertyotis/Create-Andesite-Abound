@@ -41,6 +41,7 @@
     "create.foundation.utility.BlockFaceMixin",
     "create.kinetics.RotationPropagatorMixin",
     "create.kinetics.belt.BeltBlockEntityMixin",
+    "create.kinetics.belt.BeltConnectorItemMixin",
     "create.kinetics.belt.BeltFunnelInteractionHandlerMixin",
     "create.kinetics.belt.BeltInventoryAccessor",
     "create.kinetics.belt.BeltInventoryMixin",
