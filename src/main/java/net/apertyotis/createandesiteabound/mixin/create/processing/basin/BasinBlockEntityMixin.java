@@ -1,6 +1,8 @@
 package net.apertyotis.createandesiteabound.mixin.create.processing.basin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -45,12 +47,12 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
 
     // 工作盆也会提醒头顶的工作方块更新（让锅盖类工作方块不必频繁主动搜索配方
     @ModifyExpressionValue(
-            method = "tick",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lcom/simibubi/create/content/processing/basin/BasinBlockEntity;contentsChanged:Z",
-                    opcode = Opcodes.GETFIELD
-            )
+        method = "tick",
+        at = @At(
+            value = "FIELD",
+            target = "Lcom/simibubi/create/content/processing/basin/BasinBlockEntity;contentsChanged:Z",
+            opcode = Opcodes.GETFIELD
+        )
     )
     private boolean onContentChanged(boolean contentsChanged) {
         if (level != null && contentsChanged) {
@@ -133,17 +135,18 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
         } else {
             // 根据原方法语义，绝不应该传入其他类型的handler
             throw new IllegalArgumentException(
-                    "[Create: Andesite Abound Mixin] Handler type contract violated: expected SmartFluidTankBehaviour.InternalFluidHandler, got "
-                            + targetTank.getClass().getName()
+                "[Create: Andesite Abound Mixin] Handler type contract violated: expected SmartFluidTankBehaviour.InternalFluidHandler, got "
+                    + targetTank.getClass().getName()
             );
         }
     }
 
     // 添加工作盆自动输出内容的护目镜显示
-    @Inject(method = "addToGoggleTooltip", at = @At("TAIL"))
-    private void addOutputBufferTooltip(List<Component> tooltip, boolean isPlayerSneaking, CallbackInfoReturnable<Boolean> cir) {
+    @WrapMethod(method = "addToGoggleTooltip")
+    private boolean addOutputBufferTooltip(List<Component> tooltip, boolean isPlayerSneaking, Operation<Boolean> original) {
+        boolean result = original.call(tooltip, isPlayerSneaking);
         if (spoutputBuffer.isEmpty() && spoutputFluidBuffer.isEmpty())
-            return;
+            return result;
 
         new LangBuilder("")
             .add(Component.translatable("info.caa.goggle.basin_spoutput"))
@@ -173,5 +176,6 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
                         .style(ChatFormatting.BLUE)))
                 .forGoggles(tooltip, 1);
         }
+        return true;
     }
 }
