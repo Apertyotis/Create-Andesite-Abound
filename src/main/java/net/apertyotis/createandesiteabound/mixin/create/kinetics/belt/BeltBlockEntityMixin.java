@@ -114,4 +114,26 @@ public class BeltBlockEntityMixin extends KineticBlockEntity implements BeltBloc
     private float redirectGetSpeed3(BeltBlockEntity instance, Operation<Float> original) {
         return caa$getTargetSpeed();
     }
+
+    @WrapOperation(
+        method = "canInsertFrom",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/kinetics/belt/BeltBlockEntity;getSpeed()F"
+        )
+    )
+    private float redirectGetSpeed4(BeltBlockEntity instance, Operation<Float> original) {
+        return caa$getTargetSpeed();
+    }
+
+    @WrapOperation(
+        method = "isOccupied",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/kinetics/belt/BeltBlockEntity;getSpeed()F"
+        )
+    )
+    private float redirectGetSpeed5(BeltBlockEntity instance, Operation<Float> original) {
+        return caa$getTargetSpeed();
+    }
 }
