@@ -2,14 +2,13 @@ package net.apertyotis.createandesiteabound.mixin.create.fluids;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.simibubi.create.content.fluids.FlowSource;
-import com.simibubi.create.content.fluids.FluidPropagator;
-import com.simibubi.create.content.fluids.OpenEndedPipe;
-import com.simibubi.create.content.fluids.PipeConnection;
+import com.simibubi.create.content.fluids.*;
+import com.simibubi.create.foundation.utility.BlockFace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 @Mixin(value = PipeConnection.class, remap = false)
 public abstract class PipeConnectionMixin {
@@ -71,11 +71,31 @@ public abstract class PipeConnectionMixin {
                     source = Optional.empty();
                 }
             } else if (flowSource instanceof FlowSource.FluidHandler) {
-                if (!FluidPropagator.hasFluidCapability(world, relative, side.getOpposite())) {
-                    previousSource = source;
+                if (!FluidPropagator.hasFluidCapability(world, relative, side.getOpposite()) ||
+                    !flowSource.provideHandler().isPresent()
+                ) {
                     source = Optional.empty();
                 }
             }
         }
+    }
+
+    @WrapOperation(
+        method = "manageFlows",
+        at = @At(
+            value = "NEW",
+            target = "(Lnet/minecraft/world/level/Level;Lcom/simibubi/create/foundation/utility/BlockFace;Ljava/util/function/Supplier;)Lcom/simibubi/create/content/fluids/FluidNetwork;"
+        )
+    )
+    private FluidNetwork betterSourceProvider(
+        Level world, BlockFace location, Supplier<LazyOptional<IFluidHandler>> sourceSupplier, Operation<FluidNetwork> original
+    ) {
+        return original.call(world, location, (Supplier<LazyOptional<IFluidHandler>>) () -> {
+            if (source.isPresent()) {
+                return source.get().provideHandler();
+            } else {
+                return LazyOptional.empty();
+            }
+        });
     }
 }

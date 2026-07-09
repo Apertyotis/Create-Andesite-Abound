@@ -113,7 +113,8 @@ public abstract class PumpBlockEntityMixin {
         borderNodes.set(new LongOpenHashSet());
     }
 
-    @Definition(id = "isLoaded", method = "Lnet/minecraft/world/level/Level;isLoaded(Lnet/minecraft/core/BlockPos;)Z")
+    @SuppressWarnings("DefaultAnnotationParam")
+    @Definition(id = "isLoaded", method = "Lnet/minecraft/world/level/Level;isLoaded(Lnet/minecraft/core/BlockPos;)Z", remap = true)
     @Expression("?.isLoaded(?)")
     @ModifyExpressionValue(method = "distributePressureTo", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 1))
     private boolean collectBorderNodes(
