@@ -28,6 +28,8 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
     @Unique
     private boolean caa$attached = false;
 
+    @Unique boolean caa$needUpdate = false;
+
     @Unique
     @Override
     public void caa$attachFilterPos(BlockPos pos) {
@@ -50,6 +52,12 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
         caa$attached = false;
     }
 
+    @Unique
+    @Override
+    public void caa$scheduleUpdate() {
+        caa$needUpdate = true;
+    }
+
     @Inject(method = "canPullFluidFrom", at = @At("RETURN"), cancellable = true)
     private void canPullFluidFromWithFilter(
         FluidStack fluid, BlockState state, Direction direction, CallbackInfoReturnable<Boolean> cir
@@ -68,12 +76,30 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
         if (nbt.contains("FilterPos")) {
             caa$filterPos = NbtUtils.readBlockPos(nbt.getCompound("FilterPos"));
         }
+        if (nbt.contains("ScheduleUpdate")) {
+            caa$needUpdate = nbt.getBoolean("ScheduleUpdate");
+        }
     }
 
     @Inject(method = "write", at = @At("TAIL"))
     private void writeFilterPos(CompoundTag nbt, boolean clientPacket, CallbackInfo ci) {
         if (caa$filterPos != null) {
             nbt.put("FilterPos", NbtUtils.writeBlockPos(caa$filterPos));
+        }
+        if (caa$needUpdate) {
+            nbt.putBoolean("ScheduleUpdate", true);
+        }
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void updateWhenBorderChunkReload(CallbackInfo ci) {
+        if (caa$needUpdate) {
+            BlockEntity be = ((FluidTransportBehaviour)(Object) this).blockEntity;
+            if (be.getLevel() == null)
+                return;
+            FluidPropagator.propagateChangedPipe(be.getLevel(), be.getBlockPos(), be.getBlockState());
+            caa$needUpdate = false;
+            ci.cancel();
         }
     }
 }
