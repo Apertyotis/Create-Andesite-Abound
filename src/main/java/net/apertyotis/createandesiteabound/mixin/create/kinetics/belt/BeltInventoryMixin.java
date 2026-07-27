@@ -103,7 +103,7 @@ public abstract class BeltInventoryMixin {
         // 找到传送带上与插入物品堆位置相同或更靠起始端的物品堆索引，结果有可能是列表末尾+1
         int index = caa$lowerBound(items, newStack.beltPosition, beltMovementPositive);
         // 原代码逻辑会将物品插在已有相同beltPosition物品堆之后，这里需要保持行为一致
-        if (index < items.size() && items.get(index).beltPosition == newStack.beltPosition) {
+        while (index < items.size() && items.get(index).beltPosition == newStack.beltPosition) {
             ++index;
         }
         // 插入元素

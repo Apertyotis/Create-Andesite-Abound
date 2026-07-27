@@ -42,16 +42,17 @@ public abstract class PressBehaviourMixin extends BeltProcessingBehaviour {
     // 在辊压机工作结束后，提前1gt检查是否完成
     @Inject(method = "tick", at = @At("TAIL"))
     private void afterTick(CallbackInfo ci){
-        if (!AllConfig.press_speed_change) return;
-        // 工作盆就算了
-        if (mode == PressingBehaviour.Mode.BASIN) return;
-        Level level = getWorld();
-        if (level != null && !level.isClientSide && runningTicks > 240) {
-            finished = true;
-            running = false;
-            particleItems.clear();
-            specifics.onPressingCompleted();
-            blockEntity.sendData();
+        if (!AllConfig.press_speed_change)
+            return;
+        if (mode == PressingBehaviour.Mode.WORLD) {
+            Level level = getWorld();
+            if (level != null && !level.isClientSide && runningTicks > 240) {
+                finished = true;
+                running = false;
+                particleItems.clear();
+                specifics.onPressingCompleted();
+                blockEntity.sendData();
+            }
         }
     }
 }

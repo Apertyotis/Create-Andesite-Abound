@@ -56,6 +56,7 @@
     "create.kinetics.deployer.DeployerBlockEntityMixin",
     "create.kinetics.millstone.MillstoneBlockEntityMixin",
     "create.kinetics.mixer.MixerBlockEntityMixin",
+    "create.kinetics.press.BeltPressingCallbacksMixin",
     "create.kinetics.press.PressBehaviourMixin",
     "create.kinetics.saw.SawBlockEntityMixin",
     "create.logistics.ChuteBlockEntityMixin",

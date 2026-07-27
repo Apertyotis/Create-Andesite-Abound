@@ -7,6 +7,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
+import java.util.List;
+
 @Mixin(value = BeltInventory.class, remap = false)
 public interface BeltInventoryAccessor {
     @Accessor("beltMovementPositive")
@@ -14,6 +16,12 @@ public interface BeltInventoryAccessor {
 
     @Accessor("belt")
     BeltBlockEntity getBelt();
+
+    @Accessor("toInsert")
+    List<TransportedItemStack> getToInsert();
+
+    @Accessor("toRemove")
+    List<TransportedItemStack> getToRemove();
 
     @Invoker("insert")
     void invokeInsert(TransportedItemStack newStack);

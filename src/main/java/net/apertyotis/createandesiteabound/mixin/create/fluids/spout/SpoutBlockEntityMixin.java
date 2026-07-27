@@ -1,8 +1,14 @@
 package net.apertyotis.createandesiteabound.mixin.create.fluids.spout;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.fluids.spout.SpoutBlockEntity;
+import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
+import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.mixin.create.kinetics.belt.BeltInventoryAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 @Mixin(value = SpoutBlockEntity.class, remap = false)
 public abstract class SpoutBlockEntityMixin extends SmartBlockEntity {
@@ -27,13 +35,13 @@ public abstract class SpoutBlockEntityMixin extends SmartBlockEntity {
 
     // 减少注液器1tick工作时间
     @Inject(method = "tick",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lcom/simibubi/create/content/fluids/spout/SpoutBlockEntity;processingTicks:I",
-                    opcode = Opcodes.PUTFIELD,
-                    ordinal = 0,
-                    shift = At.Shift.AFTER
-            )
+        at = @At(
+            value = "FIELD",
+            target = "Lcom/simibubi/create/content/fluids/spout/SpoutBlockEntity;processingTicks:I",
+            opcode = Opcodes.PUTFIELD,
+            ordinal = 0,
+            shift = At.Shift.AFTER
+        )
     )
     private void afterTick(CallbackInfo ci) {
         if (!AllConfig.spout_speed_change || processingTicks != 19) return;
@@ -43,14 +51,51 @@ public abstract class SpoutBlockEntityMixin extends SmartBlockEntity {
 
     // 设定储罐大小为2000mb
     @ModifyArg(
-            method = "addBehaviours",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lcom/simibubi/create/foundation/blockEntity/behaviour/fluid/SmartFluidTankBehaviour;single(Lcom/simibubi/create/foundation/blockEntity/SmartBlockEntity;I)Lcom/simibubi/create/foundation/blockEntity/behaviour/fluid/SmartFluidTankBehaviour;"
-            )
+        method = "addBehaviours",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/foundation/blockEntity/behaviour/fluid/SmartFluidTankBehaviour;single(Lcom/simibubi/create/foundation/blockEntity/SmartBlockEntity;I)Lcom/simibubi/create/foundation/blockEntity/behaviour/fluid/SmartFluidTankBehaviour;"
+        )
     )
     private int modifyTankCapacity(int original) {
         if (!AllConfig.spout_double_capacity) return original;
         return 2000;
+    }
+
+    @WrapOperation(
+        method = "whenItemHeld",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/kinetics/belt/behaviour/TransportedItemStackHandlerBehaviour;handleProcessingOnItem(Lcom/simibubi/create/content/kinetics/belt/transport/TransportedItemStack;Lcom/simibubi/create/content/kinetics/belt/behaviour/TransportedItemStackHandlerBehaviour$TransportedResult;)V"
+        )
+    )
+    private void fastOutput(
+        TransportedItemStackHandlerBehaviour handler, TransportedItemStack transported,
+        TransportedItemStackHandlerBehaviour.TransportedResult processOutput, Operation<Void> original
+    ) {
+        if (!(handler.blockEntity instanceof BeltBlockEntity belt)) {
+            original.call(handler, transported, processOutput);
+            return;
+        }
+
+        BeltBlockEntity beltBE = belt.getControllerBE();
+        if (beltBE == null)
+            return;
+        BeltInventoryAccessor inv = (BeltInventoryAccessor) beltBE.getInventory();
+        if (inv == null)
+            return;
+
+        List<TransportedItemStack> output = processOutput.getOutputs();
+        transported.stack = output.get(0).stack;
+        transported.locked = false;
+        if (processOutput.hasHeldOutput()) {
+            TransportedItemStack held = processOutput.getHeldOutput();
+            // noinspection DataFlowIssue
+            if (!held.stack.isEmpty()) {
+                held.beltPosition = belt.index + .5f - (inv.isPositive() ? 1 / 512f : -1 / 512f);
+                inv.getToInsert().add(held);
+            }
+        }
+        beltBE.notifyUpdate();
     }
 }
