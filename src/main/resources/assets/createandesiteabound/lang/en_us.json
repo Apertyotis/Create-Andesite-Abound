@@ -15,6 +15,7 @@
   "jei.text.processing_duration_with_num": "Recipe time: %s ticks / %s items",
   "jei.text.total_energy": "Total cost: %s FE",
   "jei.text.max_charge_rate": "Charging rate: %s FE / ticks",
+  "jei.text.scroll_to_cycle": "Scroll to cycle shown output. Hold [Shift] to pause",
   "info.caa.goggle.connected": "Connected to Target",
   "info.caa.goggle.not_loaded": "Target chunk is not Loaded",
   "info.caa.goggle.not_receiver": "Target block is not a Sculk Transmitter",

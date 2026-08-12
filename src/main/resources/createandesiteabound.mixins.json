@@ -111,6 +111,8 @@
     "jei.PackingCategoryMixin",
     "jei.PressingCategoryMixin",
     "jei.ProcessingViaFanCategoryMixin",
+    "jei.RecipeSlotAccessor",
+    "jei.RecipeSlotMixin",
     "jei.SawingCategoryMixin",
     "jei.SequencedAssemblyCategoryMixin",
     "jei.SpoutCategoryMixin",

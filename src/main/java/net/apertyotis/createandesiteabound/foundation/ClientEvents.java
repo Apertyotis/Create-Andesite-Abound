@@ -15,15 +15,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.function.Function;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientEvents {
@@ -129,6 +128,11 @@ public class ClientEvents {
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
             // Register overlays in reverse order
             event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), "simple_schematic", SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER);
+        }
+
+        @SubscribeEvent
+        public static void registerClientTooltipComponent(RegisterClientTooltipComponentFactoriesEvent event) {
+            event.register(AssemblyContentTooltipComponent.class, Function.identity());
         }
     }
 }

@@ -25,6 +25,7 @@
   "jei.text.processing_duration": "配方时间: %s 刻",
   "jei.text.processing_duration_with_num": "配方时间: %s 刻 / %s 物品",
   "jei.text.total_energy": "总计消耗: %s FE",
+  "jei.text.scroll_to_cycle": "滑动滚轮切换产物显示，按住[Shift]暂停",
   "msg.caa.target_reset": "目标已清除",
   "msg.caa.target_set": "目标已选择",
   "tooltip.caa.has_target_nbt": "已记录坐标:",
