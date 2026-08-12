@@ -4,6 +4,8 @@ import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.apertyotis.createandesiteabound.AllItems;
+import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
+import net.apertyotis.createandesiteabound.content.schematic.StructureMetaCache;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

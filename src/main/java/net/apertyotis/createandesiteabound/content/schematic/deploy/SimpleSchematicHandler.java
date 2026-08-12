@@ -17,7 +17,7 @@ import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.tools.SimpleToolType;
-import net.apertyotis.createandesiteabound.content.schematic.pack.StructureHelper;
+import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;

@@ -1,13 +1,16 @@
-package net.apertyotis.createandesiteabound.content.schematic.pack;
+package net.apertyotis.createandesiteabound.content.schematic;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllEntityTypes;
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.logistics.funnel.AbstractFunnelBlock;
 import com.simibubi.create.content.logistics.funnel.BeltFunnelBlock;
 import com.simibubi.create.content.logistics.funnel.FunnelBlock;
 import com.simibubi.create.content.schematics.SchematicAndQuillItem;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
+import com.simibubi.create.foundation.blockEntity.IMergeableBE;
+import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
 import com.simibubi.create.foundation.utility.Pair;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -15,6 +18,7 @@ import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.apertyotis.createandesiteabound.compat.Mods;
 import net.apertyotis.createandesiteabound.compat.design_decor.LargeBoilerStructure;
 import net.apertyotis.createandesiteabound.compat.vintageimprovements.CentrifugeStructuralBlock;
+import net.apertyotis.createandesiteabound.mixin.create.foundation.utility.BlockHelperAccessor;
 import net.apertyotis.createandesiteabound.mixin.create.logistics.BeltFunnelBlockAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
@@ -26,7 +30,9 @@ import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Clearable;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -40,6 +46,7 @@ import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fml.loading.FMLPaths;
 
+import javax.annotation.Nullable;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -319,4 +326,49 @@ public class StructureHelper {
             level.setBlock(pos, equivalent, 3);
         }
     }
+
+    public static void placeSchematicBlockUnlimited(
+        Level world, BlockState state, BlockPos target, ItemStack stack, @Nullable CompoundTag data
+    ) {
+        BlockEntity existingBlockEntity = world.getBlockEntity(target);
+
+        if (state.getBlock() instanceof BaseRailBlock) {
+            BlockHelperAccessor.invokePlaceRailWithoutUpdate(world, state, target);
+        } else if (AllBlocks.BELT.has(state)) {
+            world.setBlock(target, state, 2);
+        } else {
+            world.setBlock(target, state, 18);
+        }
+
+        if (data != null) {
+            if (existingBlockEntity instanceof IMergeableBE mergeable) {
+                BlockEntity loaded = BlockEntity.loadStatic(target, state, data);
+                if (loaded != null) {
+                    if (existingBlockEntity.getType().equals(loaded.getType())) {
+                        mergeable.accept(loaded);
+                        return;
+                    }
+                }
+            }
+            BlockEntity blockEntity = world.getBlockEntity(target);
+            if (blockEntity != null) {
+                data.putInt("x", target.getX());
+                data.putInt("y", target.getY());
+                data.putInt("z", target.getZ());
+                if (blockEntity instanceof KineticBlockEntity kbe)
+                    kbe.warnOfMovement();
+                if (blockEntity instanceof IMultiBlockEntityContainer imbe)
+                    if (!imbe.isController())
+                        data.put("Controller", NbtUtils.writeBlockPos(imbe.getController()));
+                blockEntity.load(data);
+            }
+        }
+
+        try {
+            state.getBlock().setPlacedBy(world, target, state, null, stack);
+        } catch (Exception ignored) {
+
+        }
+    }
+
 }

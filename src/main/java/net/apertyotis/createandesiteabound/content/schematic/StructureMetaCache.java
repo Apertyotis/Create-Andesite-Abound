@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.schematic.pack;
+package net.apertyotis.createandesiteabound.content.schematic;
 
 import com.simibubi.create.content.schematics.SchematicWorld;
 import com.simibubi.create.foundation.utility.Pair;

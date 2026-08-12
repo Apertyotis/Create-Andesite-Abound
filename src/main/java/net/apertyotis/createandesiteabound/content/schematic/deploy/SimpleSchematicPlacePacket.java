@@ -5,7 +5,7 @@ import com.simibubi.create.content.logistics.funnel.AbstractFunnelBlock;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.infrastructure.config.AllConfigs;
-import net.apertyotis.createandesiteabound.content.schematic.pack.StructureHelper;
+import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -90,7 +90,7 @@ public class SimpleSchematicPlacePacket extends SimplePacketBase {
                         funnels.add(pos);
                     }
                     CompoundTag data = BlockHelper.prepareBlockEntityData(state, blockEntity);
-                    BlockHelper.placeSchematicBlock(world, state, pos, null, data);
+                    StructureHelper.placeSchematicBlockUnlimited(world, state, pos, null, data);
                 }, (pos, entity) -> world.addFreshEntity(entity));
             }
 

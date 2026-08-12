@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.content.schematic.deploy;
 
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
-import net.apertyotis.createandesiteabound.content.schematic.pack.StructureHelper;
+import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;

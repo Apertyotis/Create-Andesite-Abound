@@ -39,6 +39,7 @@
     "create.foundation.inventory.InvManipulationBehaviourMixin",
     "create.foundation.item.ItemHelperMixin",
     "create.foundation.utility.BlockFaceMixin",
+    "create.foundation.utility.BlockHelperAccessor",
     "create.kinetics.RotationPropagatorMixin",
     "create.kinetics.belt.BasinBlockMixin",
     "create.kinetics.belt.BeltBlockEntityMixin",
