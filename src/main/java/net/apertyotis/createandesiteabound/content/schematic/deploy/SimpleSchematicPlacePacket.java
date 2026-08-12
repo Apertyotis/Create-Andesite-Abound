@@ -90,6 +90,7 @@ public class SimpleSchematicPlacePacket extends SimplePacketBase {
                         funnels.add(pos);
                     }
                     CompoundTag data = BlockHelper.prepareBlockEntityData(state, blockEntity);
+                    StructureHelper.simpleBeltRotate(state, blockEntity, data, rotation);
                     StructureHelper.placeSchematicBlockUnlimited(world, state, pos, null, data);
                 }, (pos, entity) -> world.addFreshEntity(entity));
             }

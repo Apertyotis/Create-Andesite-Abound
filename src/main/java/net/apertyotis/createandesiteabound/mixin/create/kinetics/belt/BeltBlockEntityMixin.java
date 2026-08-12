@@ -7,10 +7,13 @@ import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
 import com.simibubi.create.content.kinetics.belt.transport.BeltInventory;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
+import com.simibubi.create.foundation.utility.IPartialSafeNBT;
+import com.simibubi.create.foundation.utility.NBTHelper;
 import net.apertyotis.createandesiteabound.content.belt.BeltBlockEntityEx;
 import net.apertyotis.createandesiteabound.content.belt.BeltScrollValueBehaviour;
 import net.apertyotis.createandesiteabound.content.belt.BeltValueBoxTransform;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(value = BeltBlockEntity.class, remap = false)
-public class BeltBlockEntityMixin extends KineticBlockEntity implements BeltBlockEntityEx {
+public class BeltBlockEntityMixin extends KineticBlockEntity implements BeltBlockEntityEx, IPartialSafeNBT {
     @Unique
     public boolean caa$markDirty;
 
@@ -135,5 +138,11 @@ public class BeltBlockEntityMixin extends KineticBlockEntity implements BeltBloc
     )
     private float redirectGetSpeed5(BeltBlockEntity instance, Operation<Float> original) {
         return caa$getTargetSpeed();
+    }
+
+    @Override
+    public void writeSafe(CompoundTag compound) {
+        super.writeSafe(compound);
+        NBTHelper.writeEnum(compound, "Casing", ((BeltBlockEntity)(Object) this).casing);
     }
 }

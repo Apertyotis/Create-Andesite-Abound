@@ -4,6 +4,8 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllEntityTypes;
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.kinetics.belt.BeltBlock;
+import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
 import com.simibubi.create.content.logistics.funnel.AbstractFunnelBlock;
 import com.simibubi.create.content.logistics.funnel.BeltFunnelBlock;
 import com.simibubi.create.content.logistics.funnel.FunnelBlock;
@@ -371,4 +373,23 @@ public class StructureHelper {
         }
     }
 
+    public static void simpleBeltRotate(BlockState state, BlockEntity entity, CompoundTag data, Rotation rotation) {
+        if (!(AllBlocks.BELT.has(state)) || !(entity instanceof BeltBlockEntity) || !data.contains("ScrollValue"))
+            return;
+
+        boolean reverse = false;
+        switch (state.getValue(BeltBlock.SLOPE)) {
+            case HORIZONTAL:
+                if (rotation == Rotation.CLOCKWISE_180 || rotation == Rotation.COUNTERCLOCKWISE_90)
+                    reverse = true;
+                break;
+            case UPWARD, DOWNWARD:
+                if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.CLOCKWISE_180)
+                    reverse = true;
+                break;
+        }
+        if (reverse) {
+            data.putInt("ScrollValue", -data.getInt("ScrollValue"));
+        }
+    }
 }
