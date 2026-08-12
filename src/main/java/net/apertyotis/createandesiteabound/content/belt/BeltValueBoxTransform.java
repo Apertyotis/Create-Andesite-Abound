@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
@@ -65,7 +66,19 @@ public class BeltValueBoxTransform extends ValueBoxTransform.Sided {
             BeltPart part = state.getValue(BeltBlock.PART);
             Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
             switch (slope) {
-                case HORIZONTAL -> TransformStack.cast(ms).rotateY(180).rotateX(90);
+                case HORIZONTAL -> {
+                    TransformStack.cast(ms).rotateY(180).rotateX(90);
+                    Player player = Minecraft.getInstance().player;
+                    if (player != null) {
+                        float zRot = switch (player.getDirection()) {
+                            case SOUTH -> 180;
+                            case WEST -> 270;
+                            case EAST -> 90;
+                            default -> 0;
+                        };
+                        TransformStack.cast(ms).rotateZ(zRot);
+                    }
+                }
                 case VERTICAL, SIDEWAYS -> {
                     float yRot = switch (getSide()) {
                         case SOUTH -> 180;
