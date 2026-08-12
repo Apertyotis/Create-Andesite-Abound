@@ -8,20 +8,24 @@ import org.apache.commons.lang3.tuple.Pair;
 
 @Mod.EventBusSubscriber(modid = CreateAndesiteAbound.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AllConfig {
-    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-
-    public static final Common COMMON;
-    public static final ForgeConfigSpec COMMON_SPEC;
+    public static final Server SERVER;
+    public static final ForgeConfigSpec SERVER_SPEC;
+    public static final Client CLIENT;
+    public static final ForgeConfigSpec CLIENT_SPEC;
 
     static {
         // 构造配置
-        Pair<Common, ForgeConfigSpec> pair = BUILDER.configure(Common::new);
-        COMMON = pair.getLeft();
-        COMMON_SPEC = pair.getRight();
+        Pair<Server, ForgeConfigSpec> commonPair = (new ForgeConfigSpec.Builder()).configure(Server::new);
+        SERVER = commonPair.getLeft();
+        SERVER_SPEC = commonPair.getRight();
+
+        Pair<Client, ForgeConfigSpec> clientPair = (new ForgeConfigSpec.Builder()).configure(Client::new);
+        CLIENT = clientPair.getLeft();
+        CLIENT_SPEC = clientPair.getRight();
     }
 
-    // common 配置定义
-    public static class Common {
+    // server 配置定义
+    public static class Server {
         public final ForgeConfigSpec.BooleanValue DEPLOYER_SPEED_CHANGE;
         public final ForgeConfigSpec.BooleanValue CRUSHING_WHEEL_SPEED_CHANGE;
         public final ForgeConfigSpec.BooleanValue ITEM_DRAIN_SPEED_CHANGE;
@@ -47,11 +51,10 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue DONT_COMPARE_ITEM_CAPABILITY;
         public final ForgeConfigSpec.BooleanValue BETTER_PSI_ON_CARRIAGE;
         public final ForgeConfigSpec.BooleanValue PLAYER_CAN_BREATH_UNDERWATER;
-        public final ForgeConfigSpec.BooleanValue KEEP_FLYING_ON_GROUND;
         public final ForgeConfigSpec.BooleanValue HACHIMI_GLUE;
         public final ForgeConfigSpec.IntValue ITEM_ENTITY_LIFESPAN;
 
-        Common(ForgeConfigSpec.Builder builder) {
+        Server(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
             builder.comment("Recipe Time Normalization").push("normalization");
             DEPLOYER_SPEED_CHANGE = builder
@@ -138,9 +141,6 @@ public class AllConfig {
             PLAYER_CAN_BREATH_UNDERWATER = builder
                 .comment("Player won't drown underwater.")
                 .define("player_can_breath_underwater", true);
-            KEEP_FLYING_ON_GROUND = builder
-                .comment("Prevents players from automatically exiting flight mode when touching the ground.")
-                .define("keep_flying_on_ground", true);
             HACHIMI_GLUE = builder
                 .comment("Make super glue as convenient as honey glue from Aeronautic.")
                 .define("hachimi_glue", true);
@@ -148,6 +148,16 @@ public class AllConfig {
                 .comment("Override the lifespan of Item Entities created from non-player drops.")
                 .defineInRange("item_entity_lifespan", 1200, 0, Integer.MAX_VALUE);
             builder.pop();
+        }
+    }
+
+    public static class Client {
+        public final ForgeConfigSpec.BooleanValue KEEP_FLYING_ON_GROUND;
+
+        Client(ForgeConfigSpec.Builder builder) {
+            KEEP_FLYING_ON_GROUND = builder
+                .comment("Prevents players from automatically exiting flight mode when touching the ground.")
+                .define("keep_flying_on_ground", true);
         }
     }
 
@@ -182,37 +192,53 @@ public class AllConfig {
     public static int item_entity_lifespan;
 
     // 重载配置时，更新缓存
+    private static void reloadServer() {
+        deployer_speed_change = SERVER.DEPLOYER_SPEED_CHANGE.get();
+        crushing_wheel_speed_change = SERVER.CRUSHING_WHEEL_SPEED_CHANGE.get();
+        item_drain_speed_change = SERVER.ITEM_DRAIN_SPEED_CHANGE.get();
+        millstone_speed_change = SERVER.MILLSTONE_SPEED_CHANGE.get();
+        mixer_speed_change = SERVER.MIXER_SPEED_CHANGE.get();
+        press_speed_change = SERVER.PRESS_SPEED_CHANGE.get();
+        saw_speed_change = SERVER.SAW_SPEED_CHANGE.get();
+        spout_speed_change = SERVER.SPOUT_SPEED_CHANGE.get();
+        chute_speed_change = SERVER.CHUTE_SPEED_CHANGE.get();
+        pump_speed_change = SERVER.PUMP_SPEED_CHANGE.get();
+        depot_speed_change = SERVER.DEPOT_SPEED_CHANGE.get();
+        valve_speed_change = SERVER.VALVE_SPEED_CHANGE.get();
+
+        belt_funnel_detection_tweak = SERVER.BELT_FUNNEL_DETECTION_TWEAK.get();
+        spout_double_capacity = SERVER.SPOUT_DOUBLE_CAPACITY.get();
+        no_chute_leaking = SERVER.NO_CHUTE_LEAKING.get();
+        always_allow_flying = SERVER.ALWAYS_ALLOW_FLYING.get();
+        heuristic_rotation = SERVER.HEURISTIC_ROTATION.get();
+        no_depot_overflow_drop = SERVER.NO_DEPOT_OVERFLOW_DROP.get();
+        replace_any_flowing_fluid = SERVER.REPLACE_ANY_FLOWING_FLUID.get();
+        harvester_not_consume_seed = SERVER.HARVESTER_NOT_CONSUME_SEED.get();
+        disable_dig_speed_penalty = SERVER.DISABLE_DIG_SPEED_PENALTY.get();
+        dont_compare_item_capability = SERVER.DONT_COMPARE_ITEM_CAPABILITY.get();
+        better_psi_on_carriage = SERVER.BETTER_PSI_ON_CARRIAGE.get();
+        player_can_breath_underwater = SERVER.PLAYER_CAN_BREATH_UNDERWATER.get();
+        hachimi_glue = SERVER.HACHIMI_GLUE.get();
+        item_entity_lifespan = SERVER.ITEM_ENTITY_LIFESPAN.get();
+    }
+
+    private static void reloadClient() {
+        keep_flying_on_ground = CLIENT.KEEP_FLYING_ON_GROUND.get();
+    }
+
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event) {
-        if (event.getConfig().getSpec() != COMMON_SPEC) return;
+    static void onLoad(final ModConfigEvent.Loading event) {
+        if (event.getConfig().getSpec() == SERVER_SPEC)
+            reloadServer();
+        else if (event.getConfig().getSpec() == CLIENT_SPEC)
+            reloadClient();
+    }
 
-        deployer_speed_change = COMMON.DEPLOYER_SPEED_CHANGE.get();
-        crushing_wheel_speed_change = COMMON.CRUSHING_WHEEL_SPEED_CHANGE.get();
-        item_drain_speed_change = COMMON.ITEM_DRAIN_SPEED_CHANGE.get();
-        millstone_speed_change = COMMON.MILLSTONE_SPEED_CHANGE.get();
-        mixer_speed_change = COMMON.MIXER_SPEED_CHANGE.get();
-        press_speed_change = COMMON.PRESS_SPEED_CHANGE.get();
-        saw_speed_change = COMMON.SAW_SPEED_CHANGE.get();
-        spout_speed_change = COMMON.SPOUT_SPEED_CHANGE.get();
-        chute_speed_change = COMMON.CHUTE_SPEED_CHANGE.get();
-        pump_speed_change = COMMON.PUMP_SPEED_CHANGE.get();
-        depot_speed_change = COMMON.DEPOT_SPEED_CHANGE.get();
-        valve_speed_change = COMMON.VALVE_SPEED_CHANGE.get();
-
-        belt_funnel_detection_tweak = COMMON.BELT_FUNNEL_DETECTION_TWEAK.get();
-        spout_double_capacity = COMMON.SPOUT_DOUBLE_CAPACITY.get();
-        no_chute_leaking = COMMON.NO_CHUTE_LEAKING.get();
-        always_allow_flying = COMMON.ALWAYS_ALLOW_FLYING.get();
-        heuristic_rotation = COMMON.HEURISTIC_ROTATION.get();
-        no_depot_overflow_drop = COMMON.NO_DEPOT_OVERFLOW_DROP.get();
-        replace_any_flowing_fluid = COMMON.REPLACE_ANY_FLOWING_FLUID.get();
-        harvester_not_consume_seed = COMMON.HARVESTER_NOT_CONSUME_SEED.get();
-        disable_dig_speed_penalty = COMMON.DISABLE_DIG_SPEED_PENALTY.get();
-        dont_compare_item_capability = COMMON.DONT_COMPARE_ITEM_CAPABILITY.get();
-        better_psi_on_carriage = COMMON.BETTER_PSI_ON_CARRIAGE.get();
-        player_can_breath_underwater = COMMON.PLAYER_CAN_BREATH_UNDERWATER.get();
-        keep_flying_on_ground = COMMON.KEEP_FLYING_ON_GROUND.get();
-        hachimi_glue = COMMON.HACHIMI_GLUE.get();
-        item_entity_lifespan = COMMON.ITEM_ENTITY_LIFESPAN.get();
+    @SubscribeEvent
+    static void onReload(final ModConfigEvent.Reloading event) {
+        if (event.getConfig().getSpec() == SERVER_SPEC)
+            reloadServer();
+        else if (event.getConfig().getSpec() == CLIENT_SPEC)
+            reloadClient();
     }
 }
