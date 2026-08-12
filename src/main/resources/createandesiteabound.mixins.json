@@ -77,7 +77,6 @@
     "create.trains.CarriageMixin",
     "create.trains.GlobalStationMixin",
     "create.trains.NavigationMixin",
-    "create.trains.SignalEdgeGroupMixin",
     "create.trains.TrainMixin",
     "createaddition.GameEventsMixin",
     "createaddition.LiquidBlazeBurnerBlockMixin",

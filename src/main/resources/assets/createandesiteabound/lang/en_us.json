@@ -25,8 +25,6 @@
   "info.caa.goggle.status": "Status:",
   "info.caa.goggle.basin_spoutput": "Output Faucet:",
   "info.caa.option.hachimi_disabled": "The \"Hachimi Glue\" option is disabled on this server.",
-  "info.caa.train.occupied": "Detected an unexpected occupation of a reserved signal segment. The reservation lock has been released.",
-  "info.caa.train.intrude": "Intruded a reserved signal segment.",
   "msg.caa.target_set": "Target Selected",
   "msg.caa.target_reset": "Selection Canceled",
   "tooltip.caa.has_target_nbt": "Record:",
