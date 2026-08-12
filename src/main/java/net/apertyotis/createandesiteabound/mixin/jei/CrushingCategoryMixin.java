@@ -19,6 +19,7 @@ public abstract class CrushingCategoryMixin extends CreateRecipeCategory<Abstrac
     }
 
     @Override
+    @SuppressWarnings("removal")
     public @NotNull List<Component> getTooltipStrings(@NotNull AbstractCrushingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 44 && mouseX < 132 && mouseY > 24 && mouseY < 71) {

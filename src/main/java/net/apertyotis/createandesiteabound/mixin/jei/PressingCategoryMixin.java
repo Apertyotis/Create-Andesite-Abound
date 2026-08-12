@@ -20,6 +20,7 @@ public abstract class PressingCategoryMixin extends CreateRecipeCategory<Pressin
     }
 
     @Override
+    @SuppressWarnings("removal")
     public @NotNull List<Component> getTooltipStrings(@NotNull PressingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 70 && mouseX < 103 && mouseY > -1 && mouseY < 48) {

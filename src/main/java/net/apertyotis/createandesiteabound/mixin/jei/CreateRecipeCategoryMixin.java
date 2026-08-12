@@ -3,7 +3,6 @@ package net.apertyotis.createandesiteabound.mixin.jei;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.utility.Lang;
-import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.crafting.Recipe;
@@ -18,7 +17,8 @@ import java.text.DecimalFormat;
 public abstract class CreateRecipeCategoryMixin<T extends Recipe<?>> implements IRecipeCategory<T> {
     // 别显示<1%了
     @Inject(method = "addStochasticTooltip", at = @At("HEAD"), cancellable = true)
-    private static void redirectTooltipCallback(ProcessingOutput output, CallbackInfoReturnable<IRecipeSlotTooltipCallback> cir) {
+    @SuppressWarnings("removal")
+    private static void redirectTooltipCallback(ProcessingOutput output, CallbackInfoReturnable<mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback> cir) {
         cir.setReturnValue((view, tooltip) -> {
             float chance = output.getChance();
             if (chance != 1) {

@@ -19,6 +19,7 @@ public abstract class ProcessingViaFanCategoryMixin<T extends Recipe<?>> extends
     }
 
     @Override
+    @SuppressWarnings("removal")
     public @NotNull List<Component> getTooltipStrings(@NotNull T recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 55 && mouseX < 106 && mouseY > 8 && mouseY < 48) {

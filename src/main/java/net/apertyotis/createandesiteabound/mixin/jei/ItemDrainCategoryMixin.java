@@ -28,6 +28,7 @@ public abstract class ItemDrainCategoryMixin extends CreateRecipeCategory<Emptyi
     }
 
     @Override
+    @SuppressWarnings("removal")
     public @NotNull List<Component> getTooltipStrings(@NotNull EmptyingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 74 && mouseX < 102 && mouseY > 21 && mouseY < 45) {
@@ -38,6 +39,7 @@ public abstract class ItemDrainCategoryMixin extends CreateRecipeCategory<Emptyi
     }
 
     // 让分液池能显示产物概率
+    @SuppressWarnings("removal")
     @WrapOperation(
             method = "setRecipe(Lmezz/jei/api/gui/builder/IRecipeLayoutBuilder;Lcom/simibubi/create/content/fluids/transfer/EmptyingRecipe;Lmezz/jei/api/recipe/IFocusGroup;)V",
             at = @At(

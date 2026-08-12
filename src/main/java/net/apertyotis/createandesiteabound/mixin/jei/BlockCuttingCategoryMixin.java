@@ -20,6 +20,7 @@ public abstract class BlockCuttingCategoryMixin extends CreateRecipeCategory<Con
     }
 
     @Override
+    @SuppressWarnings("removal")
     public @NotNull List<Component> getTooltipStrings(@NotNull CondensedBlockCuttingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 25 && mouseX < 58 && mouseY > 26 && mouseY < 60) {

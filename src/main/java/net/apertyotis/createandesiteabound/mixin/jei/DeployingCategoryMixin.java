@@ -20,6 +20,7 @@ public abstract class DeployingCategoryMixin extends CreateRecipeCategory<Deploy
     }
 
     @Override
+    @SuppressWarnings("removal")
     public @NotNull List<Component> getTooltipStrings(@NotNull DeployerApplicationRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 74 && mouseX < 102 && mouseY > 1 && mouseY < 65) {

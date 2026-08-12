@@ -20,6 +20,7 @@ public abstract class MillingCategoryMixin extends CreateRecipeCategory<Abstract
     }
 
     @Override
+    @SuppressWarnings("removal")
     public @NotNull List<Component> getTooltipStrings(@NotNull AbstractCrushingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 42 && mouseX < 71 && mouseY > 18 && mouseY < 50) {

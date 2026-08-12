@@ -19,6 +19,7 @@ public abstract class PackingCategoryMixin extends BasinCategory {
     }
 
     @Override
+    @SuppressWarnings("removal")
     public @NotNull List<Component> getTooltipStrings(@NotNull BasinRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 90 && mouseX < 121 && mouseY > 10 && mouseY < 76) {

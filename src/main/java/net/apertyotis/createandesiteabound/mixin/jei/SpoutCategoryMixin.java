@@ -20,6 +20,7 @@ public abstract class SpoutCategoryMixin extends CreateRecipeCategory<FillingRec
     }
 
     @Override
+    @SuppressWarnings("removal")
     public @NotNull List<Component> getTooltipStrings(@NotNull FillingRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         List<Component> tooltip = new ArrayList<>();
         if (mouseX > 76 && mouseX < 100 && mouseY > 1 && mouseY < 64) {
