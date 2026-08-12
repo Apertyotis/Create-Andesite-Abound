@@ -46,7 +46,7 @@ public class SimplePackerHandler {
     private float lastPassiveScroll = 0;
     private float passiveScroll = 0;
 
-    public final LerpedFloat height = LerpedFloat.linear();
+    public final LerpedFloat height = LerpedFloat.linear().startWithValue(0.2);
 
     public float getScroll(float partialTicks) {
         return slimeli_.getValue(partialTicks) + Mth.lerp(partialTicks, lastPassiveScroll, passiveScroll);
@@ -66,12 +66,12 @@ public class SimplePackerHandler {
         }
 
         if (mc.screen instanceof SimplePackerScreen)
-            height.chase(AllKeys.ACTIVATE_TOOL.isPressed() ? 0.8f : 0, 0.25f, LerpedFloat.Chaser.EXP);
+            height.chase(AllKeys.ACTIVATE_TOOL.isPressed() ? .8 : .2, 0.25, LerpedFloat.Chaser.EXP);
 
         if (mc.screen != null || level == null || player == null || !AllItems.SIMPLE_PACKER.isIn(player.getMainHandItem()))
             return;
 
-        height.chase(AllKeys.ACTIVATE_TOOL.isPressed() ? 0.8f : 0, 0.25f, LerpedFloat.Chaser.EXP);
+        height.chase(AllKeys.ACTIVATE_TOOL.isPressed() ? .8 : .2, 0.25, LerpedFloat.Chaser.EXP);
 
         if (AllKeys.ACTIVATE_TOOL.isPressed()) {
             float pt = AnimationTickHolder.getPartialTicks();

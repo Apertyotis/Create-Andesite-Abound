@@ -1,8 +1,13 @@
 package net.apertyotis.createandesiteabound.content.schematic.pack;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllEntityTypes;
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
-import com.simibubi.create.content.schematics.SchematicExport;
+import com.simibubi.create.content.logistics.funnel.AbstractFunnelBlock;
+import com.simibubi.create.content.logistics.funnel.BeltFunnelBlock;
+import com.simibubi.create.content.logistics.funnel.FunnelBlock;
+import com.simibubi.create.content.schematics.SchematicAndQuillItem;
+import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 import com.simibubi.create.foundation.utility.Pair;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -10,15 +15,17 @@ import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.apertyotis.createandesiteabound.compat.Mods;
 import net.apertyotis.createandesiteabound.compat.design_decor.LargeBoilerStructure;
 import net.apertyotis.createandesiteabound.compat.vintageimprovements.CentrifugeStructuralBlock;
+import net.apertyotis.createandesiteabound.mixin.create.logistics.BeltFunnelBlockAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtAccounter;
-import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -30,11 +37,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.storage.LevelResource;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -179,13 +188,39 @@ public class StructureHelper {
         return name.strip().replaceAll("[\\\\/:*?\"<>|]", "_").replace("..", "_");
     }
 
+    @SuppressWarnings("removal")
     public static boolean saveTempSchematic(Path path, String filename, Level world, BlockPos pos, BlockPos bounds) {
-        SchematicExport.SchematicExportResult result = SchematicExport.saveSchematic(
-            path, filename, true,
-            world, pos, pos.offset(bounds).offset(-1, -1, -1)
-        );
+        StructureTemplate structure = new StructureTemplate();
+        structure.fillFromWorld(world, pos, bounds, true, Blocks.AIR);
+        CompoundTag data = structure.save(new CompoundTag());
+
+        ListTag entities = data.getList("entities", Tag.TAG_COMPOUND).copy();
+        Iterator<Tag> it = entities.iterator();
+        while (it.hasNext()) {
+            if (!(it.next() instanceof CompoundTag tag && tag.contains("nbt")))
+                continue;
+            ResourceLocation id = new ResourceLocation(tag.getCompound("nbt").getString("id"));
+            if (!id.equals(AllEntityTypes.SUPER_GLUE.getId()))
+                it.remove();
+        }
+        data.put("entities", entities);
+
+        SchematicAndQuillItem.replaceStructureVoidWithAir(data);
+        SchematicAndQuillItem.clampGlueBoxes(world, new AABB(pos, pos.offset(bounds)), data);
+
+        Path file = path.resolve(filename).toAbsolutePath();
+
+        try {
+            Files.createDirectories(path);
+            try (OutputStream out = Files.newOutputStream(file, StandardOpenOption.CREATE)) {
+                NbtIo.writeCompressed(data, out);
+            }
+        } catch (IOException e) {
+            CreateAndesiteAbound.LOGGER.error("An error occurred while saving schematic [{}]", filename, e);
+            return false;
+        }
         deleteOldest(path);
-        return result != null;
+        return true;
     }
 
     public static String getValidFilename(Path dir, String name, boolean overwrite) {
@@ -195,12 +230,13 @@ public class StructureHelper {
         name = sanitize(name);
         if (name.endsWith(".nbt"))
             name = name.substring(0, name.length() - 4);
-        if (!overwrite) do {
-            filename = name + (index == 0 ? "" : "_" + index) + ".nbt";
-            path = dir.resolve(filename);
-            index++;
-        } while (Files.exists(path));
-        else {
+        if (!overwrite) {
+            do {
+                filename = name + (index == 0 ? "" : "_" + index) + ".nbt";
+                path = dir.resolve(filename);
+                index++;
+            } while (Files.exists(path));
+        } else {
             filename = name + ".nbt";
         }
         return filename;
@@ -238,10 +274,49 @@ public class StructureHelper {
                 destroyLater.add(new BlockPos(pos));
                 continue;
             }
-            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 50);
+            clearBlock(level, pos);
         }
         for (BlockPos pos: destroyLater) {
-            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 50);
+            clearBlock(level, pos);
+        }
+    }
+
+    static final int FLAGS = Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_KNOWN_SHAPE
+        | Block.UPDATE_CLIENTS | Block.UPDATE_IMMEDIATE;
+
+    public static void clearBlock(Level level, BlockPos pos) {
+        if (level.getBlockEntity(pos) instanceof Clearable clearable)
+            clearable.clearContent();
+        level.removeBlockEntity(pos);
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), FLAGS);
+    }
+
+    public static void updateFunnelShape(Level level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof FunnelBlock funnelBlock) {
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            if (!facing.getAxis().isHorizontal())
+                return;
+            BlockState equivalent = funnelBlock.getEquivalentBeltFunnel(level, pos, state);
+            if (!BeltFunnelBlock.isOnValidBelt(equivalent, level, pos))
+                return;
+            equivalent = ProperWaterloggedBlock.withWater(level, equivalent, pos)
+                .setValue(BeltFunnelBlock.SHAPE, BeltFunnelBlock.getShapeForPosition(
+                    level, pos, facing, state.getValue(FunnelBlock.EXTRACTING)));
+            level.setBlock(pos, equivalent, 3);
+        } else if (state.getBlock() instanceof BeltFunnelBlock beltFunnelBlock) {
+            if (BeltFunnelBlock.isOnValidBelt(state, level, pos))
+                return;
+            BlockState equivalent = ((BeltFunnelBlockAccessor) beltFunnelBlock).getParent().getDefaultState();
+            equivalent = ProperWaterloggedBlock.withWater(level, equivalent, pos);
+            if (state.getOptionalValue(AbstractFunnelBlock.POWERED).orElse(false))
+                equivalent = equivalent.setValue(AbstractFunnelBlock.POWERED, true);
+            if (state.getValue(BeltFunnelBlock.SHAPE) == BeltFunnelBlock.Shape.PUSHING)
+                equivalent = equivalent.setValue(FunnelBlock.EXTRACTING, true);
+            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            equivalent = equivalent.setValue(FunnelBlock.FACING, facing);
+
+            level.setBlock(pos, equivalent, 3);
         }
     }
 }

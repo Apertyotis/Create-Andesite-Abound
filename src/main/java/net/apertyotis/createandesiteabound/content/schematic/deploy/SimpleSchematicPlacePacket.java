@@ -1,6 +1,7 @@
 package net.apertyotis.createandesiteabound.content.schematic.deploy;
 
 import com.simibubi.create.AllSoundEvents;
+import com.simibubi.create.content.logistics.funnel.AbstractFunnelBlock;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.infrastructure.config.AllConfigs;
@@ -20,6 +21,8 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SimpleSchematicPlacePacket extends SimplePacketBase {
 
@@ -72,6 +75,7 @@ public class SimpleSchematicPlacePacket extends SimplePacketBase {
             }
 
             boolean includeAir = AllConfigs.server().schematics.creativePrintIncludesAir.get();
+            List<BlockPos> funnels = new ArrayList<>();
 
             while (printer.advanceCurrentPos()) {
                 if (!printer.shouldPlaceCurrent(world))
@@ -82,9 +86,16 @@ public class SimpleSchematicPlacePacket extends SimplePacketBase {
                     if (placingAir && !includeAir)
                         return;
 
+                    if (state.getBlock() instanceof AbstractFunnelBlock) {
+                        funnels.add(pos);
+                    }
                     CompoundTag data = BlockHelper.prepareBlockEntityData(state, blockEntity);
                     BlockHelper.placeSchematicBlock(world, state, pos, null, data);
                 }, (pos, entity) -> world.addFreshEntity(entity));
+            }
+
+            for (BlockPos pos: funnels) {
+                StructureHelper.updateFunnelShape(world, pos);
             }
 
             AllSoundEvents.SCHEMATICANNON_FINISH.playFrom(player);
