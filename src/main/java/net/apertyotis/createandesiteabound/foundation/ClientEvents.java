@@ -4,7 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
+import net.apertyotis.createandesiteabound.AllBlocks;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueHandler;
+import net.apertyotis.createandesiteabound.content.liquid.vessel.FluidVesselClickHandler;
+import net.apertyotis.createandesiteabound.content.liquid.vessel.FluidVesselItem;
 import net.apertyotis.createandesiteabound.content.radar.RedstoneRadarHandler;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicHandler;
 import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerHandler;
@@ -77,8 +80,9 @@ public class ClientEvents {
         boolean pressed = event.getAction() != 0;
 
         if (SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.onMouseInput(button, pressed) ||
-            SimplePackerHandler.SIMPLE_PACKER_HANDLER.onMouseInput(button, pressed))
-        {
+            SimplePackerHandler.SIMPLE_PACKER_HANDLER.onMouseInput(button, pressed) ||
+            FluidVesselClickHandler.onMiddleClick(button, pressed)
+        ) {
             event.setCanceled(true);
         }
     }
@@ -133,6 +137,11 @@ public class ClientEvents {
         @SubscribeEvent
         public static void registerClientTooltipComponent(RegisterClientTooltipComponentFactoriesEvent event) {
             event.register(AssemblyContentTooltipComponent.class, Function.identity());
+        }
+
+        @SubscribeEvent
+        public static void registerFluidVesselDecorator(RegisterItemDecorationsEvent event) {
+            event.register(AllBlocks.FLUID_VESSEL.asItem(), new FluidVesselItem.VesselItemDecorator());
         }
     }
 }

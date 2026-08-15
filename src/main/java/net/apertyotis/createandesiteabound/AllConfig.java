@@ -53,6 +53,8 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue PLAYER_CAN_BREATH_UNDERWATER;
         public final ForgeConfigSpec.BooleanValue HACHIMI_GLUE;
         public final ForgeConfigSpec.IntValue ITEM_ENTITY_LIFESPAN;
+        public final ForgeConfigSpec.IntValue FLUID_VESSEL_CAPACITY;
+        public final ForgeConfigSpec.IntValue FLUID_MACHINE_CAPACITY;
 
         Server(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -148,6 +150,13 @@ public class AllConfig {
                 .comment("Override the lifespan of Item Entities created from non-player drops.")
                 .defineInRange("item_entity_lifespan", 1200, 0, Integer.MAX_VALUE);
             builder.pop();
+
+            builder.comment("Fluid Filling&Emptying").push("fluid");
+            FLUID_VESSEL_CAPACITY = builder
+                .defineInRange("fluid_vessel_capacity", 16, 1, Integer.MAX_VALUE >> 10);
+            FLUID_MACHINE_CAPACITY = builder
+                .defineInRange("fluid_machine_capacity", 9, 1, Integer.MAX_VALUE);
+            builder.pop();
         }
     }
 
@@ -190,6 +199,8 @@ public class AllConfig {
     public static boolean keep_flying_on_ground;
     public static boolean hachimi_glue;
     public static int item_entity_lifespan;
+    public static int fluid_vessel_capacity;
+    public static int fluid_machine_capacity;
 
     // 重载配置时，更新缓存
     private static void reloadServer() {
@@ -220,6 +231,8 @@ public class AllConfig {
         player_can_breath_underwater = SERVER.PLAYER_CAN_BREATH_UNDERWATER.get();
         hachimi_glue = SERVER.HACHIMI_GLUE.get();
         item_entity_lifespan = SERVER.ITEM_ENTITY_LIFESPAN.get();
+        fluid_vessel_capacity = SERVER.FLUID_VESSEL_CAPACITY.get();
+        fluid_machine_capacity = SERVER.FLUID_MACHINE_CAPACITY.get();
     }
 
     private static void reloadClient() {
