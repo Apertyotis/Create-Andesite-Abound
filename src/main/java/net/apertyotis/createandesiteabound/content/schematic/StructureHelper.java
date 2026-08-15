@@ -44,6 +44,7 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -301,6 +302,7 @@ public class StructureHelper {
     }
 
     public static void updateFunnelShape(Level level, BlockPos pos) {
+        level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         BlockState state = level.getBlockState(pos);
         if (state.getBlock() instanceof FunnelBlock funnelBlock) {
             Direction facing = state.getValue(BlockStateProperties.FACING);
