@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound;
 
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueModificationPacket;
-import net.apertyotis.createandesiteabound.content.liquid.vessel.GetFreeFluidVesselPacket;
+import net.apertyotis.createandesiteabound.content.fluids.vessel.GetFreeFluidVesselPacket;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicPlacePacket;
 import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerUsePacket;
 import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerAttackPacket;

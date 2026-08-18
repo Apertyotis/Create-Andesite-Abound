@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.liquid.vessel;
+package net.apertyotis.createandesiteabound.content.fluids.vessel;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
@@ -42,6 +42,13 @@ public class FluidVesselBlock extends Block implements IBE<FluidVesselBlockEntit
     @Override
     public BlockEntityType<? extends FluidVesselBlockEntity> getBlockEntityType() {
         return AllBlockEntityType.FLUID_VESSEL.get();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    @ParametersAreNonnullByDefault
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        IBE.onRemove(state, world, pos, newState);
     }
 
     @Override

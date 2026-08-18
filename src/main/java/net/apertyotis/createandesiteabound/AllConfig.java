@@ -153,9 +153,9 @@ public class AllConfig {
 
             builder.comment("Fluid Filling&Emptying").push("fluid");
             FLUID_VESSEL_CAPACITY = builder
-                .defineInRange("fluid_vessel_capacity", 16, 1, Integer.MAX_VALUE >> 10);
+                .defineInRange("fluid_vessel_capacity", 16, 1, 256);
             FLUID_MACHINE_CAPACITY = builder
-                .defineInRange("fluid_machine_capacity", 9, 1, Integer.MAX_VALUE);
+                .defineInRange("fluid_machine_capacity", 9, 1, 256);
             builder.pop();
         }
     }

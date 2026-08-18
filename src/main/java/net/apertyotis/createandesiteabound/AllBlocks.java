@@ -2,14 +2,18 @@ package net.apertyotis.createandesiteabound;
 
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import net.apertyotis.createandesiteabound.content.liquid.vessel.FluidVesselBlock;
-import net.apertyotis.createandesiteabound.content.liquid.vessel.FluidVesselItem;
+import net.apertyotis.createandesiteabound.content.fluids.emptying.EmptyingMachineBlock;
+import net.apertyotis.createandesiteabound.content.fluids.filling.FillingMachineBlock;
+import net.apertyotis.createandesiteabound.content.fluids.FluidMachineGenerator;
+import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselBlock;
+import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselItem;
 import net.apertyotis.createandesiteabound.content.radar.RedstoneRadarBlock;
 import net.apertyotis.createandesiteabound.content.radar.RedstoneRadarGenerator;
 import net.apertyotis.createandesiteabound.content.radar.RedstoneRadarItem;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
@@ -34,6 +38,24 @@ public class AllBlocks {
         .block("fluid_vessel", FluidVesselBlock::new)
         .properties(p -> p.sound((SoundType.NETHERITE_BLOCK)))
         .item(FluidVesselItem::new).build()
+        .register();
+
+    public static final BlockEntry<FillingMachineBlock> FILLING_MACHINE = REGISTRATE
+        .block("filling_machine", FillingMachineBlock::new)
+        .initialProperties(SharedProperties::stone)
+        .transform(pickaxeOnly())
+        .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN).noOcclusion())
+        .blockstate(new FluidMachineGenerator()::generate)
+        .simpleItem()
+        .register();
+
+    public static final BlockEntry<EmptyingMachineBlock> EMPTYING_MACHINE = REGISTRATE
+        .block("emptying_machine", EmptyingMachineBlock::new)
+        .initialProperties(SharedProperties::stone)
+        .transform(pickaxeOnly())
+        .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN))
+        .blockstate(new FluidMachineGenerator()::generate)
+        .simpleItem()
         .register();
 
     public static void register() {}

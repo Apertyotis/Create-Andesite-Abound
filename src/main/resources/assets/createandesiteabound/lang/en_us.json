@@ -1,6 +1,9 @@
 {
   "block.createandesiteabound.redstone_radar": "Sculk Transmitter",
+  "block.createandesiteabound.filling_machine": "Efficiency Filling Machine",
+  "block.createandesiteabound.emptying_machine": "Efficiency Emptying Machine",
   "block.createandesiteabound.fluid_vessel": "Fluid Vessel",
+  "block.createandesiteabound.fluid_vessel.tooltip.from_nothing": "_Cannot be crafted_. Drag it from _JEI_ into your inventory!",
   "block.createandesiteabound.fluid_vessel.tooltip.summary": "Portable fluid vessel, can multiply self.",
   "block.createandesiteabound.fluid_vessel.tooltip.condition1": "Fluid Interaction",
   "block.createandesiteabound.fluid_vessel.tooltip.behaviour1": "_R-Click_ to interact with fluid blocks, waterlogged blocks and most tanks. Allows placing water in _the Nether_.",
@@ -35,6 +38,7 @@
   "info.caa.goggle.empty": "No target, receive only",
   "info.caa.goggle.status": "Status:",
   "info.caa.goggle.basin_spoutput": "Output Faucet:",
+  "info.caa.goggle.fluid_machine_content": "Fluid Vessels:",
   "info.caa.option.hachimi_disabled": "The \"Hachimi Glue\" option is disabled on this server.",
   "msg.caa.target_set": "Target Selected",
   "msg.caa.target_reset": "Selection Canceled",
@@ -67,5 +71,6 @@
   "caa.packer.error.block": "Invalid structure. Check for missing blocks.",
   "caa.packer.error.fail": "Failed to save. See the log for details.",
   "caa.schematic.limit": "Note: You can have up to %s temporary structures at a time.",
-  "caa.schematic.error.invalid": "Expired File."
+  "caa.schematic.error.invalid": "Expired File.",
+  "caa.filling_machine.target_amount": "Targeted Fill Amount"
 }

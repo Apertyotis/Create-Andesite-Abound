@@ -1,16 +1,19 @@
-package net.apertyotis.createandesiteabound.content.liquid.vessel;
+package net.apertyotis.createandesiteabound.content.fluids.vessel;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.foundation.item.TooltipHelper;
+import net.apertyotis.createandesiteabound.AllBlocks;
 import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.IItemDecorator;
@@ -37,13 +40,13 @@ public class FluidVesselItem extends BlockItem {
         return FluidStack.EMPTY;
     }
 
-    @Override
-    public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-        if (!stack.hasTag()) {
-            entity.discard();
-            return true;
+    public static ItemStack of(FluidStack fluid) {
+        ItemStack stack = AllBlocks.FLUID_VESSEL.asStack();
+        if (!fluid.isEmpty()) {
+            CompoundTag tag = stack.getOrCreateTag();
+            tag.put("Content", fluid.writeToNBT(new CompoundTag()));
         }
-        return false;
+        return stack;
     }
 
     @Override
@@ -60,7 +63,18 @@ public class FluidVesselItem extends BlockItem {
                 .append(Component.literal(" / %d mB".formatted(AllConfig.fluid_vessel_capacity * 1000))
                     .withStyle(ChatFormatting.GRAY));
             tooltip.add(component);
+        } else {
+            Component hint = Component.translatable("block.createandesiteabound.fluid_vessel.tooltip.from_nothing");
+            tooltip.addAll(TooltipHelper.cutTextComponent(hint, TooltipHelper.Palette.STANDARD_CREATE));
         }
+    }
+
+    @Override
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
+        if (FluidVesselClickHandler.transferFluidWithBE(
+            context.getLevel(), context.getClickedPos(), context.getPlayer(), context.getHand()))
+            return InteractionResult.SUCCESS;
+        return super.useOn(context);
     }
 
     @Override
@@ -110,14 +124,14 @@ public class FluidVesselItem extends BlockItem {
             if (fluid.isEmpty())
                 return false;
 
-            int x = xOffset + 2;
-            int y = yOffset + 1;
-            int height = Math.round(14f * fluid.getAmount() / 1000 / AllConfig.fluid_vessel_capacity);
+            int x = xOffset + 1;
+            int y = yOffset + 13;
+            int width = Math.round(14f * fluid.getAmount() / 1000 / AllConfig.fluid_vessel_capacity);
             PoseStack pose = guiGraphics.pose();
             pose.pushPose();
-            pose.translate(0, 0, 199.9f);
-            guiGraphics.fill(x, y, x + 2, y + 14, 0xFF000000);
-            guiGraphics.fill(x, y + 14 - height, x + 1, y + 14, 0xFF00FF00);
+            pose.translate(x, y, 199.9f);
+            guiGraphics.fill(0, 0, 14, 2, 0xFF000000);
+            guiGraphics.fill(0, 0, width, 1, 0xFF00FF00);
             pose.popPose();
             return true;
         }

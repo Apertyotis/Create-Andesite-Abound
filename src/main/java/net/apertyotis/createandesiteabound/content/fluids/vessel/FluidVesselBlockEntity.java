@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.liquid.vessel;
+package net.apertyotis.createandesiteabound.content.fluids.vessel;
 
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
@@ -40,8 +40,8 @@ public class FluidVesselBlockEntity extends SmartBlockEntity implements IHaveGog
 
     public void playVoidingSound() {
         if (soundCooldown == 0 && level instanceof ServerLevel) {
-            soundCooldown = 60;
-            level.playSound(null, worldPosition, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1, 1);
+            soundCooldown = 10;
+            level.playSound(null, worldPosition, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, .5f, 1f);
         }
     }
 

@@ -1,9 +1,9 @@
-package net.apertyotis.createandesiteabound.content.liquid.vessel;
+package net.apertyotis.createandesiteabound.content.fluids.vessel;
 
 import com.simibubi.create.content.fluids.drain.ItemDrainBlockEntity;
-import com.simibubi.create.content.fluids.tank.CreativeFluidTankBlockEntity;
 import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
 import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
+import com.simibubi.create.content.logistics.depot.DepotBlockEntity;
 import com.simibubi.create.foundation.utility.RaycastHelper;
 import net.apertyotis.createandesiteabound.AllBlocks;
 import net.apertyotis.createandesiteabound.AllPackets;
@@ -60,7 +60,7 @@ public class FluidVesselClickHandler {
         if (hit.getType() == HitResult.Type.BLOCK &&
             AllBlocks.FLUID_VESSEL.has(level.getBlockState(hit.getBlockPos()))
         ) {
-            AllPackets.getChannel().sendToServer(new GetFreeFluidVesselPacket());
+            AllPackets.getChannel().sendToServer(new GetFreeFluidVesselPacket(-1));
             return true;
         }
         return false;
@@ -100,18 +100,17 @@ public class FluidVesselClickHandler {
 
         BlockPos pos = event.getPos();
         BlockEntity be = level.getBlockEntity(pos);
-        if (be != null && !be.getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent()) {
-            // 不处理对一般方块实体的右键
+        if (be instanceof ItemDrainBlockEntity) {
+            if (transferFluidWithBE(level, pos, player, event.getHand())) {
+                // 分液池不为空，取液
+                event.setCancellationResult(InteractionResult.SUCCESS);
+                event.setCanceled(true);
+            }
+            // 分液池为空，则由分液池处理右键分液行为
             return;
-        } if (be instanceof CreativeFluidTankBlockEntity) {
-            // 不处理创造储罐
-            return;
-        } else if (transferFluidWithBE(level, pos, player, event.getHand())) {
-            event.setCancellationResult(InteractionResult.SUCCESS);
-            event.setCanceled(true);
-            return;
-        } else if(be instanceof ItemDrainBlockEntity) {
-            // 分液池为空，由分液池处理右键分液行为
+        }
+        if (be != null && be.getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent()) {
+            // 对一般流体容器的处理延后
             return;
         }
 
@@ -126,6 +125,9 @@ public class FluidVesselClickHandler {
     ) {
         BlockHitResult hit = findFluidState(level, player);
         if (hit.getType() == HitResult.Type.MISS)
+            return false;
+        // 置物台是含水方块，不要处理它
+        if (level.getBlockEntity(hit.getBlockPos()) instanceof DepotBlockEntity && hit.getDirection() == Direction.UP)
             return false;
 
         FluidStack fluidStack = handler.getFluidInTank(0);

@@ -1,13 +1,16 @@
 {
   "block.createandesiteabound.redstone_radar": "幽匿发信器",
+  "block.createandesiteabound.filling_machine": "高速装罐机",
+  "block.createandesiteabound.emptying_machine": "高速卸罐机",
   "block.createandesiteabound.fluid_vessel": "流体容器",
+  "block.createandesiteabound.fluid_vessel.tooltip.from_nothing": "_无法合成_。从_JEI_中拖进你的物品栏里！",
   "block.createandesiteabound.fluid_vessel.tooltip.summary": "便携流体容器，可无限增殖",
   "block.createandesiteabound.fluid_vessel.tooltip.condition1": "流体交互",
   "block.createandesiteabound.fluid_vessel.tooltip.behaviour1": "_右键_可与流体方块、含水方块和大部分流体容器交互。允许_下界水_。",
   "block.createandesiteabound.fluid_vessel.tooltip.condition2": "销毁物品",
   "block.createandesiteabound.fluid_vessel.tooltip.behaviour2": "_开口容器_，上方漏斗将转换为_传送带漏斗_。含有岩浆时销毁任意输入物品。",
   "block.createandesiteabound.fluid_vessel.tooltip.condition3": "自增殖",
-  "block.createandesiteabound.fluid_vessel.tooltip.behaviour3": "生存模式_中键_获取空储罐。",
+  "block.createandesiteabound.fluid_vessel.tooltip.behaviour3": "生存模式_中键_领取空容器。",
   "block.createandesiteabound.fluid_vessel.tooltip.condition4": "自毁",
   "block.createandesiteabound.fluid_vessel.tooltip.behaviour4": "_空储罐_无法以掉落物形式存在。",
   "item.createandesiteabound.simple_schematic": "工程集合",
@@ -30,6 +33,7 @@
   "info.caa.goggle.status": "信号状态:",
   "info.caa.goggle.target": "目标位置:",
   "info.caa.goggle.basin_spoutput": "自动输出：",
+  "info.caa.goggle.fluid_machine_content": "流体容器：",
   "info.caa.option.hachimi_disabled": "服务器未启用\"强蜜胶\"选项",
   "jei.text.max_charge_rate": "充电速率: %s FE / 刻",
   "jei.text.processing_duration": "配方时间: %s 刻",
@@ -67,5 +71,6 @@
   "caa.packer.error.block": "结构无效，检查是否缺失方块",
   "caa.packer.error.fail": "保存失败",
   "caa.schematic.limit": "注意，你最多同时拥有 %s 个临时结构",
-  "caa.schematic.error.invalid": "文件已失效"
+  "caa.schematic.error.invalid": "文件已失效",
+  "caa.filling_machine.target_amount": "目标装罐液体数量"
 }

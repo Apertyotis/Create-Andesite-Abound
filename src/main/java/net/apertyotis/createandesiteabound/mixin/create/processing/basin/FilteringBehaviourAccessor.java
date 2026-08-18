@@ -9,4 +9,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface FilteringBehaviourAccessor {
     @Accessor("filter")
     FilterItemStack getFilterItemStack();
+    @Accessor("filter")
+    void setFilterInner(FilterItemStack filter);
 }
