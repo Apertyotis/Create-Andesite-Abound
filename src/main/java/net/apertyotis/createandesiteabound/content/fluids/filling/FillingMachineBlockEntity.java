@@ -92,6 +92,7 @@ public class FillingMachineBlockEntity extends AbstractFluidMachineBlockEntity {
 
                 handler.drain(extracted, FluidAction.EXECUTE);
                 items.addLast(FluidVesselItem.of(extracted));
+                notifyUpdate();
                 invWrapper.incrementVersion();
                 if (level instanceof ServerLevel)
                     level.playSound(null, worldPosition, SoundEvents.BUCKET_FILL,
@@ -114,6 +115,7 @@ public class FillingMachineBlockEntity extends AbstractFluidMachineBlockEntity {
             }
         }
         if (changed) {
+            notifyUpdate();
             invWrapper.incrementVersion();
             invVersionTracker.awaitNewVersion(handler);
         }

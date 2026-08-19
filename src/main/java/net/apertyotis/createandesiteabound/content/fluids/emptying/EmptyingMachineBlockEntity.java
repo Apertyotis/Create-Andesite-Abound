@@ -62,6 +62,7 @@ public class EmptyingMachineBlockEntity extends AbstractFluidMachineBlockEntity 
         }
 
         if (changed) {
+            notifyUpdate();
             invWrapper.incrementVersion();
             invVersionTracker.awaitNewVersion(targetInv);
         }
@@ -88,6 +89,7 @@ public class EmptyingMachineBlockEntity extends AbstractFluidMachineBlockEntity 
             }
         }
         if (changed) {
+            notifyUpdate();
             invWrapper.incrementVersion();
             if (level instanceof ServerLevel)
                 level.playSound(null, worldPosition, SoundEvents.BUCKET_EMPTY,
