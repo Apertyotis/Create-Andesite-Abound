@@ -9,7 +9,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatt
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import com.simibubi.create.foundation.utility.Components;
 import net.apertyotis.createandesiteabound.AllConfig;
-import net.apertyotis.createandesiteabound.mixin.create.processing.basin.FilteringBehaviourAccessor;
+import net.apertyotis.createandesiteabound.mixin.create.foundation.blockEntity.FilteringBehaviourAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

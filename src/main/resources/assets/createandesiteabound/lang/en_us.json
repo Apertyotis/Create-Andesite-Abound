@@ -72,5 +72,6 @@
   "caa.packer.error.fail": "Failed to save. See the log for details.",
   "caa.schematic.limit": "Note: You can have up to %s temporary structures at a time.",
   "caa.schematic.error.invalid": "Expired File.",
-  "caa.filling_machine.target_amount": "Targeted Fill Amount"
+  "caa.filling_machine.target_amount": "Targeted Fill Amount",
+  "caa.easy_filter.hold_to_open": "Hold with a wrench: JEI Bookmark Overlay"
 }

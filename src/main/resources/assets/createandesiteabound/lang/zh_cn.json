@@ -72,5 +72,6 @@
   "caa.packer.error.fail": "保存失败",
   "caa.schematic.limit": "注意，你最多同时拥有 %s 个临时结构",
   "caa.schematic.error.invalid": "文件已失效",
-  "caa.filling_machine.target_amount": "目标装罐液体数量"
+  "caa.filling_machine.target_amount": "目标装罐液体数量",
+  "caa.easy_filter.hold_to_open": "扳手长按：使用JEI书签过滤"
 }

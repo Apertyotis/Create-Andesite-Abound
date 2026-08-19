@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.create.processing.basin;
+package net.apertyotis.createandesiteabound.mixin.create.foundation.blockEntity;
 
 import com.simibubi.create.content.logistics.filter.FilterItemStack;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;

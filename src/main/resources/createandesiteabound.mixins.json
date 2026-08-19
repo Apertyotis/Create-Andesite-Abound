@@ -68,7 +68,7 @@
     "create.processing.basin.BasinOperatingBlockEntityAccessor",
     "create.processing.basin.BasinOperatingBlockEntityMixin",
     "create.processing.basin.BasinRecipeMixin",
-    "create.processing.basin.FilteringBehaviourAccessor",
+    "create.foundation.blockEntity.FilteringBehaviourAccessor",
     "create.processing.burner.BlazeBurnerBlockMixin",
     "create.processing.sequenced.SequencedAssemblyRecipeMixin",
     "create.redstone.thresholdSwitch.ConfigureThresholdSwitchPacketMixin",
