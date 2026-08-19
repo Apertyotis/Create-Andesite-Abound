@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
 import net.apertyotis.createandesiteabound.AllBlocks;
+import net.apertyotis.createandesiteabound.content.filtering.EasyFilteringHandlerClient;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueHandler;
 import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselClickHandler;
 import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselItem;
@@ -43,6 +44,7 @@ public class ClientEvents {
         SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.tick();
         SimplePackerHandler.SIMPLE_PACKER_HANDLER.tick();
         HachimiGlueHandler.HACHIMI_GLUE_HANDLER.tick();
+        EasyFilteringHandlerClient.EASY_FILTERING_HANDLER_CLIENT.tick();
     }
 
     @SubscribeEvent

@@ -105,6 +105,7 @@
     "create.schematics.ToolSelectionScreenAccessor",
     "jei.BasinCategoryMixin",
     "jei.BlockCuttingCategoryMixin",
+    "jei.BookmarkOverlayAccessor",
     "jei.CreateRecipeCategoryMixin",
     "jei.CrushingCategoryMixin",
     "jei.DeployingCategoryMixin",
