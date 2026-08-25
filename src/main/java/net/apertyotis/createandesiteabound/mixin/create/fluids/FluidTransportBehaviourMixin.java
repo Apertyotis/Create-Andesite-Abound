@@ -4,6 +4,7 @@ import com.simibubi.create.content.fluids.FluidPropagator;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.content.fluids.pipes.StraightPipeBlockEntity;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.apertyotis.createandesiteabound.foundation.FluidTransportBehaviourEx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -47,6 +48,12 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
 
     @Unique
     @Override
+    public BlockPos caa$getFilterPos() {
+        return caa$filterPos;
+    }
+
+    @Unique
+    @Override
     public void caa$resetFilterPos() {
         caa$filterPos = null;
         caa$attached = false;
@@ -65,9 +72,15 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
         BlockEntity be = ((FluidTransportBehaviour)(Object) this).blockEntity;
         Level level = be.getLevel();
         if (cir.getReturnValue() && caa$filterPos != null && level != null) {
-            FluidTransportBehaviour pipeBehaviour = FluidPropagator.getPipe(level, caa$filterPos);
-            if (pipeBehaviour != null)
-                cir.setReturnValue(pipeBehaviour.canPullFluidFrom(fluid, state, direction));
+            if (!level.isLoaded(caa$filterPos)) {
+                cir.setReturnValue(false);
+                return;
+            }
+            if (level.getBlockEntity(caa$filterPos) instanceof SmartBlockEntity otherPipe) {
+                FluidTransportBehaviour pipeBehaviour = otherPipe.getBehaviour(FluidTransportBehaviour.TYPE);
+                if (pipeBehaviour != null)
+                    cir.setReturnValue(pipeBehaviour.canPullFluidFrom(fluid, otherPipe.getBlockState(), direction));
+            }
         }
     }
 

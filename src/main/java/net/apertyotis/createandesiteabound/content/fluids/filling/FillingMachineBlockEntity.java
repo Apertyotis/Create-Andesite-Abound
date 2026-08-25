@@ -1,5 +1,6 @@
 package net.apertyotis.createandesiteabound.content.fluids.filling;
 
+import com.simibubi.create.content.logistics.filter.FilterItemStack;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.CenteredSideValueBoxTransform;
 import net.apertyotis.createandesiteabound.AllConfig;
@@ -7,6 +8,8 @@ import net.apertyotis.createandesiteabound.content.fluids.AbstractFluidMachineBl
 import net.apertyotis.createandesiteabound.content.fluids.AbstractFluidMachineBlockEntity;
 import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselItem;
 import net.apertyotis.createandesiteabound.foundation.CircularArray;
+import net.apertyotis.createandesiteabound.mixin.create.foundation.blockEntity.FilteringBehaviourAccessor;
+import net.apertyotis.createandesiteabound.mixin.create.logistics.FilterItemStackAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
@@ -79,25 +83,39 @@ public class FillingMachineBlockEntity extends AbstractFluidMachineBlockEntity {
 
             boolean precise = filter.count != 0;
             int amount = precise ? filter.count : AllConfig.fluid_vessel_capacity * 1000;
-            for (int i = 0; i < handler.getTanks(); i++) {
-                FluidStack fluid = handler.getFluidInTank(i);
-                if (fluid.isEmpty() || !filter.test(fluid))
-                    continue;
+            FluidStack resolvedFilter = resolveFilter(level, filter);
+            FluidStack toExtract = FluidStack.EMPTY;
+            if (resolvedFilter != null) {
+                if (resolvedFilter.isEmpty())
+                    break Filling;
+                resolvedFilter.setAmount(amount);
+                toExtract = handler.drain(resolvedFilter, FluidAction.SIMULATE);
+                if (toExtract.isEmpty() || (precise && toExtract.getAmount() < amount))
+                    toExtract = FluidStack.EMPTY;
+            } else {
+                for (int i = 0; i < handler.getTanks(); i++) {
+                    FluidStack fluid = handler.getFluidInTank(i);
+                    if (fluid.isEmpty() || !filter.test(fluid))
+                        continue;
 
-                fluid = fluid.copy();
-                fluid.setAmount(precise ? amount : Math.min(amount, fluid.getAmount()));
-                FluidStack extracted = handler.drain(fluid, FluidAction.SIMULATE);
-                if (extracted.isEmpty() || (precise && extracted.getAmount() < amount))
-                    continue;
+                    fluid = fluid.copy();
+                    fluid.setAmount(precise ? amount : Math.min(amount, fluid.getAmount()));
+                    toExtract = handler.drain(fluid, FluidAction.SIMULATE);
+                    if (toExtract.isEmpty() || (precise && toExtract.getAmount() < amount))
+                        toExtract = FluidStack.EMPTY;
+                    else
+                        break;
+                }
+            }
 
-                handler.drain(extracted, FluidAction.EXECUTE);
-                items.addLast(FluidVesselItem.of(extracted));
+            if (!toExtract.isEmpty()) {
+                handler.drain(toExtract, FluidAction.EXECUTE);
+                items.addLast(FluidVesselItem.of(toExtract));
                 notifyUpdate();
                 invWrapper.incrementVersion();
                 if (level instanceof ServerLevel)
                     level.playSound(null, worldPosition, SoundEvents.BUCKET_FILL,
                         SoundSource.BLOCKS, .5f, 1f);
-                break;
             }
         }
 
@@ -119,5 +137,14 @@ public class FillingMachineBlockEntity extends AbstractFluidMachineBlockEntity {
             invWrapper.incrementVersion();
             invVersionTracker.awaitNewVersion(handler);
         }
+    }
+
+    public static FluidStack resolveFilter(Level level, FillingAmountBehaviour filter) {
+        FilterItemStack filterItem = ((FilteringBehaviourAccessor) filter).getFilterItemStack();
+        if (filterItem.isEmpty() || filterItem.getClass() != FilterItemStack.class)
+            return null;
+        FilterItemStackAccessor accessor = (FilterItemStackAccessor) filterItem;
+        accessor.invokeResolveFluid(level);
+        return accessor.getFilterFluidStack().copy();
     }
 }

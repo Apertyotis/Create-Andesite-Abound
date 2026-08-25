@@ -13,19 +13,23 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = FluidNetwork.class, remap = false)
 public abstract class FluidNetworkMixin {
+    @Shadow
+    FluidStack fluid;
+
     // 将流体网络传输速度乘8
     @WrapOperation(
-            method = "tick",
-            at = @At(
-                  value = "FIELD",
-                  target = "Lcom/simibubi/create/content/fluids/FluidNetwork;transferSpeed:I",
-                  opcode = Opcodes.PUTFIELD
-            )
+        method = "tick",
+        at = @At(
+            value = "FIELD",
+            target = "Lcom/simibubi/create/content/fluids/FluidNetwork;transferSpeed:I",
+            opcode = Opcodes.PUTFIELD
+        )
     )
     private void redirectTransferSpeed(FluidNetwork instance, int value, Operation<Void> original) {
         if (!AllConfig.pump_speed_change)
@@ -39,18 +43,20 @@ public abstract class FluidNetworkMixin {
      * 详见 Create PR <a href ="https://github.com/Creators-of-Create/Create/pull/9137">#9137</a>
      */
     @WrapOperation(
-            method = "tick",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraftforge/fluids/capability/IFluidHandler;getTanks()I"
-            )
+        method = "tick",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraftforge/fluids/capability/IFluidHandler;getTanks()I"
+        )
     )
-    private int breakFindFluidLoop(IFluidHandler instance, Operation<Integer> original,
-                          @Local(name = "transfer") FluidStack transfer) {
+    private int breakFindFluidLoop(
+        IFluidHandler instance, Operation<Integer> original,
+        @Local(name = "transfer") FluidStack transfer
+    ) {
         if (transfer.isEmpty())
             return original.call(instance);
         else
-            return Integer.MIN_VALUE;
+            return 0;
     }
 
     /**
@@ -64,5 +70,33 @@ public abstract class FluidNetworkMixin {
         if (original <= 0)
             ci.cancel();
         return original;
+    }
+
+    @WrapOperation(
+        method = "tick",
+        at = @At(
+            value = "FIELD",
+            target = "Lnet/minecraftforge/fluids/FluidStack;EMPTY:Lnet/minecraftforge/fluids/FluidStack;",
+            opcode = Opcodes.GETSTATIC,
+            ordinal = 0
+        )
+    )
+    private FluidStack immediatelyDrain(
+        Operation<FluidStack> original,
+        @Local(name = "flowSpeed") int flowSpeed,
+        @Local(name = "action") IFluidHandler.FluidAction action,
+        @Local(name = "handler") IFluidHandler handler,
+        @Cancellable CallbackInfo ci
+    ) {
+        FluidStack toExtract = fluid.copy();
+        if (toExtract.isEmpty()) {
+            ci.cancel();
+            return FluidStack.EMPTY;
+        }
+        toExtract.setAmount(flowSpeed);
+        FluidStack extracted = handler.drain(toExtract, action);
+        if (extracted.isEmpty())
+            ci.cancel();
+        return extracted;
     }
 }
