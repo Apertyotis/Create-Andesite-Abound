@@ -8,6 +8,8 @@ import com.simibubi.create.foundation.gui.ScreenOpener;
 import mezz.jei.common.Internal;
 import mezz.jei.gui.overlay.bookmarks.BookmarkOverlay;
 import mezz.jei.gui.overlay.elements.IElement;
+import net.apertyotis.createandesiteabound.AllPackets;
+import net.apertyotis.createandesiteabound.foundation.RadialMenu;
 import net.apertyotis.createandesiteabound.mixin.jei.BookmarkOverlayAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -82,12 +84,17 @@ public class EasyFilteringHandlerClient {
                 ItemStack stack = elements.get(i).getTypedIngredient().getItemStack().orElse(ItemStack.EMPTY);
                 if (!stack.isEmpty() && !(stack.getItem() instanceof FilterItem)) {
                     filters.add(stack.copy());
-                    if (filters.size() >= 8)
-                        break;
                 }
             }
             if (!filters.isEmpty()) {
-                ScreenOpener.open(new RadialFilteringMenu(filters, heldPos, heldSide));
+                BlockPos finalPos = heldPos;
+                Direction finalSide = heldSide;
+                ScreenOpener.open(new RadialMenu(filters, slot -> {
+                    if (slot == -1)
+                        return;
+                    ItemStack stack = filters.get(slot);
+                    AllPackets.getChannel().sendToServer(new EasyFilteringPacket(finalPos, finalSide, stack));
+                }));
             }
         }
         reset();
