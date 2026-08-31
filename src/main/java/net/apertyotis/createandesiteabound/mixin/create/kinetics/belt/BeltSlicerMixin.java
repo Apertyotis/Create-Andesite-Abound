@@ -28,7 +28,7 @@ public abstract class BeltSlicerMixin {
         @Local(name = "controllerBE") BeltBlockEntity controllerBE
     ) {
         original.call(instance, value);
-        float targetSpeed = ((BeltBlockEntityEx) controllerBE).caa$getTargetSpeed();
+        float targetSpeed = controllerBE.getSpeed();
         ((BeltBlockEntityEx) instance).caa$setTargetSpeed((int) targetSpeed);
     }
 }
