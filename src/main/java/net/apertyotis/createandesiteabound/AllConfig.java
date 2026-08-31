@@ -51,6 +51,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue BETTER_PSI_ON_CARRIAGE;
         public final ForgeConfigSpec.BooleanValue PLAYER_CAN_BREATH_UNDERWATER;
         public final ForgeConfigSpec.BooleanValue HACHIMI_GLUE;
+        public final ForgeConfigSpec.IntValue HOSE_PULLEY_SOUND_COOLDOWN;
         public final ForgeConfigSpec.IntValue ITEM_ENTITY_LIFESPAN;
         public final ForgeConfigSpec.IntValue FLUID_VESSEL_CAPACITY;
         public final ForgeConfigSpec.IntValue FLUID_MACHINE_CAPACITY;
@@ -144,6 +145,8 @@ public class AllConfig {
             ITEM_ENTITY_LIFESPAN = builder
                 .comment("Override the lifespan of Item Entities created from non-player drops.")
                 .defineInRange("item_entity_lifespan", 1200, 0, Integer.MAX_VALUE);
+            HOSE_PULLEY_SOUND_COOLDOWN = builder
+                .defineInRange("hose_pulley_sound_cooldown", 10, 0, Integer.MAX_VALUE);
             builder.pop();
 
             builder.comment("Fluid Filling&Emptying").push("fluid");
@@ -244,6 +247,7 @@ public class AllConfig {
         item_entity_lifespan = SERVER.ITEM_ENTITY_LIFESPAN.get();
         fluid_vessel_capacity = SERVER.FLUID_VESSEL_CAPACITY.get();
         fluid_machine_capacity = SERVER.FLUID_MACHINE_CAPACITY.get();
+        hose_pulley_sound_cooldown = SERVER.HOSE_PULLEY_SOUND_COOLDOWN.get();
     }
 
     private static void reloadClient() {

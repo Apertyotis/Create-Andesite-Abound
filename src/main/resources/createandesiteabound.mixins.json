@@ -30,6 +30,7 @@
     "create.fluids.drain.ItemDrainBlockEntityMixin",
     "create.fluids.hosePulley.FluidFillingBehaviourMixin",
     "create.fluids.hosePulley.FluidManipulationBehaviourAccessor",
+    "create.fluids.hosePulley.FluidManipulationBehaviourMixin",
     "create.fluids.hosePulley.HosePulleyBlockEntityMixin",
     "create.fluids.hosePulley.HosePulleyFluidHandlerMixin",
     "create.fluids.pipes.FluidValveBlockEntityMixin",
