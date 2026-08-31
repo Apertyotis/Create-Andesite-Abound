@@ -53,6 +53,7 @@ public class FluidVesselBlockEntity extends SmartBlockEntity implements IHaveGog
 
     @Override
     public void tick() {
+        super.tick();
         if (soundCooldown > 0)
             soundCooldown--;
     }
