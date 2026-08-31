@@ -212,6 +212,7 @@ public class AllConfig {
     public static int toolbelt_hold_delay;
     public static int toolbelt_animation_ticks;
     public static boolean quick_unequip_items;
+    public static int hose_pulley_sound_cooldown;
 
     // 重载配置时，更新缓存
     private static void reloadServer() {

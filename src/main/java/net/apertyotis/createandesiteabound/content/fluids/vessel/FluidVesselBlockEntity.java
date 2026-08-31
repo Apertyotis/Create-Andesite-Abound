@@ -41,7 +41,7 @@ public class FluidVesselBlockEntity extends SmartBlockEntity implements IHaveGog
     public void playVoidingSound() {
         if (soundCooldown == 0 && level instanceof ServerLevel) {
             soundCooldown = 10;
-            level.playSound(null, worldPosition, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, .5f, 1f);
+            level.playSound(null, worldPosition, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, .3f, 1f);
         }
     }
 

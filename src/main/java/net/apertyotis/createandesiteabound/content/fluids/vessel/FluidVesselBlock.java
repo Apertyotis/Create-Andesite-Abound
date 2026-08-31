@@ -106,6 +106,8 @@ public class FluidVesselBlock extends Block implements IBE<FluidVesselBlockEntit
     @SuppressWarnings("deprecation")
     @ParametersAreNonnullByDefault
     public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (player.isShiftKeyDown())
+            return InteractionResult.PASS;
         if (level.getBlockEntity(pos) instanceof FluidVesselBlockEntity) {
             if (FluidVesselClickHandler.transferFluidWithBE(level, pos, player, hand) ||
                 FluidVesselClickHandler.isFluidContainer(level, player.getItemInHand(hand)))

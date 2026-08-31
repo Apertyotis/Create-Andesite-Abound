@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -71,6 +72,9 @@ public class FluidVesselItem extends BlockItem {
 
     @Override
     public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
+        Player player = context.getPlayer();
+        if (player == null || player.isShiftKeyDown())
+            return super.useOn(context);
         if (FluidVesselClickHandler.transferFluidWithBE(
             context.getLevel(), context.getClickedPos(), context.getPlayer(), context.getHand()))
             return InteractionResult.SUCCESS;

@@ -1,9 +1,11 @@
 package net.apertyotis.createandesiteabound.content.fluids.vessel;
 
 import com.simibubi.create.content.fluids.drain.ItemDrainBlockEntity;
+import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
 import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.content.logistics.depot.DepotBlockEntity;
+import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.foundation.utility.RaycastHelper;
 import net.apertyotis.createandesiteabound.AllBlocks;
 import net.apertyotis.createandesiteabound.AllPackets;
@@ -108,9 +110,16 @@ public class FluidVesselClickHandler {
             }
             // 分液池为空，则由分液池处理右键分液行为
             return;
+        } else if (be instanceof BasinBlockEntity || be instanceof FluidTankBlockEntity) {
+            // 这些方块无法处理堆叠物品的流体能力，在这里覆盖它
+            transferFluidWithBE(level, pos, player, event.getHand());
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            event.setCanceled(true);
+            return;
         }
         if (be != null && be.getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent()) {
-            // 对一般流体容器的处理延后
+            // 对一般流体容器的处理延后，此时会优先调用方块自己的 use 方法，最后再调用物品的 useOn 方法
+            // 注意许多方块的右键方法通常未考虑可堆叠物品的流体能力，如果发现这类方块，应该移动到上方代码块覆盖处理
             return;
         }
 
