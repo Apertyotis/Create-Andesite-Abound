@@ -51,6 +51,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue BETTER_PSI_ON_CARRIAGE;
         public final ForgeConfigSpec.BooleanValue PLAYER_CAN_BREATH_UNDERWATER;
         public final ForgeConfigSpec.BooleanValue HACHIMI_GLUE;
+        public final ForgeConfigSpec.BooleanValue PIPE_FLOW_COLLISION;
         public final ForgeConfigSpec.IntValue HOSE_PULLEY_SOUND_COOLDOWN;
         public final ForgeConfigSpec.IntValue ITEM_ENTITY_LIFESPAN;
         public final ForgeConfigSpec.IntValue FLUID_VESSEL_CAPACITY;
@@ -88,6 +89,7 @@ public class AllConfig {
                 .define("chute", true);
             PUMP_SPEED_CHANGE = builder
                 .comment("Multiply the fluid network transfer speed by 8.")
+                .comment("Increase fluid flow propagation speed to 16 blocks/tick.")
                 .define("pump", true);
             DEPOT_SPEED_CHANGE = builder
                 .comment("Set the Depot item movement animation duration to 5 ticks.")
@@ -145,6 +147,8 @@ public class AllConfig {
             ITEM_ENTITY_LIFESPAN = builder
                 .comment("Override the lifespan of Item Entities created from non-player drops.")
                 .defineInRange("item_entity_lifespan", 1200, 0, Integer.MAX_VALUE);
+            PIPE_FLOW_COLLISION = builder
+                .define("pipe_flow_collision", true);
             HOSE_PULLEY_SOUND_COOLDOWN = builder
                 .defineInRange("hose_pulley_sound_cooldown", 10, 0, Integer.MAX_VALUE);
             builder.pop();
@@ -209,6 +213,7 @@ public class AllConfig {
     public static boolean player_can_breath_underwater;
     public static boolean keep_flying_on_ground;
     public static boolean hachimi_glue;
+    public static boolean pipe_flow_collision;
     public static int item_entity_lifespan;
     public static int fluid_vessel_capacity;
     public static int fluid_machine_capacity;
@@ -244,6 +249,7 @@ public class AllConfig {
         better_psi_on_carriage = SERVER.BETTER_PSI_ON_CARRIAGE.get();
         player_can_breath_underwater = SERVER.PLAYER_CAN_BREATH_UNDERWATER.get();
         hachimi_glue = SERVER.HACHIMI_GLUE.get();
+        pipe_flow_collision = SERVER.PIPE_FLOW_COLLISION.get();
         item_entity_lifespan = SERVER.ITEM_ENTITY_LIFESPAN.get();
         fluid_vessel_capacity = SERVER.FLUID_VESSEL_CAPACITY.get();
         fluid_machine_capacity = SERVER.FLUID_MACHINE_CAPACITY.get();

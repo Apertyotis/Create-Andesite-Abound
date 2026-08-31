@@ -6,14 +6,22 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = FluidTankBlockEntity.class, remap = false)
 public abstract class FluidTankBlockEntityMixin extends SmartBlockEntity {
 
     @Shadow
     protected boolean window;
+
+    @Shadow
+    protected LazyOptional<IFluidHandler> fluidCapability;
 
     // 空构造函数，无实际作用
     public FluidTankBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -32,5 +40,10 @@ public abstract class FluidTankBlockEntityMixin extends SmartBlockEntity {
             tag.putInt("Size", 1);
             tag.putInt("Height", 1);
         }
+    }
+
+    @Inject(method = "invalidate", at = @At("TAIL"))
+    private void invalidateTank(CallbackInfo ci) {
+        fluidCapability.invalidate();
     }
 }

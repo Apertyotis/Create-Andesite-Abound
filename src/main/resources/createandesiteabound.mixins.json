@@ -26,6 +26,7 @@
     "create.fluids.FluidTransportBehaviourMixin",
     "create.fluids.OpenEndedPipeMixin",
     "create.fluids.OpenEndFluidHandlerMixin",
+    "create.fluids.PipeConnectionAccessor",
     "create.fluids.PipeConnectionMixin",
     "create.fluids.drain.ItemDrainBlockEntityMixin",
     "create.fluids.hosePulley.FluidFillingBehaviourMixin",

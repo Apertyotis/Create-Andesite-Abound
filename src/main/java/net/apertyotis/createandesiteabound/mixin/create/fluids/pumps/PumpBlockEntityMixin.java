@@ -15,22 +15,22 @@ import com.simibubi.create.content.fluids.pipes.valve.FluidValveBlockEntity;
 import com.simibubi.create.content.fluids.pump.PumpBlockEntity;
 import com.simibubi.create.foundation.utility.BlockFace;
 import com.simibubi.create.foundation.utility.Pair;
-import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.apertyotis.createandesiteabound.foundation.BlockFaceEx;
 import net.apertyotis.createandesiteabound.foundation.FluidTransportBehaviourEx;
+import net.apertyotis.createandesiteabound.foundation.PipelineHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.fluids.FluidStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Mixin(value = PumpBlockEntity.class, remap = false)
 public abstract class PumpBlockEntityMixin {
@@ -108,33 +108,32 @@ public abstract class PumpBlockEntityMixin {
         return result;
     }
 
-    @Inject(method = "distributePressureTo", at = @At(value = "NEW", target = "()Ljava/util/HashMap;", ordinal = 0))
-    private void initBorderNodes(Direction side, CallbackInfo ci, @Share("borderNodes") LocalRef<LongOpenHashSet> borderNodes) {
-        borderNodes.set(new LongOpenHashSet());
-    }
-
-    @SuppressWarnings("DefaultAnnotationParam")
+    @SuppressWarnings({"DefaultAnnotationParam", "ConstantValue"})
     @Definition(id = "isLoaded", method = "Lnet/minecraft/world/level/Level;isLoaded(Lnet/minecraft/core/BlockPos;)Z", remap = true)
     @Expression("?.isLoaded(?)")
     @ModifyExpressionValue(method = "distributePressureTo", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 1))
-    private boolean collectBorderNodes(
-        boolean original, @Share("borderNodes") LocalRef<LongOpenHashSet> borderNodes,
-        @Local(name = "currentPos") BlockPos currentPos
-    ) {
-        if (!original)
-            borderNodes.get().add(currentPos.asLong());
-        return original;
-    }
-
-    @Inject(method = "distributePressureTo", at = @At(value = "INVOKE", target = "Ljava/util/HashMap;<init>()V", ordinal = 1))
-    private void markNeedsUpdate(Direction side, CallbackInfo ci, @Share("borderNodes") LocalRef<LongOpenHashSet> borderNodes) {
-        Level level = ((PumpBlockEntity)(Object) this).getLevel();
-        if (level == null)
-            return;
-        for (long packed: borderNodes.get()) {
-            if (FluidPropagator.getPipe(level, BlockPos.of(packed)) instanceof FluidTransportBehaviourEx ex) {
+    private boolean collectBorderNodes(boolean original, @Local(name = "currentPos") BlockPos currentPos) {
+        if (!original) {
+            Level level = ((PumpBlockEntity)(Object) this).getLevel();
+            if (level == null)
+                return original;
+            if (FluidPropagator.getPipe(level, currentPos) instanceof FluidTransportBehaviourEx ex) {
                 ex.caa$scheduleUpdate();
             }
         }
+        return original;
+    }
+
+    @Definition(id = "pull", local = @Local(type = boolean.class, name = "pull"))
+    @Expression("pull")
+    @ModifyExpressionValue(method = "distributePressureTo", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 0))
+    private boolean resetFrontPipeline(boolean pull, @Local(name = "start") BlockFace start) {
+        if (pull && AllConfig.pump_speed_change) {
+            // 后方管道更新时，额外重置前方管道的液流
+            Level level = ((BlockEntity)(Object) this).getLevel();
+            BlockFace front = new BlockFace(start.getPos(), start.getOppositeFace());
+            PipelineHelper.resetFrontPipeline(level, front.getOpposite(), FluidStack.EMPTY);
+        }
+        return pull;
     }
 }

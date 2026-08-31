@@ -169,6 +169,7 @@ dependencies {
     implementation fg.deobf("curse.maven:jade-324717:6855440")
 
     implementation fg.deobf("curse.maven:createaddition-439890:5099752")
+    implementation fg.deobf("curse.maven:create-lazytick-1409401:8647331")
 
     implementation fg.deobf("local:design_decor-1.20.1:0.4.0b")
     implementation fg.deobf("local:vintageimprovements-1.20.1:0.3.6.0")

@@ -1,10 +1,16 @@
 package net.apertyotis.createandesiteabound.mixin.create.fluids;
 
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.simibubi.create.content.fluids.FlowSource;
 import com.simibubi.create.content.fluids.FluidPropagator;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
+import com.simibubi.create.content.fluids.PipeConnection;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.content.fluids.pipes.StraightPipeBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.apertyotis.createandesiteabound.foundation.FluidTransportBehaviourEx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,6 +26,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Collection;
+import java.util.Optional;
 
 @Mixin(value = FluidTransportBehaviour.class, remap = false)
 public abstract class FluidTransportBehaviourMixin implements FluidTransportBehaviourEx {
@@ -114,5 +123,32 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
             caa$needUpdate = false;
             ci.cancel();
         }
+    }
+
+    @Definition(id = "onServer", local = @Local(type = boolean.class, name = "onServer"))
+    @Expression("onServer")
+    @Inject(method = "tick", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 1), cancellable = true)
+    private void tickConnections(CallbackInfo ci) {
+        if (!AllConfig.pump_speed_change)
+            return;
+        ci.cancel();
+        // 只 tick 网络源，液流动画传播逻辑移动到流体网络遍历时完成
+        FluidTransportBehaviour behaviour = (FluidTransportBehaviour)(Object) this;
+        Level world = behaviour.getWorld();
+        if (world == null)
+            return;
+        Collection<PipeConnection> connections = behaviour.interfaces.values();
+        boolean changed = false;
+        for (PipeConnection connection: connections) {
+            if (connection.comparePressure() >= 0)
+                continue;
+            Optional<FlowSource> source = ((PipeConnectionAccessor) connection).getSource();
+            if (source.isPresent() && source.get().isEndpoint()) {
+                changed |= connection.manageFlows(world, behaviour.getPos(), FluidStack.EMPTY, fluid ->
+                    behaviour.canPullFluidFrom(fluid, behaviour.blockEntity.getBlockState(), connection.side));
+            }
+        }
+        if (changed)
+            behaviour.blockEntity.notifyUpdate();
     }
 }
