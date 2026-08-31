@@ -4,7 +4,9 @@ import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.TooltipHelper.Palette;
+import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -37,5 +39,15 @@ public class CreateAndesiteAbound {
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, AllConfig.SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, AllConfig.CLIENT_SPEC);
+
+        ModLoadingContext context = ModLoadingContext.get();
+        if (ModList.get().isLoaded("cloth_config")) {
+            context.registerExtensionPoint(
+                ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new ConfigScreenHandler.ConfigScreenFactory(
+                    (mc, parent) -> ConfigScreen.create(parent)
+                )
+            );
+        }
     }
 }

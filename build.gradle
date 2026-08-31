@@ -148,6 +148,9 @@ repositories {
         url = 'https://maven.tterrag.com/'
     }
     maven {
+        url "https://maven.shedaniel.me/"
+    }
+    maven {
         name = "CurseForge"
         url = "https://cursemaven.com"
     }
@@ -164,7 +167,7 @@ dependencies {
     implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
-    implementation fg.deobf("curse.maven:configured-457570:5180900")
+    implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:11.1.136")
 
     implementation fg.deobf("curse.maven:jade-324717:6855440")
 

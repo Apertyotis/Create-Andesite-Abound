@@ -3,6 +3,7 @@ package net.apertyotis.createandesiteabound;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -10,8 +11,10 @@ import org.apache.commons.lang3.tuple.Pair;
 public class AllConfig {
     public static final Server SERVER;
     public static final ForgeConfigSpec SERVER_SPEC;
+    public static ModConfig serverConfig;
     public static final Client CLIENT;
     public static final ForgeConfigSpec CLIENT_SPEC;
+    public static ModConfig clientConfig;
 
     static {
         // 构造配置
@@ -223,7 +226,7 @@ public class AllConfig {
     public static int hose_pulley_sound_cooldown;
 
     // 重载配置时，更新缓存
-    private static void reloadServer() {
+    public static void reloadServer() {
         deployer_speed_change = SERVER.DEPLOYER_SPEED_CHANGE.get();
         crushing_wheel_speed_change = SERVER.CRUSHING_WHEEL_SPEED_CHANGE.get();
         item_drain_speed_change = SERVER.ITEM_DRAIN_SPEED_CHANGE.get();
@@ -256,23 +259,32 @@ public class AllConfig {
         hose_pulley_sound_cooldown = SERVER.HOSE_PULLEY_SOUND_COOLDOWN.get();
     }
 
-    private static void reloadClient() {
+    public static void reloadClient() {
         keep_flying_on_ground = CLIENT.KEEP_FLYING_ON_GROUND.get();
+        toolbelt_hold_delay = CLIENT.TOOLBELT_HOLD_DELAY.get();
+        toolbelt_animation_ticks = CLIENT.TOOLBELT_ANIMATION_TICKS.get();
+        quick_unequip_items = CLIENT.QUICK_UNEQUIP_ITEMS.get();
     }
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent.Loading event) {
-        if (event.getConfig().getSpec() == SERVER_SPEC)
+        if (event.getConfig().getSpec() == SERVER_SPEC) {
             reloadServer();
-        else if (event.getConfig().getSpec() == CLIENT_SPEC)
+            serverConfig = event.getConfig();
+        } else if (event.getConfig().getSpec() == CLIENT_SPEC) {
             reloadClient();
+            clientConfig = event.getConfig();
+        }
     }
 
     @SubscribeEvent
     static void onReload(final ModConfigEvent.Reloading event) {
-        if (event.getConfig().getSpec() == SERVER_SPEC)
+        if (event.getConfig().getSpec() == SERVER_SPEC) {
             reloadServer();
-        else if (event.getConfig().getSpec() == CLIENT_SPEC)
+            serverConfig = event.getConfig();
+        } else if (event.getConfig().getSpec() == CLIENT_SPEC) {
             reloadClient();
+            clientConfig = event.getConfig();
+        }
     }
 }
