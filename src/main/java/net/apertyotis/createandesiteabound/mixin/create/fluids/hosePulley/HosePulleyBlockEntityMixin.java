@@ -9,6 +9,7 @@ import com.simibubi.create.content.fluids.transfer.FluidDrainingBehaviour;
 import com.simibubi.create.content.fluids.transfer.FluidFillingBehaviour;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.LangBuilder;
+import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -69,12 +70,12 @@ public abstract class HosePulleyBlockEntityMixin {
     }
 
     @WrapOperation(
-            method = "addToGoggleTooltip",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lcom/simibubi/create/content/fluids/hosePulley/HosePulleyBlockEntity;infinite:Z",
-                    opcode = Opcodes.GETFIELD
-            )
+        method = "addToGoggleTooltip",
+        at = @At(
+            value = "FIELD",
+            target = "Lcom/simibubi/create/content/fluids/hosePulley/HosePulleyBlockEntity;infinite:Z",
+            opcode = Opcodes.GETFIELD
+        )
     )
     private boolean addDetailedTooltip(
             HosePulleyBlockEntity instance, Operation<Boolean> original,
@@ -85,6 +86,7 @@ public abstract class HosePulleyBlockEntityMixin {
         Level level = instance.getLevel();
         if (level == null)
             return false;
+        // 软管滑轮流体能力实现较为特别，需要另外获取液体种类
         BlockPos pos = ((HosePulleyFluidHandlerAccessor) handler).getRootPosGetter().get();
         BlockState blockState = level.getBlockState(pos);
         Fluid fluid;
@@ -95,11 +97,12 @@ public abstract class HosePulleyBlockEntityMixin {
         } else {
             fluid = blockState.getFluidState().getType();
         }
+
         if (fluid == Fluids.EMPTY) {
             return false;
-        } else if (!((FluidManipulationBehaviourAccessor) drainer).invokeCanDrainInfinitely(fluid)) {
+        } else if (!AllConfigs.server().fluids.bottomlessFluidMode.get().test(fluid)) {
             Component hint = Component.translatable("caa.hint.hose_pulley.cant_infinite")
-                    .withStyle(ChatFormatting.RED);
+                .withStyle(ChatFormatting.RED);
             for (Component line: TooltipHelper.cutTextComponent(hint, TooltipHelper.Palette.RED)) {
                 new LangBuilder(CreateAndesiteAbound.MOD_ID).add(line).forGoggles(tooltip);
             }
@@ -108,7 +111,7 @@ public abstract class HosePulleyBlockEntityMixin {
             return true;
         } else if (caa$fillerInfinite) {
             Component hint = Component.translatable("caa.hint.hose_pulley.lower_hose")
-                    .withStyle(ChatFormatting.GOLD);
+                .withStyle(ChatFormatting.GOLD);
             for (Component line: TooltipHelper.cutTextComponent(hint, TooltipHelper.Palette.YELLOW)) {
                 new LangBuilder(CreateAndesiteAbound.MOD_ID).add(line).forGoggles(tooltip);
             }
