@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.create.equipment;
+package net.apertyotis.createandesiteabound.mixin.create.equipment.backtank;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

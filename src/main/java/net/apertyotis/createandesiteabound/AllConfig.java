@@ -157,11 +157,25 @@ public class AllConfig {
 
     public static class Client {
         public final ForgeConfigSpec.BooleanValue KEEP_FLYING_ON_GROUND;
+        public final ForgeConfigSpec.IntValue TOOLBELT_HOLD_DELAY;
+        public final ForgeConfigSpec.IntValue TOOLBELT_ANIMATION_TICKS;
+        public final ForgeConfigSpec.BooleanValue QUICK_UNEQUIP_ITEMS;
 
         Client(ForgeConfigSpec.Builder builder) {
             KEEP_FLYING_ON_GROUND = builder
                 .comment("Prevents players from automatically exiting flight mode when touching the ground.")
                 .define("keep_flying_on_ground", true);
+            TOOLBELT_HOLD_DELAY = builder
+                .comment("Ticks the toolbelt hotkey must be held before activating.")
+                .comment("By the way, this key is blocked while holding a schematic.")
+                .defineInRange("toolbelt_hold_delay", 3, 0, 100);
+            TOOLBELT_ANIMATION_TICKS = builder
+                .comment("Duration of the Toolbelt opening animation.")
+                .comment("Set to 0 to open instantly. (Vanilla: 10)")
+                .defineInRange("toolbelt_animation_ticks", 2, 0, 100);
+            QUICK_UNEQUIP_ITEMS = builder
+                .comment("Short-press the toolbelt hotkey to quickly unequip items without opening the toolbox.")
+                .define("quick_unequip_items", true);
         }
     }
 
@@ -195,6 +209,9 @@ public class AllConfig {
     public static int item_entity_lifespan;
     public static int fluid_vessel_capacity;
     public static int fluid_machine_capacity;
+    public static int toolbelt_hold_delay;
+    public static int toolbelt_animation_ticks;
+    public static boolean quick_unequip_items;
 
     // 重载配置时，更新缓存
     private static void reloadServer() {

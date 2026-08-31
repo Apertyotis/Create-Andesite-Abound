@@ -12,6 +12,7 @@ import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselItem
 import net.apertyotis.createandesiteabound.content.radar.RedstoneRadarHandler;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicHandler;
 import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerHandler;
+import net.apertyotis.createandesiteabound.content.toolbox.BetterToolboxHandlerClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
@@ -45,6 +46,7 @@ public class ClientEvents {
         SimplePackerHandler.SIMPLE_PACKER_HANDLER.tick();
         HachimiGlueHandler.HACHIMI_GLUE_HANDLER.tick();
         EasyFilteringHandlerClient.EASY_FILTERING_HANDLER_CLIENT.tick();
+        BetterToolboxHandlerClient.BETTER_TOOLBOX_HANDLER_CLIENT.tick();
     }
 
     @SubscribeEvent
@@ -80,6 +82,8 @@ public class ClientEvents {
 
         int button = event.getButton();
         boolean pressed = event.getAction() != 0;
+
+        BetterToolboxHandlerClient.BETTER_TOOLBOX_HANDLER_CLIENT.onMouseInput(button, pressed);
 
         if (SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.onMouseInput(button, pressed) ||
             SimplePackerHandler.SIMPLE_PACKER_HANDLER.onMouseInput(button, pressed) ||
