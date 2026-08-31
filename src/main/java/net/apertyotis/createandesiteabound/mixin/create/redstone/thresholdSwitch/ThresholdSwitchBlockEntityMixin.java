@@ -1,6 +1,7 @@
 package net.apertyotis.createandesiteabound.mixin.create.redstone.thresholdSwitch;
 
 import com.simibubi.create.compat.thresholdSwitch.ThresholdSwitchCompat;
+import com.simibubi.create.content.equipment.clipboard.ClipboardCloneable;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkBlock;
 import com.simibubi.create.content.redstone.thresholdSwitch.ThresholdSwitchBlock;
 import com.simibubi.create.content.redstone.thresholdSwitch.ThresholdSwitchBlockEntity;
@@ -11,10 +12,12 @@ import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedI
 import net.apertyotis.createandesiteabound.content.thresholdSwitch.ThresholdSwitchBlockEntityEx;
 import net.apertyotis.createandesiteabound.content.thresholdSwitch.ThresholdSwitchObservableEx;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -33,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(value = ThresholdSwitchBlockEntity.class, remap = false)
-public abstract class ThresholdSwitchBlockEntityMixin implements ThresholdSwitchBlockEntityEx {
+public abstract class ThresholdSwitchBlockEntityMixin implements ThresholdSwitchBlockEntityEx, ClipboardCloneable {
     @Shadow
     private InvManipulationBehaviour observedInventory;
     @Shadow
@@ -51,6 +54,12 @@ public abstract class ThresholdSwitchBlockEntityMixin implements ThresholdSwitch
     @Shadow
     @Final
     private static List<ThresholdSwitchCompat> COMPAT;
+    @Shadow
+    public float onWhenAbove;
+    @Shadow
+    public float offWhenBelow;
+    @Shadow
+    private boolean inverted;
     @Unique
     private boolean caa$inStacksOrBuckets = false;
     @Unique
@@ -165,6 +174,50 @@ public abstract class ThresholdSwitchBlockEntityMixin implements ThresholdSwitch
             suffix = stacksOrBuckets ? "caa.schedule.threshold.buckets" : "caa.schedule.threshold.milibuckets";
 
         return Component.literal(value + " ").append(Component.translatable(suffix));
+    }
+
+    @Override
+    public String getClipboardKey() {
+        return "ThresholdSwitch";
+    }
+
+    @Override
+    public boolean writeToClipboard(CompoundTag tag, Direction side) {
+        if (caa$precision) {
+            tag.putBoolean("Precise", true);
+            tag.putInt("OnAbove", caa$onWhenAbove);
+            tag.putInt("OffBelow", caa$offWhenBelow);
+            tag.putBoolean("InStacks", caa$inStacksOrBuckets);
+        } else {
+            tag.putFloat("OnAbove", onWhenAbove);
+            tag.putFloat("OffBelow", offWhenBelow);
+        }
+        tag.putBoolean("Inverted", inverted);
+
+        return true;
+    }
+
+    @Override
+    public boolean readFromClipboard(CompoundTag tag, Player player, Direction side, boolean simulate) {
+        if (!tag.contains("OnAbove") || !tag.contains("OffBelow"))
+            return false;
+        if (simulate)
+            return true;
+        if (tag.getBoolean("Precise")) {
+            caa$precision = true;
+            caa$onWhenAbove = tag.getInt("OnAbove");
+            caa$offWhenBelow = tag.getInt("OffBelow");
+            caa$inStacksOrBuckets = tag.getBoolean("InStacks");
+        } else {
+            caa$precision = false;
+            onWhenAbove = tag.getFloat("OnAbove");
+            offWhenBelow = tag.getFloat("OffBelow");
+        }
+        ThresholdSwitchBlockEntity threshold = ((ThresholdSwitchBlockEntity)(Object) this);
+        threshold.setInverted(tag.getBoolean("Inverted"));
+        invVersionTracker.awaitNewVersion(observedInventory);
+        threshold.notifyUpdate();
+        return true;
     }
 
     @Unique

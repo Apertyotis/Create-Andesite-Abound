@@ -165,7 +165,7 @@ public abstract class ThresholdSwitchScreenMixin extends AbstractSimiScreen {
 
         int valueStep = caa$getValueStep();
         int min = ex.caa$getMinAmount() + valueStep;
-        int max = ex.caa$getMaxAmount();
+        int max = Math.max(min, ex.caa$getMaxAmount());
         caa$onAbove.withRange(min, max + 1);
         int roundedState = Mth.clamp((caa$onAbove.getState() / valueStep) * valueStep, min, max);
         if (roundedState != caa$onAbove.getState()) {
@@ -174,7 +174,7 @@ public abstract class ThresholdSwitchScreenMixin extends AbstractSimiScreen {
         }
 
         min = ex.caa$getMinAmount();
-        max = ex.caa$getMaxAmount() - valueStep;
+        max = Math.max(min, ex.caa$getMaxAmount() - valueStep);
         caa$offBelow.withRange(min, max + 1);
         roundedState = Mth.clamp((caa$offBelow.getState() / valueStep) * valueStep, min, max);
         if (roundedState != caa$offBelow.getState()) {
@@ -312,7 +312,7 @@ public abstract class ThresholdSwitchScreenMixin extends AbstractSimiScreen {
 
     @Unique
     private void caa$setMode(boolean mode) {
-        lastModification = 0;
+        lastModification = 20;
         caa$precision = mode;
         if (!mode) {
             caa$inStacksOrBuckets.active = caa$inStacksOrBuckets.visible = false;
