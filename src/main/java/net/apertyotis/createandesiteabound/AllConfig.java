@@ -41,7 +41,6 @@ public class AllConfig {
 
         public final ForgeConfigSpec.BooleanValue BELT_FUNNEL_DETECTION_TWEAK;
         public final ForgeConfigSpec.BooleanValue SPOUT_DOUBLE_CAPACITY;
-        public final ForgeConfigSpec.BooleanValue NO_CHUTE_LEAKING;
         public final ForgeConfigSpec.BooleanValue ALWAYS_ALLOW_FLYING;
         public final ForgeConfigSpec.BooleanValue HEURISTIC_ROTATION;
         public final ForgeConfigSpec.BooleanValue NO_DEPOT_OVERFLOW_DROP;
@@ -107,10 +106,6 @@ public class AllConfig {
             SPOUT_DOUBLE_CAPACITY = builder
                 .comment("Set the spout's fluid capacity to 2000 mB.")
                 .define("spout_double_capacity", true);
-            NO_CHUTE_LEAKING = builder
-                .comment("Prevent Diagonal Chutes from interacting with containers below.")
-                .comment("Because visually, Diagonal Chutes have no opening at the bottom.")
-                .define("no_chute_leaking", true);
             ALWAYS_ALLOW_FLYING = builder
                 .comment("Allow all players flying.")
                 .define("always_allow_flying",true);
@@ -186,7 +181,6 @@ public class AllConfig {
 
     public static boolean belt_funnel_detection_tweak;
     public static boolean spout_double_capacity;
-    public static boolean no_chute_leaking;
     public static boolean always_allow_flying;
     public static boolean heuristic_rotation;
     public static boolean no_depot_overflow_drop;
@@ -219,7 +213,6 @@ public class AllConfig {
 
         belt_funnel_detection_tweak = SERVER.BELT_FUNNEL_DETECTION_TWEAK.get();
         spout_double_capacity = SERVER.SPOUT_DOUBLE_CAPACITY.get();
-        no_chute_leaking = SERVER.NO_CHUTE_LEAKING.get();
         always_allow_flying = SERVER.ALWAYS_ALLOW_FLYING.get();
         heuristic_rotation = SERVER.HEURISTIC_ROTATION.get();
         no_depot_overflow_drop = SERVER.NO_DEPOT_OVERFLOW_DROP.get();

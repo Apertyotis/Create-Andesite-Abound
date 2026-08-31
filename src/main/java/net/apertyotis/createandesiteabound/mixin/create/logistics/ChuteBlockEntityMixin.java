@@ -50,20 +50,21 @@ public abstract class ChuteBlockEntityMixin extends SmartBlockEntity implements 
 
     // 让各种常规情况下的单倍速溜槽速度为 5tick 每次，并防止底部无开口的斜溜槽吸取下方容器内容
     @Inject(
-            method = "tick",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lcom/simibubi/create/content/logistics/chute/ChuteBlockEntity;tickAirStreams(F)V",
-                    shift = At.Shift.AFTER
-            ),
-            cancellable = true
+        method = "tick",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/logistics/chute/ChuteBlockEntity;tickAirStreams(F)V",
+            shift = At.Shift.AFTER
+        ),
+        cancellable = true
     )
     private void redirectInputAndMovement(
-            CallbackInfo ci,
-            @Local(name = "clientSide") boolean clientSide,
-            @Local(name = "itemMotion") float itemMotion)
+        CallbackInfo ci,
+        @Local(name = "clientSide") boolean clientSide,
+        @Local(name = "itemMotion") float itemMotion)
     {
-        if (!AllConfig.chute_speed_change && !AllConfig.no_chute_leaking) return;
+        if (!AllConfig.chute_speed_change)
+            return;
 
         // 取消原抽取物品逻辑，改为不耗时操作
         if (!clientSide && item.isEmpty()) {
@@ -72,7 +73,7 @@ public abstract class ChuteBlockEntityMixin extends SmartBlockEntity implements 
 
             if (itemMotion > 0) {
                 // 修复斜溜槽底部漏风，不让斜溜槽从下方容器抽取
-                if (!AllConfig.no_chute_leaking || AbstractChuteBlock.getChuteFacing(getBlockState()) == Direction.DOWN)
+                if (AbstractChuteBlock.getChuteFacing(getBlockState()) == Direction.DOWN)
                     handleInputFromBelow();
             }
 
@@ -117,19 +118,14 @@ public abstract class ChuteBlockEntityMixin extends SmartBlockEntity implements 
 
     // 修复斜溜槽底部漏风，不让斜溜槽输出到下方容器
     @ModifyExpressionValue(
-            method = "handleDownwardOutput",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraftforge/common/util/LazyOptional;isPresent()Z",
-                    ordinal = 1
-            )
+        method = "handleDownwardOutput",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraftforge/common/util/LazyOptional;isPresent()Z",
+            ordinal = 1
+        )
     )
     private boolean redirectOutputToCapBelow(boolean original, @Local(name = "direction") Direction direction) {
-        if (!AllConfig.no_chute_leaking) return original;
-
-        if (direction != Direction.DOWN)
-            return false;
-        else
-            return original;
+        return direction == Direction.DOWN && original;
     }
 }
