@@ -26,7 +26,7 @@ public class EmptyingMachineBlockEntity extends AbstractFluidMachineBlockEntity 
 
     @Override
     public Direction getTarget() {
-        return Direction.UP;
+        return Direction.DOWN;
     }
 
     @Override
@@ -93,7 +93,7 @@ public class EmptyingMachineBlockEntity extends AbstractFluidMachineBlockEntity 
             invWrapper.incrementVersion();
             if (level instanceof ServerLevel)
                 level.playSound(null, worldPosition, SoundEvents.BUCKET_EMPTY,
-                    SoundSource.BLOCKS, .5f, 1f);
+                    SoundSource.BLOCKS, .3f, 1f);
         }
     }
 }
