@@ -26,7 +26,8 @@ public abstract class RadialToolboxMenuMixin {
         at = @At(
             value = "INVOKE",
             target = "Lcom/simibubi/create/content/equipment/toolbox/RadialToolboxMenu;onClose()V"
-        )
+        ),
+        remap = true
     )
     private void onKeyReleased(int code, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
         BetterToolboxHandlerClient handler = BetterToolboxHandlerClient.BETTER_TOOLBOX_HANDLER_CLIENT;
