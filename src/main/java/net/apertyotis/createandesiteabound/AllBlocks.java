@@ -37,6 +37,8 @@ public class AllBlocks {
     public static final BlockEntry<FluidVesselBlock> FLUID_VESSEL = REGISTRATE
         .block("fluid_vessel", FluidVesselBlock::new)
         .properties(p -> p.sound((SoundType.NETHERITE_BLOCK)))
+        .properties(BlockBehaviour.Properties::noOcclusion)
+        .addLayer(() -> RenderType::cutoutMipped)
         .item(FluidVesselItem::new).build()
         .register();
 

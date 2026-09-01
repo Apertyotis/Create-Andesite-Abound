@@ -117,8 +117,9 @@ public class FluidVesselClickHandler {
             event.setCanceled(true);
             return;
         }
-        if (be != null && be.getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent()) {
-            // 对一般流体容器的处理延后，此时会优先调用方块自己的 use 方法，最后再调用物品的 useOn 方法
+        if (be != null) {
+            // 对一般方块实体右键处理延后，此时会优先调用方块自身 use 方法，例如置物台的右键放置物品
+            // use 不成功再调用物品的 useOn 方法
             // 注意许多方块的右键方法通常未考虑可堆叠物品的流体能力，如果发现这类方块，应该移动到上方代码块覆盖处理
             return;
         }

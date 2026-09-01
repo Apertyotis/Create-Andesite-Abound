@@ -2,6 +2,7 @@ package net.apertyotis.createandesiteabound.content.fluids.vessel;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.item.TooltipHelper;
+import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import net.apertyotis.createandesiteabound.AllBlocks;
 import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.ChatFormatting;
@@ -17,7 +18,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemDecorator;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
@@ -26,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class FluidVesselItem extends BlockItem {
 
@@ -48,6 +53,12 @@ public class FluidVesselItem extends BlockItem {
             tag.put("Content", fluid.writeToNBT(new CompoundTag()));
         }
         return stack;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(SimpleCustomRenderer.create(this, new FluidVesselItemRender()));
     }
 
     @Override
