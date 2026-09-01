@@ -40,6 +40,8 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
 
     @Unique boolean caa$needUpdate = false;
 
+    @Unique boolean caa$noSource = false;
+
     @Unique
     @Override
     public void caa$attachFilterPos(BlockPos pos) {
@@ -63,9 +65,10 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
 
     @Unique
     @Override
-    public void caa$resetFilterPos() {
+    public void caa$pressureChanged() {
         caa$filterPos = null;
         caa$attached = false;
+        caa$noSource = false;
     }
 
     @Unique
@@ -132,6 +135,8 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
         if (!AllConfig.pump_speed_change)
             return;
         ci.cancel();
+        if (caa$noSource)
+            return;
         // 只 tick 网络源，液流动画传播逻辑移动到流体网络遍历时完成
         FluidTransportBehaviour behaviour = (FluidTransportBehaviour)(Object) this;
         Level world = behaviour.getWorld();
@@ -139,16 +144,38 @@ public abstract class FluidTransportBehaviourMixin implements FluidTransportBeha
             return;
         Collection<PipeConnection> connections = behaviour.interfaces.values();
         boolean changed = false;
+        // 缓存管道是否位于源的信息
+        boolean noSource = true;
         for (PipeConnection connection: connections) {
             if (connection.comparePressure() >= 0)
                 continue;
             Optional<FlowSource> source = ((PipeConnectionAccessor) connection).getSource();
+            if (source.isEmpty() && !connection.determineSource(world, behaviour.getPos())) {
+                if (connection.determineSource(world, behaviour.getPos())) {
+                    source = ((PipeConnectionAccessor) connection).getSource();
+                } else {
+                    // 让未加载的管道有机会初始化
+                    noSource = false;
+                    continue;
+                }
+            }
             if (source.isPresent() && source.get().isEndpoint()) {
+                noSource = false;
                 changed |= connection.manageFlows(world, behaviour.getPos(), FluidStack.EMPTY, fluid ->
                     behaviour.canPullFluidFrom(fluid, behaviour.blockEntity.getBlockState(), connection.side));
             }
         }
+        caa$noSource = noSource;
         if (changed)
             behaviour.blockEntity.notifyUpdate();
+    }
+
+    // 网络变化同时清空液流
+    @Inject(method = "wipePressure", at = @At("TAIL"))
+    private void onNetworkChange(CallbackInfo ci) {
+        for (PipeConnection connection: ((FluidTransportBehaviour)(Object) this).interfaces.values()) {
+            ((PipeConnectionAccessor) connection).setFlow(Optional.empty());
+        }
+        caa$noSource = false;
     }
 }

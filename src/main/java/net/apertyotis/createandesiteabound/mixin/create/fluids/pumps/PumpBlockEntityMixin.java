@@ -45,7 +45,7 @@ public abstract class PumpBlockEntityMixin {
     private FluidTransportBehaviour resetFilterPos(BlockGetter reader, BlockPos pos, Operation<FluidTransportBehaviour> original) {
         FluidTransportBehaviour pipeBehaviour = original.call(reader, pos);
         if (pipeBehaviour instanceof FluidTransportBehaviourEx ex)
-            ex.caa$resetFilterPos();
+            ex.caa$pressureChanged();
         return pipeBehaviour;
     }
 

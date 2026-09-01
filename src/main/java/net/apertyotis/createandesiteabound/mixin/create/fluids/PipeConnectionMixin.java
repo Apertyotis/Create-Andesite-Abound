@@ -115,13 +115,6 @@ public abstract class PipeConnectionMixin {
         cir.setReturnValue(changed);
     }
 
-    // 擦除压力时同时清空液流
-    @Inject(method = "wipePressure", at = @At("TAIL"))
-    private void onNetworkChange(CallbackInfo ci) {
-        if (AllConfig.pump_speed_change)
-            flow = Optional.empty();
-    }
-
     // 动画速度覆盖
     @WrapOperation(
         method = "tickFlowProgress",
