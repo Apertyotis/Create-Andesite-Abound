@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(value = BeltBlockEntity.class, remap = false)
-public class BeltBlockEntityMixin extends KineticBlockEntity implements BeltBlockEntityEx, IPartialSafeNBT {
+public abstract class BeltBlockEntityMixin extends KineticBlockEntity implements BeltBlockEntityEx, IPartialSafeNBT {
     @Unique
     public boolean caa$markDirty;
 
@@ -98,6 +98,7 @@ public class BeltBlockEntityMixin extends KineticBlockEntity implements BeltBloc
         }
     }
 
+    @Override
     public void onSpeedChanged(float previousSpeed) {
         float kineticSpeed = super.getSpeed();
         boolean fromOrToZero = (previousSpeed == 0) != (kineticSpeed == 0);
@@ -107,6 +108,7 @@ public class BeltBlockEntityMixin extends KineticBlockEntity implements BeltBloc
         setChanged();
     }
 
+    @Override
     public void removeSource() {
         float prevSpeed = super.getSpeed();
 
