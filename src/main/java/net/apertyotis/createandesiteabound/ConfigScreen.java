@@ -64,6 +64,7 @@ public class ConfigScreen {
 
         ConfigCategory misc = builder.getOrCreateCategory(Component.translatable("caa.config.misc.title"));
         misc.addEntry(intEntry(entryBuilder, SERVER.ITEM_ENTITY_LIFESPAN, true, 0, Integer.MAX_VALUE));
+        misc.addEntry(booleanEntry(entryBuilder, SERVER.NONNULL_FLUID_VESSEL_STACKABLE, true));
         misc.addEntry(intEntry(entryBuilder, SERVER.FLUID_VESSEL_CAPACITY, true, 1, 256));
         misc.addEntry(intEntry(entryBuilder, SERVER.FLUID_MACHINE_CAPACITY, true, 1, 256));
         misc.addEntry(booleanEntry(entryBuilder, SERVER.DONT_COMPARE_ITEM_CAPABILITY, true));

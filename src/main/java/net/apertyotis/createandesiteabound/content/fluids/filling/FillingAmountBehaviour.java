@@ -57,16 +57,16 @@ public class FillingAmountBehaviour extends FilteringBehaviour {
             Components.literal("B"));
         ValueSettingsFormatter formatter = new ValueSettingsFormatter(this::formatSettings);
         return new ValueSettingsBoard(Component.translatable("caa.filling_machine.target_amount"),
-            250, 5, rows, formatter);
+            200, 4, rows, formatter);
     }
 
     public MutableComponent formatSettings(ValueSettings vs) {
         if (vs.value() == 0) {
             return Component.literal("*");
         } else if (vs.row() == 0) {
-            return Component.literal(String.valueOf(vs.value() * 4));
+            return Component.literal(String.valueOf(vs.value() * 5));
         } else {
-            int bucket = AllConfig.fluid_vessel_capacity * vs.value() / 250;
+            int bucket = AllConfig.fluid_vessel_capacity * vs.value() / 200;
             return Component.literal(bucket == 0 ? "*" : String.valueOf(bucket));
         }
     }
@@ -76,9 +76,9 @@ public class FillingAmountBehaviour extends FilteringBehaviour {
         if (!vs.equals(getValueSettings()))
             playFeedbackSound(this);
         if (vs.row() == 0) {
-            count = vs.value() * 4;
+            count = vs.value() * 5;
         } else {
-            count = AllConfig.fluid_vessel_capacity * vs.value() / 250 * 1000;
+            count = AllConfig.fluid_vessel_capacity * vs.value() / 200 * 1000;
         }
         upTo = count == 0;
     }
@@ -86,9 +86,9 @@ public class FillingAmountBehaviour extends FilteringBehaviour {
     @Override
     public ValueSettings getValueSettings() {
         if (count % 1000 == 0) {
-            return new ValueSettings(1, count * 250 / (AllConfig.fluid_vessel_capacity * 1000) + 1);
+            return new ValueSettings(1, count * 200 / (AllConfig.fluid_vessel_capacity * 1000) + 1);
         } else {
-            return new ValueSettings(0, count / 4);
+            return new ValueSettings(0, count / 5);
         }
     }
 }

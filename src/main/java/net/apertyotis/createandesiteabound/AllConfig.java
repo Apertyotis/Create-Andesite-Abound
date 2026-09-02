@@ -57,6 +57,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue PIPE_FLOW_COLLISION;
         public final ForgeConfigSpec.IntValue HOSE_PULLEY_SOUND_COOLDOWN;
         public final ForgeConfigSpec.IntValue ITEM_ENTITY_LIFESPAN;
+        public final ForgeConfigSpec.BooleanValue NONNULL_FLUID_VESSEL_STACKABLE;
         public final ForgeConfigSpec.IntValue FLUID_VESSEL_CAPACITY;
         public final ForgeConfigSpec.IntValue FLUID_MACHINE_CAPACITY;
 
@@ -157,6 +158,8 @@ public class AllConfig {
             builder.pop();
 
             builder.comment("Fluid Filling&Emptying").push("fluid");
+            NONNULL_FLUID_VESSEL_STACKABLE = builder
+                .define("nonnull_fluid_vessel_stackable", false);
             FLUID_VESSEL_CAPACITY = builder
                 .defineInRange("fluid_vessel_capacity", 16, 1, 256);
             FLUID_MACHINE_CAPACITY = builder
@@ -218,6 +221,7 @@ public class AllConfig {
     public static boolean hachimi_glue;
     public static boolean pipe_flow_collision;
     public static int item_entity_lifespan;
+    public static boolean nonnull_fluid_vessel_stackable;
     public static int fluid_vessel_capacity;
     public static int fluid_machine_capacity;
     public static int toolbelt_hold_delay;
@@ -254,6 +258,7 @@ public class AllConfig {
         hachimi_glue = SERVER.HACHIMI_GLUE.get();
         pipe_flow_collision = SERVER.PIPE_FLOW_COLLISION.get();
         item_entity_lifespan = SERVER.ITEM_ENTITY_LIFESPAN.get();
+        nonnull_fluid_vessel_stackable = SERVER.NONNULL_FLUID_VESSEL_STACKABLE.get();
         fluid_vessel_capacity = SERVER.FLUID_VESSEL_CAPACITY.get();
         fluid_machine_capacity = SERVER.FLUID_MACHINE_CAPACITY.get();
         hose_pulley_sound_cooldown = SERVER.HOSE_PULLEY_SOUND_COOLDOWN.get();

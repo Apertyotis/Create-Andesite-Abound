@@ -13,16 +13,15 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(targets = "com.simibubi.create.content.fluids.OpenEndedPipe$OpenEndFluidHandler", remap = false)
 public abstract class OpenEndFluidHandlerMixin {
     @WrapOperation(
-            method = "fill",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lcom/simibubi/create/content/fluids/OpenEndedPipe;" +
-                            "provideFluidToSpace(Lnet/minecraftforge/fluids/FluidStack;Z)Z",
-                    ordinal = 1
-            )
+        method = "fill",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/fluids/OpenEndedPipe;provideFluidToSpace(Lnet/minecraftforge/fluids/FluidStack;Z)Z",
+            ordinal = 1
+        )
     )
     private boolean provideUpdatedFluidToSpace(
-            OpenEndedPipe instance, FluidStack fluid, boolean simulate, Operation<Boolean> original
+        OpenEndedPipe instance, FluidStack fluid, boolean simulate, Operation<Boolean> original
     ) {
         FluidStack containedFluidStack = ((IFluidTank) this).getFluid();
         boolean hasBlockState = FluidHelper.hasBlockState(containedFluidStack.getFluid());
