@@ -30,6 +30,9 @@ import java.util.List;
 @Mixin(value = BeltBlockEntity.class, remap = false)
 public abstract class BeltBlockEntityMixin extends KineticBlockEntity implements BeltBlockEntityEx, IPartialSafeNBT {
     @Unique
+    public int caa$stopWhenChanged = 0;
+
+    @Unique
     public boolean caa$markDirty;
 
     @Unique
@@ -57,6 +60,8 @@ public abstract class BeltBlockEntityMixin extends KineticBlockEntity implements
         )
     )
     private void beltInventoryTickWrapper(BeltInventory instance, Operation<Void> original) {
+        if (caa$stopWhenChanged > 0)
+            caa$stopWhenChanged--;
         caa$markDirty =false;
         original.call(instance);
         if (caa$markDirty) {
@@ -77,12 +82,14 @@ public abstract class BeltBlockEntityMixin extends KineticBlockEntity implements
 
     @Override
     public float getSpeed() {
-        int value = caa$targetSpeed == null ? 0 : caa$targetSpeed.getValue();
+        int value = caa$stopWhenChanged != 0 || caa$targetSpeed == null ? 0 :
+            caa$targetSpeed.getValue();
         return value == 0 ? super.getSpeed() : value;
     }
 
     @Override
     public void updateFromNetwork(float maxStress, float currentStress, int networkSize) {
+        caa$stopWhenChanged = 2;
         networkDirty = false;
         this.capacity = maxStress;
         this.stress = currentStress;
@@ -110,6 +117,7 @@ public abstract class BeltBlockEntityMixin extends KineticBlockEntity implements
 
     @Override
     public void removeSource() {
+        caa$stopWhenChanged = 2;
         float prevSpeed = super.getSpeed();
 
         speed = 0;

@@ -164,12 +164,21 @@ public abstract class FluidNetworkMixin {
                 BlockFace blockFace = iterator.next();
                 if (!isPresent(blockFace))
                     continue;
-                PipeConnection connection = get(blockFace);
+                FluidTransportBehaviour behaviour = getFluidTransfer(blockFace.getPos());
+                PipeConnection connection = behaviour == null ? null : behaviour.getConnection(blockFace.getFace());
                 if (connection != null) {
                     if (blockFace.equals(start)) {
-                        int multi = Mods.CreateLazyTick.runIfInstalled(() -> LazyTickConfig::getFluidDelayMax).orElse(1);
+                        int multi = Mods.CreateLazyTick.runIfInstalled(() ->
+                            LazyTickConfig::getFluidDelayMax).orElse(1);
                         transferSpeed = (int) Math.max(1, connection.getPressure().get(true) / 2f) * 8 * multi;
                     } else if (!connection.hasFlow()) {
+                        if (!behaviour.canPullFluidFrom(fluid,
+                            behaviour.blockEntity.getBlockState(),
+                            blockFace.getFace())
+                        ) {
+                            iterator.remove();
+                            continue;
+                        }
                         ((PipeConnectionAccessor) connection).invokeTryStartingNewFlow(true, fluid);
                         connection.tickFlowProgress(world, blockFace.getPos());
                     }

@@ -57,7 +57,7 @@ public class FillingAmountBehaviour extends FilteringBehaviour {
             Components.literal("B"));
         ValueSettingsFormatter formatter = new ValueSettingsFormatter(this::formatSettings);
         return new ValueSettingsBoard(Component.translatable("caa.filling_machine.target_amount"),
-            200, 4, rows, formatter);
+            200, 10, rows, formatter);
     }
 
     public MutableComponent formatSettings(ValueSettings vs) {
