@@ -13,7 +13,8 @@ public enum Mods {
     CreateAddition("GameEventsMixin", "LiquidBlazeBurnerBlockMixin", "ModularAccumulatorBlockEntityMixin"),
     Design_Decor("LargeBoilerMixin", "RailingBlockMixin", "LargeBoilerStructureMixin"),
     VintageImprovements(),
-    CreateLazyTick();
+    CreateLazyTick(),
+    Create_Connected("InventoryAccessPortBlockMixin", "InventoryAccessPortBlockEntityMixin");
 
     private final String id;
     private final String[] mixins;

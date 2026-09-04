@@ -84,6 +84,8 @@
     "create.trains.GlobalStationMixin",
     "create.trains.NavigationMixin",
     "create.trains.TrainMixin",
+    "create_connected.InventoryAccessPortBlockEntityMixin",
+    "create_connected.InventoryAccessPortBlockMixin",
     "createaddition.GameEventsMixin",
     "createaddition.LiquidBlazeBurnerBlockMixin",
     "createaddition.ModularAccumulatorBlockEntityMixin",
