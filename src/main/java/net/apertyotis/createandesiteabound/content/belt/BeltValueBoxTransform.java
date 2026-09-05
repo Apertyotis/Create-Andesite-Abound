@@ -16,7 +16,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
 public class BeltValueBoxTransform extends ValueBoxTransform.Sided {
 
@@ -68,7 +71,7 @@ public class BeltValueBoxTransform extends ValueBoxTransform.Sided {
             switch (slope) {
                 case HORIZONTAL -> {
                     TransformStack.cast(ms).rotateY(180).rotateX(90);
-                    Player player = Minecraft.getInstance().player;
+                    Player player = getLocalPlayerSafe();
                     if (player != null) {
                         float zRot = switch (player.getDirection()) {
                             case SOUTH -> 180;
@@ -111,7 +114,7 @@ public class BeltValueBoxTransform extends ValueBoxTransform.Sided {
                 case HORIZONTAL, UPWARD, DOWNWARD -> {
                     if (direction == Direction.UP)
                         return true;
-                    else if (Minecraft.getInstance().hitResult instanceof BlockHitResult hit) {
+                    else if (getHitResultSafe() instanceof BlockHitResult hit) {
                         return hit.getLocation().y - hit.getBlockPos().getY() >= 10 / 16f;
                     } else {
                         return false;
@@ -131,5 +134,15 @@ public class BeltValueBoxTransform extends ValueBoxTransform.Sided {
     @Override
     protected Vec3 getSouthLocation() {
         return Vec3.ZERO;
+    }
+
+    private static Player getLocalPlayerSafe() {
+        return DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> () ->
+            Minecraft.getInstance().player);
+    }
+
+    private static HitResult getHitResultSafe() {
+        return DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> () ->
+            Minecraft.getInstance().hitResult);
     }
 }

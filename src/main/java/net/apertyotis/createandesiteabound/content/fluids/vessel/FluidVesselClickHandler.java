@@ -29,6 +29,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -49,6 +51,7 @@ import static net.minecraftforge.fluids.FluidUtil.tryFillContainerAndStow;
  */
 @Mod.EventBusSubscriber(modid = CreateAndesiteAbound.MOD_ID)
 public class FluidVesselClickHandler {
+    @OnlyIn(Dist.CLIENT)
     public static boolean onMiddleClick(int button, boolean pressed) {
         if (button != 2 || !pressed)
             return false;
