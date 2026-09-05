@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
 import com.simibubi.create.content.kinetics.belt.BeltSlicer;
+import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import net.apertyotis.createandesiteabound.content.belt.BeltBlockEntityEx;
 import net.apertyotis.createandesiteabound.content.belt.BeltScrollValueBehaviour;
 import net.minecraft.world.item.DyeColor;
@@ -30,8 +31,8 @@ public abstract class BeltSlicerMixin {
     ) {
         original.call(instance, value);
         // 应力变化期间速度被视为0，需要通过内部方法获取设置值
-        BeltScrollValueBehaviour behaviour = controllerBE.getBehaviour(BeltScrollValueBehaviour.TYPE);
-        if (behaviour != null) {
+        ScrollValueBehaviour behaviour = controllerBE.getBehaviour(ScrollValueBehaviour.TYPE);
+        if (behaviour instanceof BeltScrollValueBehaviour) {
             float targetSpeed = behaviour.getValue();
             ((BeltBlockEntityEx) instance).caa$setTargetSpeed((int) targetSpeed);
         }
