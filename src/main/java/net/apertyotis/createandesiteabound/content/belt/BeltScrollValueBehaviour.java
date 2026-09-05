@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatter;
@@ -24,6 +25,8 @@ import java.util.List;
 
 public class BeltScrollValueBehaviour extends BulkScrollValueBehaviour {
 
+    public static final BehaviourType<BeltScrollValueBehaviour> TYPE = new BehaviourType<>();
+
     public BeltScrollValueBehaviour(Component label, SmartBlockEntity sbe, ValueBoxTransform slot) {
         super(label, sbe, slot, be -> {
             Level level = be.getLevel();
@@ -36,6 +39,11 @@ public class BeltScrollValueBehaviour extends BulkScrollValueBehaviour {
             return List.of();
         });
         withFormatter(v -> v == 0 ? "*" : String.valueOf(Math.abs(v)));
+    }
+
+    @Override
+    public BehaviourType<?> getType() {
+        return TYPE;
     }
 
     @Override

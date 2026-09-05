@@ -60,13 +60,17 @@ public abstract class BeltBlockEntityMixin extends KineticBlockEntity implements
         )
     )
     private void beltInventoryTickWrapper(BeltInventory instance, Operation<Void> original) {
-        if (caa$stopWhenChanged > 0)
-            caa$stopWhenChanged--;
         caa$markDirty =false;
         original.call(instance);
         if (caa$markDirty) {
             setChanged();
         }
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void onTick(CallbackInfo ci) {
+        if (caa$stopWhenChanged > 0)
+            caa$stopWhenChanged--;
     }
 
     // 添加轮椅选项
