@@ -57,28 +57,28 @@ public abstract class BeltInventoryMixin {
 
     // 取消原先缓慢的遍历判断，改用二分查找判断输入位置是否被阻塞
     @WrapOperation(
-            method = "canInsertAtFromSide",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ljava/util/List;iterator()Ljava/util/Iterator;",
-                    ordinal = 0
-            )
+        method = "canInsertAtFromSide",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/util/List;iterator()Ljava/util/Iterator;",
+            ordinal = 0
+        )
     )
     private Iterator<Object> hasItemBlocking(
-            List<TransportedItemStack> items,
-            Operation<Iterator<?>> original,
-            @Local(argsOnly = true) int segment,
-            @Local(argsOnly = true) Direction side,
-            @Local(name = "segmentPos") float segmentPos,
-            @Cancellable CallbackInfoReturnable<Boolean> cir)
-    {
+        List<TransportedItemStack> items,
+        Operation<Iterator<?>> original,
+        @Local(argsOnly = true) int segment,
+        @Local(argsOnly = true) Direction side,
+        @Local(name = "segmentPos") float segmentPos,
+        @Cancellable CallbackInfoReturnable<Boolean> cir
+    ) {
         // 所需判断的区间最远处
         float furtherPos = beltMovementPositive ? segmentPos + 1 : segmentPos - 1;
         // 最近处，比理想状态下的范围稍大，因为传送带并不完美
         float closerPos = beltMovementPositive ? segment : segment + 1;
         // 约定最远物品在列表低索引处
         int index = caa$lowerBound(items, furtherPos, beltMovementPositive);
-        while(index < items.size()) {
+        while (index < items.size()) {
             TransportedItemStack stack = items.get(index);
             if (beltMovementPositive ? stack.beltPosition < closerPos : stack.beltPosition > closerPos) {
                 // 区间遍历完成，退出

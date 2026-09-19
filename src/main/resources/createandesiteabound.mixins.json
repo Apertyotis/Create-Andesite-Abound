@@ -45,6 +45,7 @@
     "create.foundation.item.ItemHelperMixin",
     "create.foundation.utility.BlockFaceMixin",
     "create.foundation.utility.BlockHelperAccessor",
+    "create.foundation.utility.BlockHelperMixin",
     "create.kinetics.RotationPropagatorMixin",
     "create.kinetics.base.GeneratingKineticBlockEntityMixin",
     "create.kinetics.base.KineticBlockEntityAccessor",
