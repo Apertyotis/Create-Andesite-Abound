@@ -40,7 +40,7 @@ public class FluidVesselItem extends BlockItem {
 
     @Override
     public int getMaxStackSize(ItemStack stack) {
-        return AllConfig.nonnull_fluid_vessel_stackable || getFluid(stack).isEmpty() ? super.getMaxStackSize(stack) : 1;
+        return AllConfig.nonnull_fluid_vessel_stackable || getFluid(stack).isEmpty() ? 64 : 1;
     }
 
     public static FluidStack getFluid(ItemStack stack) {

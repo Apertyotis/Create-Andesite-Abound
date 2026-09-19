@@ -16,7 +16,7 @@ public class FluidVesselRender extends SafeBlockEntityRenderer<FluidVesselBlockE
         FluidVesselBlockEntity be, float partialTicks, PoseStack ms,
         MultiBufferSource buffer, int light, int overlay
     ) {
-        FluidStack fluidStack = be.tank.getPrimaryHandler().getFluid();
+        FluidStack fluidStack = be.tank.getFluidInTank(0);
         if (fluidStack.isEmpty())
             return;
 

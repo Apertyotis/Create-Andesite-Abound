@@ -115,7 +115,7 @@ public class FillingMachineBlockEntity extends AbstractFluidMachineBlockEntity {
                 invWrapper.incrementVersion();
                 if (level instanceof ServerLevel)
                     level.playSound(null, worldPosition, SoundEvents.BUCKET_FILL,
-                        SoundSource.BLOCKS, .3f, 1f);
+                        SoundSource.BLOCKS, .3f, 1.5f + .5f * level.getRandom().nextFloat());
             }
         }
 

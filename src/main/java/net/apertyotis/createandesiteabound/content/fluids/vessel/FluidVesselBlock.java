@@ -66,7 +66,7 @@ public class FluidVesselBlock extends Block implements IBE<FluidVesselBlockEntit
     public @NotNull ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
         ItemStack stack = AllBlocks.FLUID_VESSEL.asStack();
         if (level.getBlockEntity(pos) instanceof FluidVesselBlockEntity vessel) {
-            FluidStack fluid = vessel.tank.getPrimaryHandler().getFluidInTank(0);
+            FluidStack fluid = vessel.tank.getFluidInTank(0);
             if (!fluid.isEmpty()) {
                 CompoundTag tag = stack.getOrCreateTag();
                 tag.put("Content", fluid.writeToNBT(new CompoundTag()));
@@ -81,7 +81,7 @@ public class FluidVesselBlock extends Block implements IBE<FluidVesselBlockEntit
     public @NotNull List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
         ItemStack stack = AllBlocks.FLUID_VESSEL.asStack();
         if (pParams.getParameter(LootContextParams.BLOCK_ENTITY) instanceof FluidVesselBlockEntity vessel) {
-            FluidStack fluid = vessel.tank.getPrimaryHandler().getFluidInTank(0);
+            FluidStack fluid = vessel.tank.getFluidInTank(0);
             if (!fluid.isEmpty()) {
                 CompoundTag tag = stack.getOrCreateTag();
                 tag.put("Content", fluid.writeToNBT(new CompoundTag()));
@@ -107,7 +107,7 @@ public class FluidVesselBlock extends Block implements IBE<FluidVesselBlockEntit
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         FluidStack fluid = FluidVesselItem.getFluid(stack);
         if (!fluid.isEmpty()) {
-            withBlockEntityDo(level, pos, be -> be.tank.getPrimaryHandler().setFluid(fluid));
+            withBlockEntityDo(level, pos, be -> be.tank.setFluid(fluid));
         }
     }
 

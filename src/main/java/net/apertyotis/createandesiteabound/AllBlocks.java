@@ -39,7 +39,9 @@ public class AllBlocks {
         .properties(p -> p.sound((SoundType.NETHERITE_BLOCK)))
         .properties(BlockBehaviour.Properties::noOcclusion)
         .addLayer(() -> RenderType::cutoutMipped)
-        .item(FluidVesselItem::new).build()
+        .item(FluidVesselItem::new)
+        .properties(p -> p.stacksTo(1))
+        .build()
         .register();
 
     public static final BlockEntry<FillingMachineBlock> FILLING_MACHINE = REGISTRATE
