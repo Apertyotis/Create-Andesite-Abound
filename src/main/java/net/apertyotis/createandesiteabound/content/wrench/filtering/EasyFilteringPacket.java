@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.content.filtering;
+package net.apertyotis.createandesiteabound.content.wrench.filtering;
 
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.logistics.filter.FilterItem;

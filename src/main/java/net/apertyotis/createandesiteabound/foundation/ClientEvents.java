@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
 import net.apertyotis.createandesiteabound.AllBlocks;
-import net.apertyotis.createandesiteabound.content.filtering.EasyFilteringHandlerClient;
+import net.apertyotis.createandesiteabound.content.wrench.filtering.EasyFilteringHandlerClient;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueHandler;
 import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselClickHandler;
 import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselItem;
