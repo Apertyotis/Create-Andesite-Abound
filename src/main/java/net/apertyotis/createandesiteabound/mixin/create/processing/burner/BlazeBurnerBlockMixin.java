@@ -1,5 +1,6 @@
 package net.apertyotis.createandesiteabound.mixin.create.processing.burner;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
@@ -44,32 +45,36 @@ public abstract class BlazeBurnerBlockMixin extends HorizontalDirectionalBlock {
                 else if (pState.getValue(HEAT_LEVEL) == BlazeBurnerBlock.HeatLevel.SEETHING)
                     return List.of(AllBlocks.BLAZE_BURNER.asStack(), AllItems.CREATIVE_BLAZE_CAKE.asStack(2));
             }
-        } catch (NoSuchElementException | IllegalArgumentException ignored) {}
+        } catch (NoSuchElementException | IllegalArgumentException ignored) {
+        }
 
         return super.getDrops(pState, pParams);
     }
 
     // 使生存模式创造烈焰蛋糕变为消耗品
     @Inject(
-            method = "tryInsert",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lcom/simibubi/create/content/processing/burner/BlazeBurnerBlockEntity;applyCreativeFuel()V",
-                    shift = At.Shift.AFTER
-            ),
-            cancellable = true
+        method = "tryInsert",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/processing/burner/BlazeBurnerBlockEntity;applyCreativeFuel()V"
+        ),
+        cancellable = true
     )
     private static void survivalBlazeCake(
-            BlockState state, Level world, BlockPos pos, ItemStack stack, boolean doNotConsume,
-            boolean forceOverflow, boolean simulate, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir
+        BlockState state, Level world, BlockPos pos, ItemStack stack, boolean doNotConsume,
+        boolean forceOverflow, boolean simulate, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir,
+        @Local(name = "burnerBE") BlazeBurnerBlockEntity burnerBE
     ) {
         if (!doNotConsume && !world.isClientSide) {
             try {
-                if (state.getValue(HEAT_LEVEL) == BlazeBurnerBlock.HeatLevel.SEETHING)
+                if (!burnerBE.isCreative())
+                    stack.shrink(1);
+                else if (state.getValue(HEAT_LEVEL) == BlazeBurnerBlock.HeatLevel.SEETHING)
                     cir.setReturnValue(InteractionResultHolder.success(AllItems.CREATIVE_BLAZE_CAKE.asStack(2)));
                 else
                     stack.shrink(1);
-            } catch (IllegalArgumentException ignored) {}
+            } catch (IllegalArgumentException ignored) {
+            }
         }
     }
 }
