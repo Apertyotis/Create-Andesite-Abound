@@ -14,7 +14,8 @@ public enum Mods {
     Design_Decor("LargeBoilerMixin", "RailingBlockMixin", "LargeBoilerStructureMixin"),
     VintageImprovements(),
     CreateLazyTick(),
-    Create_Connected("InventoryAccessPortBlockMixin", "InventoryAccessPortBlockEntityMixin");
+    Create_Connected("InventoryAccessPortBlockMixin", "InventoryAccessPortBlockEntityMixin"),
+    FTBUltimine();
 
     private final String id;
     private final String[] mixins;
@@ -61,6 +62,11 @@ public enum Mods {
         if (isLoaded())
             return Optional.of(toRun.get().get());
         return Optional.empty();
+    }
+
+    public void executeIfInstalled(Supplier<Runnable> toRun) {
+        if (isLoaded())
+            toRun.get().run();
     }
 
     public String[] getMixins() {

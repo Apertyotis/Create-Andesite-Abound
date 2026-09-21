@@ -18,6 +18,7 @@ import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.tools.SimpleToolType;
 import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
+import net.apertyotis.createandesiteabound.foundation.ClientEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
@@ -267,7 +268,8 @@ public class SimpleSchematicHandler extends SchematicHandler {
 
     @Override
     public boolean onMouseInput(int button, boolean pressed) {
-        if (!active || !pressed || button != 1)
+        int keyUseCode = ClientEvents.getKeyUseCode();
+        if (!active || !pressed || button != keyUseCode)
             return false;
 
         return currentTool.getTool().handleRightClick();

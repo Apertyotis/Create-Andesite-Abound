@@ -113,6 +113,8 @@
     "create.kinetics.base.KineticBlockEntityRendererMixin",
     "create.redstone.thresholdSwitch.ThresholdSwitchScreenMixin",
     "create.schematics.ToolSelectionScreenAccessor",
+    "create.schematics.client.SchematicAndQuillHandlerMixin",
+    "create.schematics.client.SchematicHandlerMixin",
     "jei.BasinCategoryMixin",
     "jei.BlockCuttingCategoryMixin",
     "jei.BookmarkOverlayAccessor",

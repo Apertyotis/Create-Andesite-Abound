@@ -12,6 +12,7 @@ import com.simibubi.create.foundation.utility.animation.PhysicalFloat;
 import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
+import net.apertyotis.createandesiteabound.foundation.ClientEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -169,7 +170,9 @@ public class SimplePackerHandler {
     }
 
     public boolean onMouseInput(int button, boolean pressed) {
-        if (!pressed || (button != 0 && button != 1))
+        int left = ClientEvents.getKeyAttackCode();
+        int right = ClientEvents.getKeyUseCode();
+        if (!pressed || (button != left && button != right))
             return false;
 
         Minecraft mc = Minecraft.getInstance();
@@ -178,7 +181,7 @@ public class SimplePackerHandler {
         if (level == null || player == null || !AllItems.SIMPLE_PACKER.isIn(player.getMainHandItem()))
             return false;
 
-        if (button == 0) {
+        if (button == left) {
             AllPackets.getChannel().sendToServer(new SimplePackerAttackPacket());
             return true;
         }

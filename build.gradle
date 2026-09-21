@@ -178,6 +178,10 @@ dependencies {
     implementation fg.deobf("local:vintageimprovements-1.20.1:0.3.6.0")
     implementation fg.deobf("local:create_connected-1.20.1:0.9.4")
 
+    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
+    implementation fg.deobf("curse.maven:ftb-library-forge-404465:8226927")
+    implementation fg.deobf("curse.maven:ftb-ultimine-forge-386134:7880472")
+
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.2"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.2")) {

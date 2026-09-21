@@ -1,5 +1,6 @@
 package net.apertyotis.createandesiteabound.foundation;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
@@ -13,6 +14,7 @@ import net.apertyotis.createandesiteabound.content.radar.RedstoneRadarHandler;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicHandler;
 import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerHandler;
 import net.apertyotis.createandesiteabound.content.toolbox.BetterToolboxHandlerClient;
+import net.apertyotis.createandesiteabound.content.wrench.pickup.QuickPickupClientHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +33,16 @@ import java.util.function.Function;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientEvents {
+
+    public static int getKeyAttackCode() {
+        InputConstants.Key keyAttack = Minecraft.getInstance().options.keyAttack.getKey();
+        return keyAttack.getType() == InputConstants.Type.MOUSE ? keyAttack.getValue() : 0;
+    }
+
+    public static int getKeyUseCode() {
+        InputConstants.Key keyUse = Minecraft.getInstance().options.keyUse.getKey();
+        return keyUse.getType() == InputConstants.Type.MOUSE ? keyUse.getValue() : 0;
+    }
 
     @SubscribeEvent
     public static void onTick(TickEvent.ClientTickEvent event) {
@@ -87,7 +99,8 @@ public class ClientEvents {
 
         if (SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.onMouseInput(button, pressed) ||
             SimplePackerHandler.SIMPLE_PACKER_HANDLER.onMouseInput(button, pressed) ||
-            FluidVesselClickHandler.onMiddleClick(button, pressed)
+            FluidVesselClickHandler.onMiddleClick(button, pressed) ||
+            QuickPickupClientHandler.onMouseInput(button, pressed)
         ) {
             event.setCanceled(true);
         }
