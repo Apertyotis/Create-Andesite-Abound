@@ -7,6 +7,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
 import com.simibubi.create.content.kinetics.belt.BeltSlope;
 import com.simibubi.create.content.kinetics.belt.item.BeltConnectorItem;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.apertyotis.createandesiteabound.content.belt.BeltBlockEntityEx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,6 +27,8 @@ public abstract class BeltConnectorItemMixin {
         @Local(name = "slope") BeltSlope slope, @Local(name = "facing") Direction facing,
         @Local(name = "beltsToCreate") List<BlockPos> beltsToCreate
     ) {
+        if (!AllConfig.easy_belt)
+            return failed;
         if (!failed && (slope == BeltSlope.HORIZONTAL || slope == BeltSlope.UPWARD || slope == BeltSlope.DOWNWARD)) {
             int targetSpeed = facing == Direction.EAST || facing == Direction.NORTH ? -256 : 256;
             for (BlockPos pos: beltsToCreate) {

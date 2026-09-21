@@ -118,6 +118,8 @@
   "caa.config.tweaks.hachimi_glue.1": "强力胶现在类似蜂蜜胶可以直接调整大小。",
   "caa.config.tweaks.pipe_flow_collision": "管道混液是否爆管",
   "caa.config.tweaks.hose_pulley_sound_cooldown": "软管滑轮音效冷却",
+  "caa.config.tweaks.easy_belt": "简易传送带",
+  "caa.config.tweaks.easy_belt.1": "允许传送带无动力工作。",
 
   "caa.config.normalization.title": "归一化",
   "caa.config.normalization.deployer": "机械手",

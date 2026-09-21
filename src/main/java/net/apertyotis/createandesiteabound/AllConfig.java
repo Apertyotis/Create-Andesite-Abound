@@ -60,6 +60,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue NONNULL_FLUID_VESSEL_STACKABLE;
         public final ForgeConfigSpec.IntValue FLUID_VESSEL_CAPACITY;
         public final ForgeConfigSpec.IntValue FLUID_MACHINE_CAPACITY;
+        public final ForgeConfigSpec.BooleanValue EASY_BELT;
 
         Server(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -155,6 +156,9 @@ public class AllConfig {
                 .define("pipe_flow_collision", true);
             HOSE_PULLEY_SOUND_COOLDOWN = builder
                 .defineInRange("hose_pulley_sound_cooldown", 10, 0, Integer.MAX_VALUE);
+            EASY_BELT = builder
+                .comment("Allow belts to operate without requiring a power source.")
+                .define("easy_belt", true);
             builder.pop();
 
             builder.comment("Fluid Filling&Emptying").push("fluid");
@@ -228,6 +232,7 @@ public class AllConfig {
     public static int toolbelt_animation_ticks;
     public static boolean quick_unequip_items;
     public static int hose_pulley_sound_cooldown;
+    public static boolean easy_belt;
 
     // 重载配置时，更新缓存
     public static void reloadServer() {
@@ -262,6 +267,7 @@ public class AllConfig {
         fluid_vessel_capacity = SERVER.FLUID_VESSEL_CAPACITY.get();
         fluid_machine_capacity = SERVER.FLUID_MACHINE_CAPACITY.get();
         hose_pulley_sound_cooldown = SERVER.HOSE_PULLEY_SOUND_COOLDOWN.get();
+        easy_belt = SERVER.EASY_BELT.get();
     }
 
     public static void reloadClient() {

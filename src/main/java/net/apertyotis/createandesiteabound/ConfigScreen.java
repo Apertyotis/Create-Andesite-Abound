@@ -47,6 +47,7 @@ public class ConfigScreen {
         qol.addEntry(booleanEntry(entryBuilder, SERVER.HACHIMI_GLUE,true));
         qol.addEntry(booleanEntry(entryBuilder, SERVER.PIPE_FLOW_COLLISION, true));
         qol.addEntry(intEntry(entryBuilder, SERVER.HOSE_PULLEY_SOUND_COOLDOWN, true, 0, Integer.MAX_VALUE));
+        qol.addEntry(booleanEntry(entryBuilder, SERVER.EASY_BELT, true));
 
         ConfigCategory norm = builder.getOrCreateCategory(Component.translatable("caa.config.normalization.title"));
         norm.addEntry(booleanEntry(entryBuilder, SERVER.DEPLOYER_SPEED_CHANGE, true));

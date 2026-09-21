@@ -117,6 +117,8 @@
   "caa.config.tweaks.hachimi_glue.1": "Make super glue as convenient as honey glue from Aeronautic.",
   "caa.config.tweaks.pipe_flow_collision": "Pipe Flow Collision",
   "caa.config.tweaks.hose_pulley_sound_cooldown": "Hose Pulley Sound Cooldown",
+  "caa.config.tweaks.easy_belt": "Easy Belt",
+  "caa.config.tweaks.easy_belt.1": "Allow belts to operate without requiring a power source.",
 
   "caa.config.normalization.title": "Normalization",
   "caa.config.normalization.deployer": "Deployer",
