@@ -24,6 +24,7 @@
   "item.createandesiteabound.simple_packer.tooltip.behaviour2": "按住_Ctrl_并_滑动滚轮_可调整选区大小。_右键_确认选择。",
   "item.createandesiteabound.simple_packer.tooltip.condition3": "切换模式",
   "item.createandesiteabound.simple_packer.tooltip.behaviour3": "_左键_切换模式。开启时可匹配已放置的工程集合，关闭时可搬运任意结构。",
+  "item.createandesiteabound.bottled_ghost": "罐装幽魂",
   "info.caa.goggle.connected": "成功连接到目标",
   "info.caa.goggle.empty": "无目标, 仅接收",
   "info.caa.goggle.forceload_disable": "区块加载功能已关闭",

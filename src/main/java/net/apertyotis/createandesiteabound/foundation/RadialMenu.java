@@ -11,6 +11,7 @@ import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
+import net.apertyotis.createandesiteabound.AllConfig;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -56,13 +57,15 @@ public class RadialMenu extends AbstractSimiScreen {
 
     @Override
     public void renderBackground(GuiGraphics graphics) {
-        int a = ((int) (0x50 * Math.min(1, (ticksOpen + AnimationTickHolder.getPartialTicks()) / 20f))) << 24;
+        int a = ((int) (0x50 * Math.min(1, (ticksOpen + AnimationTickHolder.getPartialTicks()) / 10f))) << 24;
         graphics.fillGradient(0, 0, this.width, this.height, 0x101010 | a, 0x101010 | a);
     }
 
     @Override
     protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        float fade = Mth.clamp((ticksOpen + AnimationTickHolder.getPartialTicks()) / 10f, 1 / 512f, 1);
+        int ticks = Math.max(1, AllConfig.toolbelt_animation_ticks);
+        float fade = (ticksOpen + AnimationTickHolder.getPartialTicks()) / ticks;
+        fade = Mth.clamp(fade, 1 / 512f, 1);
 
         hoveredSlot = NONE;
         Window window = getMinecraft().getWindow();
@@ -127,11 +130,7 @@ public class RadialMenu extends AbstractSimiScreen {
 
                 if (slot == (scrollMode ? scrollSlot : hoveredSlot)) {
                     AllGuiTextures.TOOLBELT_SLOT_HIGHLIGHT.render(graphics, -1, -1);
-                    if (tooltips == null) {
-                        tip = stack.getHoverName();
-                    } else if (index < tooltips.size()) {
-                        tip = Component.literal(tooltips.get(index));
-                    }
+                    tip = stack.getHoverName();
                 }
             } else {
                 AllGuiTextures.TOOLBELT_EMPTY_SLOT.render(graphics, 0, 0);
@@ -141,21 +140,27 @@ public class RadialMenu extends AbstractSimiScreen {
         }
         ms.popPose();
 
-        if (tip != null) {
-            int i1 = Math.min((int) (fade * 255), 255);
-
-            if (i1 > 8) {
-                ms.pushPose();
-                ms.translate((float) (width / 2), (float) (height - 68), 0.0F);
-                RenderSystem.enableBlend();
-                RenderSystem.defaultBlendFunc();
-                int k1 = 16777215;
-                int k = i1 << 24 & -16777216;
+        int i1 = Math.min((int) (fade * 255), 255);
+        if (i1 > 8) {
+            ms.pushPose();
+            ms.translate((float) (width / 2), (float) (height - 86), 0.0F);
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            int color = (i1 << 24 & 0xFF0000) | 0xFFFFFF;
+            if (tip != null) {
                 int l = font.width(tip);
-                graphics.drawString(font, tip, Math.round(-l / 2f), -4, k1 | k, false);
-                RenderSystem.disableBlend();
-                ms.popPose();
+                graphics.drawString(font, tip, Math.round(-l / 2f), -4, color, false);
             }
+            if (tooltips != null) {
+                ms.translate(0, font.lineHeight, 0);
+                for (String tooltip: tooltips) {
+                    ms.translate(0, font.lineHeight, 0);
+                    int l = font.width(tooltip);
+                    graphics.drawString(font, tooltip, Math.round(-l / 2f), -4, color, false);
+                }
+            }
+            RenderSystem.disableBlend();
+            ms.popPose();
         }
     }
 

@@ -154,6 +154,10 @@ repositories {
         name = "CurseForge"
         url = "https://cursemaven.com"
     }
+    maven {
+        // location of the maven for Curios API
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 dependencies {
@@ -169,6 +173,9 @@ dependencies {
 
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:11.1.136")
 
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}+1.20.1:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}+1.20.1")
+
     implementation fg.deobf("curse.maven:jade-324717:6855440")
 
     implementation fg.deobf("curse.maven:createaddition-439890:5099752")
@@ -181,6 +188,7 @@ dependencies {
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
     implementation fg.deobf("curse.maven:ftb-library-forge-404465:8226927")
     implementation fg.deobf("curse.maven:ftb-ultimine-forge-386134:7880472")
+    implementation fg.deobf("curse.maven:carpet-neoforged-1284716:7156876")
 
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.2"))

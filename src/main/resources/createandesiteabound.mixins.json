@@ -98,6 +98,9 @@
     "minecraft.entity.ItemEntityMixin",
     "minecraft.items.ItemHandlerHelperMixin",
     "minecraft.items.ItemStackMixin",
+    "minecraft.noclip.BlockItemMixin",
+    "minecraft.noclip.PlayerMixin",
+    "minecraft.noclip.StandingAndWallBlockItemMixin",
     "minecraft.player.GameTypeMixin",
     "minecraft.player.PlayerMixin"
   ],
@@ -133,6 +136,7 @@
     "jei.ScreenHelperMixin",
     "jei.SequencedAssemblyCategoryMixin",
     "jei.SpoutCategoryMixin",
+    "minecraft.noclip.LevelRendererMixin",
     "minecraft.player.LocalPlayerMixin",
     "renderer.FluidRendererMixin"
   ],

@@ -24,6 +24,7 @@
   "item.createandesiteabound.simple_packer.tooltip.behaviour2": "_Ctrl-Scroll_ on the faces to adjust the size, then R-Click again to Confirm.",
   "item.createandesiteabound.simple_packer.tooltip.condition3": "Change mode",
   "item.createandesiteabound.simple_packer.tooltip.behaviour3": "_L-Click_ to open/close the box. When open, it matches placed Engineering Set; when closed, it can transport any structure.",
+  "item.createandesiteabound.bottled_ghost": "Ghost in a Jar",
   "jei.text.processing_duration": "Recipe time: %s ticks",
   "jei.text.processing_duration_with_num": "Recipe time: %s ticks / %s items",
   "jei.text.total_energy": "Total cost: %s FE",
