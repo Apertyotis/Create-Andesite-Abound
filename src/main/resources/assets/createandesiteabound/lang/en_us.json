@@ -113,7 +113,7 @@
   "caa.config.tweaks.disable_dig_speed_penalty.1": "When players are in the air or water, they will no longer be subject to a five-time increase in digging time penalty",
   "caa.config.tweaks.better_psi_on_carriage": "Better Psi On Carriage",
   "caa.config.tweaks.better_psi_on_carriage.1": "PSIs on trains are now only activated when the train arrives at a station.",
-  "caa.config.tweaks.player_can_breath_underwater": "Player Can Breath Underwater",
+  "caa.config.tweaks.player_can_breath": "Player Can Breath Underwater And In Wall",
   "caa.config.tweaks.hachimi_glue": "Hachimi Glue",
   "caa.config.tweaks.hachimi_glue.1": "Make super glue as convenient as honey glue from Aeronautic.",
   "caa.config.tweaks.pipe_flow_collision": "Pipe Flow Collision",

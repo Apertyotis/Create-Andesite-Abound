@@ -52,7 +52,7 @@ public class AllConfig {
         public final ForgeConfigSpec.BooleanValue DISABLE_DIG_SPEED_PENALTY;
         public final ForgeConfigSpec.BooleanValue DONT_COMPARE_ITEM_CAPABILITY;
         public final ForgeConfigSpec.BooleanValue BETTER_PSI_ON_CARRIAGE;
-        public final ForgeConfigSpec.BooleanValue PLAYER_CAN_BREATH_UNDERWATER;
+        public final ForgeConfigSpec.BooleanValue PLAYER_CAN_BREATH;
         public final ForgeConfigSpec.BooleanValue HACHIMI_GLUE;
         public final ForgeConfigSpec.BooleanValue PIPE_FLOW_COLLISION;
         public final ForgeConfigSpec.IntValue HOSE_PULLEY_SOUND_COOLDOWN;
@@ -143,9 +143,9 @@ public class AllConfig {
             BETTER_PSI_ON_CARRIAGE = builder
                 .comment("PSIs on trains are now only activated when the train arrives at a station.")
                 .define("better_psi_on_carriage", true);
-            PLAYER_CAN_BREATH_UNDERWATER = builder
-                .comment("Player won't drown underwater.")
-                .define("player_can_breath_underwater", true);
+            PLAYER_CAN_BREATH = builder
+                .comment("Player won't drown underwater or suffocate in wall.")
+                .define("player_can_breath", true);
             HACHIMI_GLUE = builder
                 .comment("Make super glue as convenient as honey glue from Aeronautic.")
                 .define("hachimi_glue", true);
@@ -220,7 +220,7 @@ public class AllConfig {
     public static boolean disable_dig_speed_penalty;
     public static boolean dont_compare_item_capability;
     public static boolean better_psi_on_carriage;
-    public static boolean player_can_breath_underwater;
+    public static boolean player_can_breath;
     public static boolean keep_flying_on_ground;
     public static boolean hachimi_glue;
     public static boolean pipe_flow_collision;
@@ -259,7 +259,7 @@ public class AllConfig {
         disable_dig_speed_penalty = SERVER.DISABLE_DIG_SPEED_PENALTY.get();
         dont_compare_item_capability = SERVER.DONT_COMPARE_ITEM_CAPABILITY.get();
         better_psi_on_carriage = SERVER.BETTER_PSI_ON_CARRIAGE.get();
-        player_can_breath_underwater = SERVER.PLAYER_CAN_BREATH_UNDERWATER.get();
+        player_can_breath = SERVER.PLAYER_CAN_BREATH.get();
         hachimi_glue = SERVER.HACHIMI_GLUE.get();
         pipe_flow_collision = SERVER.PIPE_FLOW_COLLISION.get();
         item_entity_lifespan = SERVER.ITEM_ENTITY_LIFESPAN.get();

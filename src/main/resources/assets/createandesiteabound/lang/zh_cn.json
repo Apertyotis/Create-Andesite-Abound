@@ -114,7 +114,7 @@
   "caa.config.tweaks.disable_dig_speed_penalty.1": "取消玩家在水中、空中时受到的5倍挖掘时间惩罚。",
   "caa.config.tweaks.better_psi_on_carriage": "列车存储接口优化",
   "caa.config.tweaks.better_psi_on_carriage.1": "三种存储接口位于列车结构时，会且仅会在列车到站时自动激活。",
-  "caa.config.tweaks.player_can_breath_underwater": "玩家不会溺水",
+  "caa.config.tweaks.player_can_breath": "玩家不会溺水或窒息",
   "caa.config.tweaks.hachimi_glue": "蜜制强力胶",
   "caa.config.tweaks.hachimi_glue.1": "强力胶现在类似蜂蜜胶可以直接调整大小。",
   "caa.config.tweaks.pipe_flow_collision": "管道混液是否爆管",

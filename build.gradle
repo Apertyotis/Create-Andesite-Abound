@@ -188,7 +188,6 @@ dependencies {
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
     implementation fg.deobf("curse.maven:ftb-library-forge-404465:8226927")
     implementation fg.deobf("curse.maven:ftb-ultimine-forge-386134:7880472")
-    implementation fg.deobf("curse.maven:carpet-neoforged-1284716:7156876")
 
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.2"))

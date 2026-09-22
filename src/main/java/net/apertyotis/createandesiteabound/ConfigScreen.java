@@ -43,7 +43,7 @@ public class ConfigScreen {
         qol.addEntry(booleanEntry(entryBuilder, SERVER.HARVESTER_NOT_CONSUME_SEED,true));
         qol.addEntry(booleanEntry(entryBuilder, SERVER.DISABLE_DIG_SPEED_PENALTY,true));
         qol.addEntry(booleanEntry(entryBuilder, SERVER.BETTER_PSI_ON_CARRIAGE,true));
-        qol.addEntry(booleanEntry(entryBuilder, SERVER.PLAYER_CAN_BREATH_UNDERWATER,true));
+        qol.addEntry(booleanEntry(entryBuilder, SERVER.PLAYER_CAN_BREATH,true));
         qol.addEntry(booleanEntry(entryBuilder, SERVER.HACHIMI_GLUE,true));
         qol.addEntry(booleanEntry(entryBuilder, SERVER.PIPE_FLOW_COLLISION, true));
         qol.addEntry(intEntry(entryBuilder, SERVER.HOSE_PULLEY_SOUND_COOLDOWN, true, 0, Integer.MAX_VALUE));
