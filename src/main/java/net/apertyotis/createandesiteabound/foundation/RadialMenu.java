@@ -142,25 +142,27 @@ public class RadialMenu extends AbstractSimiScreen {
 
         int i1 = Math.min((int) (fade * 255), 255);
         if (i1 > 8) {
-            ms.pushPose();
-            ms.translate((float) (width / 2), (float) (height - 86), 0.0F);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             int color = (i1 << 24 & 0xFF0000) | 0xFFFFFF;
             if (tip != null) {
+                ms.pushPose();
+                ms.translate((float) width / 2, height - 86, 0);
                 int l = font.width(tip);
                 graphics.drawString(font, tip, Math.round(-l / 2f), -4, color, false);
+                ms.popPose();
             }
             if (tooltips != null) {
-                ms.translate(0, font.lineHeight, 0);
+                ms.pushPose();
+                ms.translate((float) width / 2, height - 77, 0);
                 for (String tooltip: tooltips) {
                     ms.translate(0, font.lineHeight, 0);
                     int l = font.width(tooltip);
                     graphics.drawString(font, tooltip, Math.round(-l / 2f), -4, color, false);
                 }
+                ms.popPose();
             }
             RenderSystem.disableBlend();
-            ms.popPose();
         }
     }
 
