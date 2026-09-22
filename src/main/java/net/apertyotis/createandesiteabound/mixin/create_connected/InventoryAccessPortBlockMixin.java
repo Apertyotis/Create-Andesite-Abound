@@ -35,8 +35,10 @@ public abstract class InventoryAccessPortBlockMixin extends DirectedDirectionalB
         method = "getStateForPlacement",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/world/level/block/entity/BlockEntity;getCapability(Lnet/minecraftforge/common/capabilities/Capability;)Lnet/minecraftforge/common/util/LazyOptional;"
-        )
+            target = "Lnet/minecraft/world/level/block/entity/BlockEntity;getCapability(Lnet/minecraftforge/common/capabilities/Capability;)Lnet/minecraftforge/common/util/LazyOptional;",
+            remap = false
+        ),
+        remap = true
     )
     private LazyOptional<?> findTank(BlockEntity be, Capability<?> cap, Operation<LazyOptional<?>> original) {
         LazyOptional<?> itemCap = original.call(be, cap);
