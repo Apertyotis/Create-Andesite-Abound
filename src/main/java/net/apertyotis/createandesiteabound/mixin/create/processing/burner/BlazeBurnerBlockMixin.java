@@ -1,11 +1,13 @@
 package net.apertyotis.createandesiteabound.mixin.create.processing.burner;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -17,7 +19,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -51,19 +52,18 @@ public abstract class BlazeBurnerBlockMixin extends HorizontalDirectionalBlock {
         return super.getDrops(pState, pParams);
     }
 
-    // 使生存模式创造烈焰蛋糕变为消耗品
-    @Inject(
+    @WrapOperation(
         method = "tryInsert",
         at = @At(
             value = "INVOKE",
             target = "Lcom/simibubi/create/content/processing/burner/BlazeBurnerBlockEntity;applyCreativeFuel()V"
-        ),
-        cancellable = true
+        )
     )
     private static void survivalBlazeCake(
-        BlockState state, Level world, BlockPos pos, ItemStack stack, boolean doNotConsume,
-        boolean forceOverflow, boolean simulate, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir,
-        @Local(name = "burnerBE") BlazeBurnerBlockEntity burnerBE
+        BlazeBurnerBlockEntity burnerBE, Operation<Void> original,
+        @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level world,
+        @Local(argsOnly = true) ItemStack stack, @Local(argsOnly = true, ordinal = 0) boolean doNotConsume,
+        @Cancellable CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir
     ) {
         if (!doNotConsume && !world.isClientSide) {
             try {
@@ -76,5 +76,6 @@ public abstract class BlazeBurnerBlockMixin extends HorizontalDirectionalBlock {
             } catch (IllegalArgumentException ignored) {
             }
         }
+        original.call(burnerBE);
     }
 }
