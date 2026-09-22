@@ -8,7 +8,7 @@
   "block.createandesiteabound.fluid_vessel.tooltip.condition1": "流体交互",
   "block.createandesiteabound.fluid_vessel.tooltip.behaviour1": "_右键_可与流体方块、含水方块和大部分流体容器交互。允许_下界水_。",
   "block.createandesiteabound.fluid_vessel.tooltip.condition2": "销毁物品",
-  "block.createandesiteabound.fluid_vessel.tooltip.behaviour2": "_开口容器_，上方漏斗将转换为_传送带漏斗_。含有岩浆时销毁任意输入物品。",
+  "block.createandesiteabound.fluid_vessel.tooltip.behaviour2": "_开口容器_，上方漏斗将转换为_传送带漏斗_。含有岩浆时销毁输入物品或流体。",
   "block.createandesiteabound.fluid_vessel.tooltip.condition3": "自增殖",
   "block.createandesiteabound.fluid_vessel.tooltip.behaviour3": "生存模式_中键_领取空液罐。",
   "block.createandesiteabound.fluid_vessel.tooltip.condition4": "自毁",

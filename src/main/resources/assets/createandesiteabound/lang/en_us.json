@@ -8,7 +8,7 @@
   "block.createandesiteabound.fluid_vessel.tooltip.condition1": "Fluid Interaction",
   "block.createandesiteabound.fluid_vessel.tooltip.behaviour1": "_R-Click_ to interact with fluid blocks, waterlogged blocks and most tanks. Allows placing water in _the Nether_.",
   "block.createandesiteabound.fluid_vessel.tooltip.condition2": "Voiding Item",
-  "block.createandesiteabound.fluid_vessel.tooltip.behaviour2": "Accepts _direct belt input_ and allows _belt funnels_; destroys input items when containing lava.",
+  "block.createandesiteabound.fluid_vessel.tooltip.behaviour2": "Accepts _direct belt input_ and allows _belt funnels_; destroys input items or fluids when containing lava.",
   "block.createandesiteabound.fluid_vessel.tooltip.condition3": "Self-replication",
   "block.createandesiteabound.fluid_vessel.tooltip.behaviour3": "_M-Click_ in Survival mode to get empty canisters.",
   "block.createandesiteabound.fluid_vessel.tooltip.condition4": "Self-destruction",
