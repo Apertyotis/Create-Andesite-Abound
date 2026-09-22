@@ -8,11 +8,13 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.fluids.*;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.utility.BlockFace;
 import com.simibubi.create.foundation.utility.Pair;
 import net.apertyotis.createandesiteabound.AllConfig;
 import net.apertyotis.createandesiteabound.compat.Mods;
 import net.apertyotis.createandesiteabound.compat.lazytick.LazyTickConfig;
+import net.apertyotis.createandesiteabound.foundation.FluidNetworkEx;
 import net.apertyotis.createandesiteabound.foundation.PipelineHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -22,9 +24,11 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -33,7 +37,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Mixin(value = FluidNetwork.class, remap = false)
-public abstract class FluidNetworkMixin {
+public abstract class FluidNetworkMixin implements FluidNetworkEx {
     @Shadow
     FluidStack fluid;
 
@@ -71,6 +75,21 @@ public abstract class FluidNetworkMixin {
 
     @Shadow
     Set<BlockPos> visited;
+
+    @Unique
+    private SmartBlockEntity caa$blockEntity;
+
+    @Override
+    public void caa$setOldFluid(FluidStack fluidStack) {
+        fluid = fluidStack;
+    }
+
+    @Inject(method = "getFluidTransfer", at = @At("RETURN"))
+    private void cacheSelf(BlockPos pos, CallbackInfoReturnable<FluidTransportBehaviour> cir) {
+        FluidTransportBehaviour behaviour = cir.getReturnValue();
+        if (behaviour != null && start.getPos().equals(pos))
+            caa$blockEntity = behaviour.blockEntity;
+    }
 
     // 简化抽取逻辑
     @WrapOperation(
@@ -263,6 +282,9 @@ public abstract class FluidNetworkMixin {
     @Inject(method = "reset", at = @At("HEAD"))
     private void beforeReset(CallbackInfo ci) {
         if (!AllConfig.pump_speed_change || targets.isEmpty())
+            return;
+        // 不能在区块卸载后访问
+        if (caa$blockEntity != null && caa$blockEntity.isChunkUnloaded())
             return;
         PipelineHelper.resetFrontPipeline(world, start, fluid);
     }

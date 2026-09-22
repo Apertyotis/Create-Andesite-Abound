@@ -6,6 +6,7 @@ import com.simibubi.create.content.fluids.*;
 import com.simibubi.create.foundation.utility.BlockFace;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.foundation.FluidNetworkEx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -86,6 +87,7 @@ public abstract class PipeConnectionMixin {
 
         // 源液体流变化不再抛弃原流体网络，需要流体网络批量处理液流
         boolean changed = false;
+        FluidStack oldFluid = FluidStack.EMPTY;
         FlowSource flowSource = source.get();
         if (!connection.hasFlow()) {
             changed = tryStartingNewFlow(true, flowSource.provideFluid(filter));
@@ -95,6 +97,7 @@ public abstract class PipeConnectionMixin {
             FluidStack extracted = handler == null ? FluidStack.EMPTY :
                 handler.drain(flow.fluid, IFluidHandler.FluidAction.SIMULATE);
             if (extracted.isEmpty() || !filter.test(extracted)) {
+                oldFluid = flow.fluid;
                 this.flow = Optional.empty();
                 changed = true;
             }
@@ -109,6 +112,8 @@ public abstract class PipeConnectionMixin {
                     return LazyOptional.empty();
                 }
             }));
+            if (network.get() instanceof FluidNetworkEx ex)
+                ex.caa$setOldFluid(oldFluid);
         }
         network.get().tick();
 
