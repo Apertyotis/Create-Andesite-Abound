@@ -79,6 +79,7 @@ public abstract class FluidNetworkMixin implements FluidNetworkEx {
     @Unique
     private SmartBlockEntity caa$blockEntity;
 
+    @Unique
     @Override
     public void caa$setOldFluid(FluidStack fluidStack) {
         fluid = fluidStack;
