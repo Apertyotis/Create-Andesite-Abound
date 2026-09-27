@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.renderer;
+package net.apertyotis.createandesiteabound.mixin.create.fluids.spout;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -16,11 +16,11 @@ import java.util.function.Function;
 public abstract class FluidRendererMixin {
     // 修复蓝图打印注液器会崩溃的 bug
     @WrapOperation(
-            method = "renderFluidBox(Lnet/minecraftforge/fluids/FluidStack;FFFFFFLcom/mojang/blaze3d/vertex/VertexConsumer;Lcom/mojang/blaze3d/vertex/PoseStack;IZ)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ljava/util/function/Function;apply(Ljava/lang/Object;)Ljava/lang/Object;"
-            )
+        method = "renderFluidBox(Lnet/minecraftforge/fluids/FluidStack;FFFFFFLcom/mojang/blaze3d/vertex/VertexConsumer;Lcom/mojang/blaze3d/vertex/PoseStack;IZ)V",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/util/function/Function;apply(Ljava/lang/Object;)Ljava/lang/Object;"
+        )
     )
     private static Object preventRenderNullFluid(Function<ResourceLocation, TextureAtlasSprite> instance, Object t, Operation<?> original, @Cancellable CallbackInfo ci) {
         if (t == null) {

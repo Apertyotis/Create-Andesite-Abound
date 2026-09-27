@@ -109,6 +109,8 @@
     "create.contraption.glue.SuperGlueSelectionHandlerMixin",
     "create.equipment.toolbox.RadialToolboxMenuMixin",
     "create.fluids.hosePulley.HosePulleyFluidHandlerAccessor",
+    "create.fluids.spout.FluidRendererMixin",
+    "create.fluids.spout.SpoutBlockEntityClientMixin",
     "create.foundation.blockEntity.FilteringRendererMixin",
     "create.foundation.blockEntity.ScrollValueRendererMixin",
     "create.foundation.events.InputEventsMixin",
@@ -137,8 +139,7 @@
     "jei.SequencedAssemblyCategoryMixin",
     "jei.SpoutCategoryMixin",
     "minecraft.noclip.LevelRendererMixin",
-    "minecraft.player.LocalPlayerMixin",
-    "renderer.FluidRendererMixin"
+    "minecraft.player.LocalPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
