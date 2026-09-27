@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public enum Mods {
-    CreateAddition("GameEventsMixin", "LiquidBlazeBurnerBlockMixin", "ModularAccumulatorBlockEntityMixin"),
+    CreateAddition("GameEventsMixin", "LiquidBlazeBurnerBlockMixin", "ModularAccumulatorBlockEntityMixin", "CAArmInteractionsMixin"),
     Design_Decor("LargeBoilerMixin", "RailingBlockMixin", "LargeBoilerStructureMixin"),
     VintageImprovements(),
     CreateLazyTick(),
