@@ -171,6 +171,8 @@ public class FluidVesselClickHandler {
                 blockState = blockState.setValue(BlockStateProperties.WATERLOGGED, true);
                 level.setBlock(hit.getBlockPos(), blockState, 3);
                 level.scheduleTick(hit.getBlockPos(), Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            } else {
+                return false;
             }
             return true;
         } else if (!fluidState.isEmpty() && fluidState.isSource() &&

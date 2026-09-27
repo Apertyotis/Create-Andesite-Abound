@@ -53,7 +53,7 @@ public class FluidMachineItemHandler implements IItemHandlerModifiable {
 
     @Override
     public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        if (input && items.size() < items.capacity() && !stack.isEmpty()) {
+        if (input && items.size() < items.capacity() && isItemValid(slot, stack)) {
             if (!simulate) {
                 items.addLast(stack.copyWithCount(1));
                 blockEntity.notifyUpdate();
