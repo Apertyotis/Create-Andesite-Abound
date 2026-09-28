@@ -73,6 +73,7 @@
     "create.logistics.tunnel.BrassTunnelItemHandlerMixin",
     "create.logistics.vault.ItemVaultBlockEntityMixin",
     "create.processing.basin.BasinBlockEntityMixin",
+    "create.processing.basin.BasinBlockMixin",
     "create.processing.basin.BasinOperatingBlockEntityAccessor",
     "create.processing.basin.BasinOperatingBlockEntityMixin",
     "create.processing.basin.BasinRecipeMixin",
