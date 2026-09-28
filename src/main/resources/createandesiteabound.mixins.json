@@ -60,6 +60,8 @@
     "create.kinetics.deployer.BeltDeployerCallbacksMixin",
     "create.kinetics.deployer.DeployerBlockEntityAccessor",
     "create.kinetics.deployer.DeployerBlockEntityMixin",
+    "create.kinetics.fan.EncasedFanBlockEntityMixin",
+    "create.kinetics.fan.EncasedFanBlockMixin",
     "create.kinetics.millstone.MillstoneBlockEntityMixin",
     "create.kinetics.mixer.MixerBlockEntityMixin",
     "create.kinetics.press.BeltPressingCallbacksMixin",
