@@ -2,10 +2,15 @@ package net.apertyotis.createandesiteabound.mixin.create.kinetics.belt;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Cancellable;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
 import com.simibubi.create.content.kinetics.belt.transport.BeltInventory;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.logistics.tunnel.BrassTunnelBlock;
+import com.simibubi.create.content.logistics.tunnel.BrassTunnelBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import com.simibubi.create.foundation.utility.IPartialSafeNBT;
@@ -14,10 +19,13 @@ import net.apertyotis.createandesiteabound.AllConfig;
 import net.apertyotis.createandesiteabound.content.belt.BeltBlockEntityEx;
 import net.apertyotis.createandesiteabound.content.belt.BeltScrollValueBehaviour;
 import net.apertyotis.createandesiteabound.content.belt.BeltValueBoxTransform;
+import net.apertyotis.createandesiteabound.content.tunnel.BrassTunnelBlockEntityEx;
 import net.apertyotis.createandesiteabound.mixin.create.kinetics.base.KineticBlockEntityAccessor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,6 +33,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
@@ -151,5 +160,30 @@ public abstract class BeltBlockEntityMixin extends KineticBlockEntity implements
     public void writeSafe(CompoundTag compound) {
         super.writeSafe(compound);
         NBTHelper.writeEnum(compound, "Casing", ((BeltBlockEntity)(Object) this).casing);
+    }
+
+    @WrapOperation(
+        method = "tryInsertingFromSide",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/logistics/tunnel/BrassTunnelBlockEntity;getStackToDistribute()Lnet/minecraft/world/item/ItemStack;"
+        )
+    )
+    private ItemStack tryInputTunnelFromSide(
+        BrassTunnelBlockEntity tunnel, Operation<ItemStack> original,
+        @Local(argsOnly = true) TransportedItemStack inserted, @Local(argsOnly = true) Direction side,
+        @Cancellable CallbackInfoReturnable<ItemStack> cir
+    ) {
+        ItemStack stack = original.call(tunnel);
+        if (tunnel instanceof BrassTunnelBlockEntityEx ex) {
+            Direction.Axis axis = tunnel.getBlockState().getValue(BrassTunnelBlock.HORIZONTAL_AXIS);
+            if (side.getAxis() == axis) {
+                if (!ex.caa$canInputFromBack())
+                    cir.setReturnValue(inserted.stack);
+            } else {
+                ex.caa$tryInputFromSide();
+            }
+        }
+        return stack;
     }
 }

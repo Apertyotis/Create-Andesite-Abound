@@ -3,6 +3,8 @@ package net.apertyotis.createandesiteabound.mixin.create.kinetics.belt;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.AllBlocks;
@@ -13,8 +15,10 @@ import com.simibubi.create.content.kinetics.belt.transport.BeltTunnelInteraction
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.logistics.tunnel.BeltTunnelBlock;
 import com.simibubi.create.content.logistics.tunnel.BeltTunnelBlockEntity;
+import com.simibubi.create.content.logistics.tunnel.BrassTunnelBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
+import net.apertyotis.createandesiteabound.content.tunnel.BrassTunnelBlockEntityEx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -35,14 +39,14 @@ public abstract class BeltTunnelInteractionHandlerMixin {
      * 详见 Create PR <a href="https://github.com/Creators-of-Create/Create/pull/9967">#9967</a>
      */
     @ModifyVariable(
-            method = "flapTunnelsAndCheckIfStuck",
-            at = @At(value = "STORE"),
-            name = "currentSegment"
+        method = "flapTunnelsAndCheckIfStuck",
+        at = @At(value = "STORE"),
+        name = "currentSegment"
     )
     private static int redirectCurrentSegment(
-            int currentSegment,
-            @Local(argsOnly = true) BeltInventory beltInventory,
-            @Local(argsOnly = true) TransportedItemStack current)
+        int currentSegment,
+        @Local(argsOnly = true) BeltInventory beltInventory,
+        @Local(argsOnly = true) TransportedItemStack current)
     {
         if (((BeltInventoryAccessor) beltInventory).isPositive() && current.beltPosition <= .0f)
             return -1;
@@ -58,13 +62,13 @@ public abstract class BeltTunnelInteractionHandlerMixin {
     @Expression("nextTunnel != null")
     @ModifyExpressionValue(method = "flapTunnelsAndCheckIfStuck", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 0))
     private static boolean redirectAndesiteTunnelCheck(
-            boolean original,
-            @Local(name = "nextTunnel") BeltTunnelBlockEntity nextTunnel,
-            @Local(argsOnly = true) BeltInventory beltInventory,
-            @Local(argsOnly = true) TransportedItemStack current,
-            @Local(argsOnly = true) float nextOffset,
-            @Cancellable CallbackInfoReturnable<Boolean> cir)
-    {
+        boolean original,
+        @Local(name = "nextTunnel") BeltTunnelBlockEntity nextTunnel,
+        @Local(argsOnly = true) BeltInventory beltInventory,
+        @Local(argsOnly = true) TransportedItemStack current,
+        @Local(argsOnly = true) float nextOffset,
+        @Cancellable CallbackInfoReturnable<Boolean> cir
+    ) {
         if (nextTunnel == null) return false;
 
         int upcomingSegment = (int) nextOffset;
@@ -75,9 +79,9 @@ public abstract class BeltTunnelInteractionHandlerMixin {
         BlockState blockState = nextTunnel.getBlockState();
 
         if (current.stack.getCount() > 1 && AllBlocks.ANDESITE_TUNNEL.has(blockState)
-                && BeltTunnelBlock.isJunction(blockState)
-                && movementFacing.getAxis() == blockState.getValue(BeltTunnelBlock.HORIZONTAL_AXIS))
-        {
+            && BeltTunnelBlock.isJunction(blockState)
+            && movementFacing.getAxis() == blockState.getValue(BeltTunnelBlock.HORIZONTAL_AXIS)
+        ) {
             // 拆分原代码逻辑，先检查和记录可输出的方向
             EnumMap<Direction, DirectBeltInputBehaviour> outputs = new EnumMap<>(Direction.class);
             for (Direction d: Iterate.horizontalDirections) {
@@ -123,5 +127,20 @@ public abstract class BeltTunnelInteractionHandlerMixin {
             }
         }
         return false;
+    }
+
+    @WrapOperation(
+        method = "flapTunnelsAndCheckIfStuck",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/logistics/tunnel/BrassTunnelBlockEntity;canTakeItems()Z"
+        )
+    )
+    private static boolean canTakeItemsFromBack(BrassTunnelBlockEntity tunnel, Operation<Boolean> original) {
+        boolean result = original.call(tunnel);
+        if (tunnel instanceof BrassTunnelBlockEntityEx ex) {
+            result &= ex.caa$canInputFromBack();
+        }
+        return result;
     }
 }

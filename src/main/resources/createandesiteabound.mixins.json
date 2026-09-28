@@ -69,6 +69,8 @@
     "create.logistics.depot.DepotBehaviourMixin",
     "create.logistics.filter.FilterItemStackAccessor",
     "create.logistics.funnel.BeltFunnelBlockAccessor",
+    "create.logistics.tunnel.BrassTunnelBlockEntityMixin",
+    "create.logistics.tunnel.BrassTunnelItemHandlerMixin",
     "create.logistics.vault.ItemVaultBlockEntityMixin",
     "create.processing.basin.BasinBlockEntityMixin",
     "create.processing.basin.BasinOperatingBlockEntityAccessor",
