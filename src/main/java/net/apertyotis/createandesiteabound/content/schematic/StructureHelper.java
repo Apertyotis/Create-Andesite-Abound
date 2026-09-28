@@ -21,7 +21,7 @@ import net.apertyotis.createandesiteabound.compat.Mods;
 import net.apertyotis.createandesiteabound.compat.design_decor.LargeBoilerStructure;
 import net.apertyotis.createandesiteabound.compat.vintageimprovements.CentrifugeStructuralBlock;
 import net.apertyotis.createandesiteabound.mixin.create.foundation.utility.BlockHelperAccessor;
-import net.apertyotis.createandesiteabound.mixin.create.logistics.BeltFunnelBlockAccessor;
+import net.apertyotis.createandesiteabound.mixin.create.logistics.funnel.BeltFunnelBlockAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.core.BlockPos;

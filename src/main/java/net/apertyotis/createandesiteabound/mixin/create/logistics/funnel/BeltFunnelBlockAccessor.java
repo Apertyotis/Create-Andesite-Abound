@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.create.logistics;
+package net.apertyotis.createandesiteabound.mixin.create.logistics.funnel;
 
 import com.simibubi.create.content.logistics.funnel.BeltFunnelBlock;
 import com.simibubi.create.content.logistics.funnel.FunnelBlock;

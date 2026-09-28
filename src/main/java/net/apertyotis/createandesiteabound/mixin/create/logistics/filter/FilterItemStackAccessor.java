@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.create.logistics;
+package net.apertyotis.createandesiteabound.mixin.create.logistics.filter;
 
 import com.simibubi.create.content.logistics.filter.FilterItemStack;
 import net.minecraft.world.level.Level;

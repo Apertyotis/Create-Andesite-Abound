@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.foundation;
+package net.apertyotis.createandesiteabound.content.fluids;
 
 import net.minecraft.core.BlockPos;
 

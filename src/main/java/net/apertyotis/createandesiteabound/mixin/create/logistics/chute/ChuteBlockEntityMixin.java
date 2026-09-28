@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.create.logistics;
+package net.apertyotis.createandesiteabound.mixin.create.logistics.chute;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;

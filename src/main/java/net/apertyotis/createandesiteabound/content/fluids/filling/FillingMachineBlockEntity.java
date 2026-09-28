@@ -9,7 +9,7 @@ import net.apertyotis.createandesiteabound.content.fluids.AbstractFluidMachineBl
 import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselItem;
 import net.apertyotis.createandesiteabound.foundation.CircularArray;
 import net.apertyotis.createandesiteabound.mixin.create.foundation.blockEntity.FilteringBehaviourAccessor;
-import net.apertyotis.createandesiteabound.mixin.create.logistics.FilterItemStackAccessor;
+import net.apertyotis.createandesiteabound.mixin.create.logistics.filter.FilterItemStackAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

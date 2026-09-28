@@ -6,7 +6,7 @@ import com.simibubi.create.content.fluids.*;
 import com.simibubi.create.foundation.utility.BlockFace;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import net.apertyotis.createandesiteabound.AllConfig;
-import net.apertyotis.createandesiteabound.foundation.FluidNetworkEx;
+import net.apertyotis.createandesiteabound.content.fluids.FluidNetworkEx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;

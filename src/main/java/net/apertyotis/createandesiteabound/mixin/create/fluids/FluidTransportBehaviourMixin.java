@@ -14,7 +14,7 @@ import com.simibubi.create.content.fluids.pipes.StraightPipeBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.apertyotis.createandesiteabound.AllConfig;
-import net.apertyotis.createandesiteabound.foundation.FluidTransportBehaviourEx;
+import net.apertyotis.createandesiteabound.content.fluids.FluidTransportBehaviourEx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

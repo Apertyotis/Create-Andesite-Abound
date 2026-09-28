@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.create.logistics;
+package net.apertyotis.createandesiteabound.mixin.create.logistics.depot;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -51,11 +51,11 @@ public abstract class DepotBehaviourMixin {
 
     // 重写置物台合并额外物品逻辑，防止掉落无法合并的物品
     @ModifyExpressionValue(
-            method = "tick()V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ljava/util/Iterator;hasNext()Z"
-            )
+        method = "tick()V",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/util/Iterator;hasNext()Z"
+        )
     )
     private boolean preventDropping(boolean original) {
         if (!AllConfig.no_depot_overflow_drop)
@@ -87,12 +87,12 @@ public abstract class DepotBehaviourMixin {
 
     // 防止置物台溢出物品时执行加工配方
     @Inject(
-            method = "tick()V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lcom/simibubi/create/foundation/blockEntity/behaviour/BlockEntityBehaviour;get(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lcom/simibubi/create/foundation/blockEntity/behaviour/BehaviourType;)Lcom/simibubi/create/foundation/blockEntity/behaviour/BlockEntityBehaviour;"
-            ),
-            cancellable = true
+        method = "tick()V",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/foundation/blockEntity/behaviour/BlockEntityBehaviour;get(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lcom/simibubi/create/foundation/blockEntity/behaviour/BehaviourType;)Lcom/simibubi/create/foundation/blockEntity/behaviour/BlockEntityBehaviour;"
+        ),
+        cancellable = true
     )
     private void preventOverProcessing(CallbackInfo ci) {
         if (!AllConfig.no_depot_overflow_drop)
@@ -103,12 +103,12 @@ public abstract class DepotBehaviourMixin {
 
     // 将置物台加工溢出的产物移到 incoming 列表
     @WrapOperation(
-            method = "applyToAllItems",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/Containers;dropItemStack(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/item/ItemStack;)V"
-            ),
-            remap = true
+        method = "applyToAllItems",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/Containers;dropItemStack(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/item/ItemStack;)V"
+        ),
+        remap = true
     )
     private void moveOverflowItemsToIncoming(Level p_18993_, double p_18994_, double p_18995_, double p_18996_, ItemStack p_18997_, Operation<Void> original) {
         if (!AllConfig.no_depot_overflow_drop) {
@@ -124,12 +124,12 @@ public abstract class DepotBehaviourMixin {
 
     // 防止弹射置物台无限接受未合并物品
     @Inject(
-            method = "insert",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lcom/simibubi/create/content/logistics/depot/DepotBehaviour;getRemainingSpace()I"
-            ),
-            cancellable = true
+        method = "insert",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/logistics/depot/DepotBehaviour;getRemainingSpace()I"
+        ),
+        cancellable = true
     )
     private void preventInfiniteIncoming(TransportedItemStack heldItem, boolean simulate, CallbackInfoReturnable<ItemStack> cir) {
         if (!AllConfig.no_depot_overflow_drop)
@@ -141,22 +141,22 @@ public abstract class DepotBehaviourMixin {
 
     // 让普通置物台能持久化保存额外物品 nbt
     @ModifyExpressionValue(
-            method = "write",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lcom/simibubi/create/content/logistics/depot/DepotBehaviour;canMergeItems()Z"
-            )
+        method = "write",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/logistics/depot/DepotBehaviour;canMergeItems()Z"
+        )
     )
     private boolean writeIncoming(boolean original) {
         return true;
     }
 
     @ModifyExpressionValue(
-            method = "read",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lcom/simibubi/create/content/logistics/depot/DepotBehaviour;canMergeItems()Z"
-            )
+        method = "read",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/logistics/depot/DepotBehaviour;canMergeItems()Z"
+        )
     )
     private boolean readIncoming(boolean original) {
         return true;

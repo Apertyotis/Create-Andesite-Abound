@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.mixin.create.logistics;
+package net.apertyotis.createandesiteabound.mixin.create.logistics.vault;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

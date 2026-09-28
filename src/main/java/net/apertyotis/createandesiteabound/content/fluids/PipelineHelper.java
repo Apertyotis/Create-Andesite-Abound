@@ -1,4 +1,4 @@
-package net.apertyotis.createandesiteabound.foundation;
+package net.apertyotis.createandesiteabound.content.fluids;
 
 import com.simibubi.create.content.fluids.FluidPropagator;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
