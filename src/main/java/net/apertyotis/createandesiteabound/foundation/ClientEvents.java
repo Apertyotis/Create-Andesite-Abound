@@ -6,6 +6,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
 import net.apertyotis.createandesiteabound.AllBlocks;
+import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
+import net.apertyotis.createandesiteabound.content.note.RichNoteClientHandler;
+import net.apertyotis.createandesiteabound.content.note.RichNoteTooltipComponent;
 import net.apertyotis.createandesiteabound.content.wrench.filtering.EasyFilteringHandlerClient;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueHandler;
 import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselClickHandler;
@@ -31,7 +34,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.function.Function;
 
-@Mod.EventBusSubscriber(Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = CreateAndesiteAbound.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
 
     public static int getKeyAttackCode() {
@@ -59,6 +62,7 @@ public class ClientEvents {
         HachimiGlueHandler.HACHIMI_GLUE_HANDLER.tick();
         EasyFilteringHandlerClient.EASY_FILTERING_HANDLER_CLIENT.tick();
         BetterToolboxHandlerClient.BETTER_TOOLBOX_HANDLER_CLIENT.tick();
+        RichNoteClientHandler.tick();
     }
 
     @SubscribeEvent
@@ -74,15 +78,21 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onMouseScrolled(InputEvent.MouseScrollingEvent event) {
-        if (Minecraft.getInstance().screen != null)
-            return;
-
         double delta = event.getScrollDelta();
 
         if (SimpleSchematicHandler.SIMPLE_SCHEMATIC_HANDLER.mouseScrolled(delta) ||
             SimplePackerHandler.SIMPLE_PACKER_HANDLER.mouseScrolled(delta) ||
             HachimiGlueHandler.HACHIMI_GLUE_HANDLER.mouseScrolled(delta))
         {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onScreenMouseScroll(ScreenEvent.MouseScrolled.Pre event) {
+        double delta = event.getScrollDelta();
+
+        if (RichNoteClientHandler.mouseScrolled(delta)) {
             event.setCanceled(true);
         }
     }
@@ -156,6 +166,7 @@ public class ClientEvents {
         @SubscribeEvent
         public static void registerClientTooltipComponent(RegisterClientTooltipComponentFactoriesEvent event) {
             event.register(AssemblyContentTooltipComponent.class, Function.identity());
+            event.register(RichNoteTooltipComponent.class, Function.identity());
         }
 
         @SubscribeEvent

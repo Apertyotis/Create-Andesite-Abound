@@ -87,6 +87,10 @@
   "caa.config.quick_unequip_items": "Quick Unequip Items",
   "caa.config.quick_unequip_items.1": "Short-press the toolbelt hotkey to quickly unequip items without opening the toolbox.",
 
+  "caa.keybind.category": "Andesite Abound's Comments",
+  "caa.keybind.open_note": "Open Notes",
+  "caa.note.hold_open": "Hold [%s] to Open Notes",
+
   "caa.config.qol.title": "QoL",
   "caa.config.tweaks.belt_funnel_detection_tweak": "Belt Funnel Detection Tweak",
   "caa.config.tweaks.belt_funnel_detection_tweak.1": "Allows funnels to extract items positioned exactly at the center of a belt.",
