@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.awt.*;
 
 public class RichNoteTooltipComponent implements ClientTooltipComponent, TooltipComponent {
 
@@ -39,20 +40,21 @@ public class RichNoteTooltipComponent implements ClientTooltipComponent, Tooltip
     public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
         if (!RichNoteClientHandler.active || !RichNoteClientHandler.opened)
             return;
-        RichNoteData data = RichNoteDataManager.cachedData;
-        if (data == null)
-            return;
-        data.initPages(font, CONTENT_WIDTH, CONTENT_HEIGHT);
-        RichNoteData.Page page = data.getPage();
+        RichNotePage page = RichNotePageManager.resolveCurrentPage(font, CONTENT_WIDTH, CONTENT_HEIGHT);
         if (page == null)
             return;
         renderBackground(guiGraphics, x, y);
         page.render(font, x, y, guiGraphics);
-        Component pageIndicator = Component.literal("%d / %d".formatted(data.index + 1, data.pages.size()));
+        int current = RichNotePageManager.getIndex() + 1;
+        int total = RichNotePageManager.getTotalPages();
+        String pageIndicator = "%d / %d".formatted(current, total);
         int width = font.width(pageIndicator);
         int xOffset = (CONTENT_WIDTH - width) / 2;
         guiGraphics.drawString(font, pageIndicator,
             x + LEFT_PADDING + xOffset, y + TOP_PADDING + CONTENT_HEIGHT + 3,
             0x000000, false);
+        guiGraphics.drawString(font, Component.translatable("caa.note.hint"),
+            x + 5, y + CLIPBOARD_HEIGHT + 3,
+            0xffffff, false);
     }
 }

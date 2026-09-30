@@ -79,6 +79,7 @@
   "caa.keybind.category": "安山林立的便签",
   "caa.keybind.open_note": "打开便签",
   "caa.note.hold_open": "按住 [%s] 打开便签",
+  "caa.note.hint": "左键/右键: 打开/返回; (Ctrl+)滚轮: 翻页",
 
   "caa.config.client.title": "客户端",
   "caa.config.keep_flying_on_ground": "落地不退出飞行",

@@ -13,6 +13,7 @@ import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
 import net.apertyotis.createandesiteabound.foundation.ClientEvents;
+import net.apertyotis.createandesiteabound.foundation.PathHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -224,7 +225,7 @@ public class SimplePackerHandler {
         BlockPos size = new BlockPos(bounds.getLength().offset(1, 1, 1));
         Minecraft mc = Minecraft.getInstance();
         if (filename != null && mc.level != null) {
-            Path path = StructureHelper.getOrCreateClientTempSchematicPath();
+            Path path = PathHelper.getOrCreateClientTempSchematicPath();
             filename = StructureHelper.getValidFilename(path, filename, false);
             StructureHelper.saveTempSchematic(path, filename, mc.level, anchor, size);
         }

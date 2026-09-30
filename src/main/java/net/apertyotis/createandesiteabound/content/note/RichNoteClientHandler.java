@@ -42,26 +42,33 @@ public class RichNoteClientHandler {
         active = true;
         if (trackingStack.isEmpty())
             return;
-        if (level.getGameTime() - lastTooltipTick > 1) {
+        if (level.getGameTime() - lastTooltipTick > 3) {
             reset();
         }
     }
 
     public static boolean mouseScrolled(double delta) {
-        if (!active || !opened || RichNoteDataManager.cachedData == null)
+        if (!active || !opened || !RichNotePageManager.isOpen())
             return false;
         if (delta < 0) {
-            RichNoteDataManager.cachedData.nextPage();
+            RichNotePageManager.nextPage();
         } else if (delta > 0) {
-            RichNoteDataManager.cachedData.prevPage();
+            RichNotePageManager.prevPage();
         }
         return true;
+    }
+
+    public static boolean mouseClick(int button, double x, double y) {
+        if (!active || !opened || !RichNotePageManager.isOpen())
+            return false;
+        return RichNotePageManager.mouseClick(button, x, y);
     }
 
     public static void reset() {
         opened = false;
         trackingStack = ItemStack.EMPTY;
         progress.startWithValue(0);
+        RichNotePageManager.onClose();
     }
 
     public static void deferredTick() {
@@ -77,19 +84,24 @@ public class RichNoteClientHandler {
         float value = progress.getValue();
         if (value >= 1) {
             opened = true;
-            RichNoteDataManager.cachedData = RichNoteDataManager.get(trackingStack);
+            RichNotePageManager.open(trackingStack.getItem());
             return;
         }
-        int keyCode = AllKey.NOTE_KEY.getKey().getValue();
-        long window = Minecraft.getInstance().getWindow().getWindow();
-        if (InputConstants.isKeyDown(window, keyCode))
+
+        if (isNoteKeyDown())
             progress.setValue(Math.min(1, value + Math.max(.25f, value) * .25f));
         else
             progress.setValue(Math.max(0, value - .05));
     }
 
+    public static boolean isNoteKeyDown() {
+        int keyCode = AllKey.NOTE_KEY.getKey().getValue();
+        long window = Minecraft.getInstance().getWindow().getWindow();
+        return InputConstants.isKeyDown(window, keyCode);
+    }
+
     public static boolean updateTracking(ItemStack stack) {
-        if (RichNoteDataManager.get(stack) == null) {
+        if (RichNoteDataManager.get(stack.getItem()) == null) {
             reset();
             return false;
         }
@@ -155,7 +167,9 @@ public class RichNoteClientHandler {
             }
             return Components.literal(builder.toString());
         } else {
-            return holdCtrl.append(Component.literal(" ★").withStyle(ChatFormatting.YELLOW));
+            if (RichNoteReadRecord.isUnread(trackingStack.getItem()))
+                holdCtrl = holdCtrl.append(Component.literal(" ★").withStyle(ChatFormatting.YELLOW));
+            return holdCtrl;
         }
     }
 }

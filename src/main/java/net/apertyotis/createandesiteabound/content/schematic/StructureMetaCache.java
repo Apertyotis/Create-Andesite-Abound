@@ -4,6 +4,7 @@ import com.simibubi.create.content.schematics.SchematicWorld;
 import com.simibubi.create.foundation.utility.Pair;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import net.apertyotis.createandesiteabound.foundation.PathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
@@ -100,7 +101,7 @@ public class StructureMetaCache {
                     }
                 }
                 if (match) {
-                    Path parent = StructureHelper.getOrCreateSchematicPath();
+                    Path parent = PathHelper.getOrCreateSchematicPath();
                     Path file = cacheEntry.getKey().subpath(parent.getNameCount(), cacheEntry.getKey().getNameCount());
                     success.accept(file, blockReader);
                     return;
@@ -113,7 +114,7 @@ public class StructureMetaCache {
     }
 
     private static void updateAllCache(HolderLookup<Block> lookup) {
-        Path root = StructureHelper.getOrCreateSchematicPath();
+        Path root = PathHelper.getOrCreateSchematicPath();
         Set<Path> visited = new HashSet<>();
         try {
             Files.walkFileTree(root, new SimpleFileVisitor<>(){

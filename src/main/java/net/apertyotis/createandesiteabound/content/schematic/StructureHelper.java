@@ -20,17 +20,15 @@ import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.apertyotis.createandesiteabound.compat.Mods;
 import net.apertyotis.createandesiteabound.compat.design_decor.LargeBoilerStructure;
 import net.apertyotis.createandesiteabound.compat.vintageimprovements.CentrifugeStructuralBlock;
+import net.apertyotis.createandesiteabound.foundation.PathHelper;
 import net.apertyotis.createandesiteabound.mixin.create.foundation.utility.BlockHelperAccessor;
 import net.apertyotis.createandesiteabound.mixin.create.logistics.funnel.BeltFunnelBlockAccessor;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -45,9 +43,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.fml.loading.FMLPaths;
 
 import javax.annotation.Nullable;
 import java.io.BufferedInputStream;
@@ -60,8 +56,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
-
-import static net.apertyotis.createandesiteabound.CreateAndesiteAbound.MOD_ID;
 
 public class StructureHelper {
 
@@ -158,45 +152,6 @@ public class StructureHelper {
             Mods.VintageImprovements.runIfInstalled(() -> () -> CentrifugeStructuralBlock.is(block)).orElse(false);
     }
 
-    public static Path getOrCreateSchematicPath() {
-        Path path =  FMLPaths.CONFIGDIR.get().resolve(MOD_ID).resolve("structures");
-        makeDirs(path);
-        return path;
-    }
-
-    public static Path getOrCreateServerTempSchematicPath(ServerLevel level) {
-        Path path = level.getServer().getWorldPath(LevelResource.GENERATED_DIR).normalize()
-            .resolve(MOD_ID).resolve("structures");
-        makeDirs(path);
-        return path;
-    }
-
-    public static Path getOrCreateClientTempSchematicPath() {
-        Minecraft mc = Minecraft.getInstance();
-        String save;
-        if (mc.hasSingleplayerServer()) {
-            // noinspection DataFlowIssue
-            save = sanitize(mc.getSingleplayerServer().getWorldPath(LevelResource.ROOT).normalize().getFileName().toString());
-        } else {
-            ServerData server = mc.getCurrentServer();
-            save = server == null ? "unknown" : sanitize(server.ip);
-        }
-        Path path = FMLPaths.CONFIGDIR.get().resolve(MOD_ID).resolve("temp").resolve(save);
-        makeDirs(path);
-        return path;
-    }
-
-    public static void makeDirs(Path path) {
-        try {
-            Files.createDirectories(path);
-        } catch (IOException e) {
-            CreateAndesiteAbound.LOGGER.warn("Could not create Folder: {}", path);
-        }
-    }
-
-    public static String sanitize(String name) {
-        return name.strip().replaceAll("[\\\\/:*?\"<>|]", "_").replace("..", "_");
-    }
 
     @SuppressWarnings("removal")
     public static boolean saveTempSchematic(Path path, String filename, Level world, BlockPos pos, BlockPos bounds) {
@@ -237,7 +192,7 @@ public class StructureHelper {
         Path path;
         String filename;
         int index = 0;
-        name = sanitize(name);
+        name = PathHelper.sanitize(name);
         if (name.endsWith(".nbt"))
             name = name.substring(0, name.length() - 4);
         if (!overwrite) {

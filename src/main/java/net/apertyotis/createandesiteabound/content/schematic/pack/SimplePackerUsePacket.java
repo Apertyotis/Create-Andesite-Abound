@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
 import net.apertyotis.createandesiteabound.content.schematic.StructureMetaCache;
+import net.apertyotis.createandesiteabound.foundation.PathHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -62,7 +63,7 @@ public class SimplePackerUsePacket extends SimplePacketBase {
 
             // noinspection DataFlowIssue
             if (stack.hasTag() && stack.getTag().getBoolean("Closure")) {
-                Path path = StructureHelper.getOrCreateServerTempSchematicPath((ServerLevel) world)
+                Path path = PathHelper.getOrCreateServerTempSchematicPath((ServerLevel) world)
                     .resolve(player.getGameProfile().getName());
                 filename = StructureHelper.getValidFilename(path, filename, true);
                 if (StructureHelper.saveTempSchematic(path, filename, world, anchor, size)) {

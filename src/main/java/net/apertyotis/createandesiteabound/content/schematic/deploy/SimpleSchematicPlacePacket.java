@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.networking.SimplePacketBase;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
+import net.apertyotis.createandesiteabound.foundation.PathHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -105,7 +106,7 @@ public class SimpleSchematicPlacePacket extends SimplePacketBase {
                 CompoundTag tag = heldItem.getOrCreateTag();
                 if (tag.getBoolean("Temp")) {
                     try {
-                        Files.deleteIfExists(StructureHelper.getOrCreateServerTempSchematicPath(world)
+                        Files.deleteIfExists(PathHelper.getOrCreateServerTempSchematicPath(world)
                             .resolve(player.getGameProfile().getName())
                             .resolve(tag.getString("File")));
                     } catch (IOException ignored) {}

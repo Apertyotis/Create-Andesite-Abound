@@ -117,6 +117,17 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
+    public static void onScreenMouseInput(ScreenEvent.MouseButtonPressed.Pre event) {
+        int button = event.getButton();
+        double x = event.getMouseX();
+        double y = event.getMouseY();
+
+        if (RichNoteClientHandler.mouseClick(button, x, y)) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
     public static void onLoadWorld(LevelEvent.Load event) {
         LevelAccessor world = event.getLevel();
         if (world.isClientSide() && world instanceof ClientLevel && !(world instanceof WrappedClientWorld)) {

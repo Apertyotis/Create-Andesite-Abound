@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.content.schematic.deploy;
 
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
-import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
+import net.apertyotis.createandesiteabound.foundation.PathHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -109,10 +109,10 @@ public class SimpleSchematicItem extends Item {
         Path dir;
         if (tag.getBoolean("Temp"))
             dir = world.isClientSide ?
-                StructureHelper.getOrCreateClientTempSchematicPath() :
-                StructureHelper.getOrCreateServerTempSchematicPath((ServerLevel) world).resolve(playerName);
+                PathHelper.getOrCreateClientTempSchematicPath() :
+                PathHelper.getOrCreateServerTempSchematicPath((ServerLevel) world).resolve(playerName);
         else
-            dir = StructureHelper.getOrCreateSchematicPath();
+            dir = PathHelper.getOrCreateSchematicPath();
         dir = dir.toAbsolutePath();
         Path file = Paths.get(schematic);
 

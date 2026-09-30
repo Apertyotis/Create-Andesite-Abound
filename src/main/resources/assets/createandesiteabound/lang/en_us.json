@@ -90,6 +90,7 @@
   "caa.keybind.category": "Andesite Abound's Comments",
   "caa.keybind.open_note": "Open Notes",
   "caa.note.hold_open": "Hold [%s] to Open Notes",
+  "caa.note.hint": "L/R Click: Open/Back; (Ctrl+)Scroll: Page",
 
   "caa.config.qol.title": "QoL",
   "caa.config.tweaks.belt_funnel_detection_tweak": "Belt Funnel Detection Tweak",

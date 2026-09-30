@@ -17,8 +17,8 @@ import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.tools.SimpleToolType;
-import net.apertyotis.createandesiteabound.content.schematic.StructureHelper;
 import net.apertyotis.createandesiteabound.foundation.ClientEvents;
+import net.apertyotis.createandesiteabound.foundation.PathHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
@@ -352,7 +352,7 @@ public class SimpleSchematicHandler extends SchematicHandler {
         Player player = Minecraft.getInstance().player;
         if (tag.getBoolean("Temp") && (player == null || !player.isCreative())) {
             try {
-                Files.deleteIfExists(StructureHelper.getOrCreateClientTempSchematicPath()
+                Files.deleteIfExists(PathHelper.getOrCreateClientTempSchematicPath()
                     .resolve(tag.getString("File")));
             } catch (IOException ignored) {}
         }
