@@ -1,0 +1,8 @@
+{
+  "blocks":[
+    {"text": {"text": "用扳手对任意过滤槽长按右键，即可根据jei书签设定过滤，最近添加的书签排序最前。"}},
+    {"text": {"text": "当然，无法用扳手设定列表过滤器或属性过滤器。"}},
+    {"image":{"texture": "createandesiteabound:textures/figure/wrench", "w": 1920, "h": 986}},
+    {"text": {"text": "此外，受CyberGoggles启发，现在也可以左键快速拆除机器（兼容FTBUltimine）。"}}
+  ]
+}

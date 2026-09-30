@@ -1,0 +1,6 @@
+{
+  "blocks":[
+    {"text": {"text": "经过技术改进，当物品、流体、能量接口在列车上工作时，其仅会在列车到站时主动连接，从而避免串线。"}},
+    {"image":{"texture": "createandesiteabound:textures/figure/psi", "w": 1920, "h": 986}}
+  ]
+}

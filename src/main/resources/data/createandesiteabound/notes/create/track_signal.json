@@ -1,0 +1,10 @@
+{
+  "blocks":[
+    {"text": {"text": "当你建造列车网络时，一定会需要信号机来避免撞车。"}},
+    {"text": {"text": "同时你也可能注意到可以建造立交避免轨道交叉。遗憾的是，在原版建造立交需要较大的空间才能保证不发生碰撞。"}},
+    {"text": {"text": "甚至信号机对这种情况也毫无办法，因为列车会与同网络（轨道相连或交叉形成的网络，如图1）内所有列车判定碰撞，尽管列车的碰撞判定区很小。"}},
+    {"image":{"texture": "createandesiteabound:textures/figure/signal_1", "w": 1920, "h": 986}},
+    {"text": {"text": "经过技术改进，现在列车只会与相同信号区段内的其它列车判定碰撞，如图2。"}},
+    {"image":{"texture": "createandesiteabound:textures/figure/signal_2", "w": 1920, "h": 986}}
+  ]
+}

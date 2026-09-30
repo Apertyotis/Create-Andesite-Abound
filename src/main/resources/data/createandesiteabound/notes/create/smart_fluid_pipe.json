@@ -1,0 +1,9 @@
+{
+  "blocks":[
+    {"text": {"text": "智能流体管道经常被人诟病不够智能，因为位于管线下游的智能管道几乎毫无作用，仅能阻挡液体通过，功能性与阀门管道不相上下。"}},
+    {"text": {"text": "经过技术改进，现在只要智能管道和流体源之间的通路没有动力泵阻隔，那么智能管道就会通知源仅抽取符合条件的流体。"}},
+    {"image":{"texture": "createandesiteabound:textures/figure/smart_pipe_1", "w": 1920, "h": 986}},
+    {"text": {"text": "注意，符合上述条件的智能管道必须有且仅有一个，否则流体源不知道应该抽取何种流体。"}},
+    {"image":{"texture": "createandesiteabound:textures/figure/smart_pipe_2", "w": 1920, "h": 986}}
+  ]
+}

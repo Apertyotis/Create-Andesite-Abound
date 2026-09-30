@@ -1,0 +1,8 @@
+{
+  "blocks":[
+    {"text": {"text": "经过技术改进，现在存量转信器同时可以按百分比或数量设定阈值，在GUI中切换两种版本的检测模式。"}},
+    {"text": {"text": "此外，可以用剪切板复制阈值设定（原版仅能复制过滤槽）。"}},
+    {"image":{"texture": "createandesiteabound:textures/figure/switch", "w": 1920, "h": 986}},
+    {"text": {"text": "注意，存量转信器每10tick检测一次存量，因此对于某些任务，它并不灵敏。相对地，智能侦测器会每tick检测容器。"}}
+  ]
+}
