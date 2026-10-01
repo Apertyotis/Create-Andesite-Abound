@@ -49,6 +49,7 @@ public class AllBlocks {
         .initialProperties(SharedProperties::stone)
         .transform(pickaxeOnly())
         .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN).noOcclusion())
+        .properties(p -> p.isRedstoneConductor(($1, $2, $3) -> false))
         .blockstate(new FluidMachineGenerator()::generate)
         .simpleItem()
         .register();

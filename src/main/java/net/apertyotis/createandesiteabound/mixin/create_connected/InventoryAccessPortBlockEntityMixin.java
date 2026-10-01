@@ -11,6 +11,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.inventory.TankManipu
 import net.apertyotis.createandesiteabound.foundation.TankAccessHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -39,9 +40,6 @@ public abstract class InventoryAccessPortBlockEntityMixin extends SmartBlockEnti
     @Shadow
     protected LazyOptional<IItemHandler> itemCapability;
 
-    @Shadow
-    private boolean powered;
-
     @Unique
     private TankManipulationBehaviour caa$observedTank;
 
@@ -56,8 +54,6 @@ public abstract class InventoryAccessPortBlockEntityMixin extends SmartBlockEnti
     private void initCapabilityOnce(BlockEntityType<?> type, BlockPos pos, BlockState state, CallbackInfo ci) {
         initCapability();
         caa$tankCapability = LazyOptional.of(() -> new TankAccessHandler(() -> {
-            if (powered)
-                return null;
             IFluidHandler handler = caa$observedTank.getInventory();
             return handler instanceof TankAccessHandler ? null : handler;
         }));
@@ -74,14 +70,26 @@ public abstract class InventoryAccessPortBlockEntityMixin extends SmartBlockEnti
 
     @Inject(method = "isAttached", at = @At("RETURN"), cancellable = true)
     private void hasAttachedTank(CallbackInfoReturnable<Boolean> cir) {
-        boolean result = cir.getReturnValue() || (!powered && caa$observedTank.hasInventory() &&
-            !(caa$observedTank.getInventory() instanceof TankAccessHandler));
+        boolean result = cir.getReturnValue() ||
+            (caa$observedTank.hasInventory() && !(caa$observedTank.getInventory() instanceof TankAccessHandler));
         cir.setReturnValue(result);
     }
 
     @Inject(method = "updateConnectedInventory", at = @At("HEAD"))
     private void updateConnectedTank(CallbackInfo ci) {
         caa$observedTank.findNewCapability();
+    }
+
+    @WrapOperation(
+        method = "updateConnectedInventory",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/Level;hasNeighborSignal(Lnet/minecraft/core/BlockPos;)Z",
+            remap = true
+        )
+    )
+    private boolean noPower(Level instance, BlockPos blockPos, Operation<Boolean> original) {
+        return false;
     }
 
     @Inject(method = "getCapability", at = @At("HEAD"), cancellable = true)
