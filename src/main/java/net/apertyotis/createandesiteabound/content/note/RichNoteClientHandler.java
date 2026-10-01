@@ -42,7 +42,7 @@ public class RichNoteClientHandler {
         active = true;
         if (trackingStack.isEmpty())
             return;
-        if (level.getGameTime() - lastTooltipTick > 3) {
+        if (level.getGameTime() - lastTooltipTick > 4) {
             reset();
         }
     }

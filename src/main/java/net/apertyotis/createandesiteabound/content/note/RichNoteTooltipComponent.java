@@ -13,17 +13,16 @@ import java.awt.*;
 
 public class RichNoteTooltipComponent implements ClientTooltipComponent, TooltipComponent {
 
-    public static final int CLIPBOARD_WIDTH = 244;
+    public static final int CLIPBOARD_WIDTH = 228;
     public static final int CLIPBOARD_HEIGHT = 256;
-    public static final int LEFT_PADDING = 41;
+    public static final int LEFT_PADDING = 33;
     public static final int TOP_PADDING = 50;
-    public static final int BOTTOM_MARGIN = 18;
     public static final int CONTENT_WIDTH = 162;
     public static final int CONTENT_HEIGHT = 180;
 
     @Override
     public int getHeight() {
-        return CLIPBOARD_HEIGHT + BOTTOM_MARGIN;
+        return CLIPBOARD_HEIGHT;
     }
 
     @Override
@@ -32,7 +31,7 @@ public class RichNoteTooltipComponent implements ClientTooltipComponent, Tooltip
     }
 
     public void renderBackground(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blit(AllGuiTextures.CLIPBOARD.location, x, y, 5, 0, CLIPBOARD_WIDTH, CLIPBOARD_HEIGHT);
+        guiGraphics.blit(AllGuiTextures.CLIPBOARD.location, x, y, 13, 0, CLIPBOARD_WIDTH, CLIPBOARD_HEIGHT);
     }
 
     @Override
@@ -53,8 +52,10 @@ public class RichNoteTooltipComponent implements ClientTooltipComponent, Tooltip
         guiGraphics.drawString(font, pageIndicator,
             x + LEFT_PADDING + xOffset, y + TOP_PADDING + CONTENT_HEIGHT + 3,
             0x000000, false);
-        guiGraphics.drawString(font, Component.translatable("caa.note.hint"),
-            x + 5, y + CLIPBOARD_HEIGHT + 3,
-            0xffffff, false);
+        Component hint_1 = Component.translatable("caa.note.hint_1");
+        Component hint_2 = Component.translatable("caa.note.hint_2");
+        width = font.width(hint_2);
+        guiGraphics.drawString(font, hint_1, x + 12, y + 8, 0xffffff, false);
+        guiGraphics.drawString(font, hint_2, x + CLIPBOARD_WIDTH - 12 - width, y + 8, 0xffffff, false);
     }
 }
