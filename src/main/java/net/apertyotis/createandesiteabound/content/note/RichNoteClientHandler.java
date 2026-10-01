@@ -30,6 +30,7 @@ public class RichNoteClientHandler {
     public static boolean active = false;
     public static boolean opened = false;
     public static long lastTooltipTick;
+    public static long timestamp;
     public static ItemStack trackingStack = ItemStack.EMPTY;
     public static LerpedFloat progress = LerpedFloat.linear().startWithValue(0);
 
@@ -42,13 +43,15 @@ public class RichNoteClientHandler {
         active = true;
         if (trackingStack.isEmpty())
             return;
-        if (level.getGameTime() - lastTooltipTick > 4) {
+        if (level.getGameTime() - lastTooltipTick > 5) {
             reset();
         }
     }
 
     public static boolean mouseScrolled(double delta) {
         if (!active || !opened || !RichNotePageManager.isOpen())
+            return false;
+        if (System.currentTimeMillis() - timestamp > 250)
             return false;
         if (delta < 0) {
             RichNotePageManager.nextPage();
@@ -60,6 +63,8 @@ public class RichNoteClientHandler {
 
     public static boolean mouseClick(int button, double x, double y) {
         if (!active || !opened || !RichNotePageManager.isOpen())
+            return false;
+        if (System.currentTimeMillis() - timestamp > 250)
             return false;
         return RichNotePageManager.mouseClick(button, x, y);
     }
@@ -79,6 +84,7 @@ public class RichNoteClientHandler {
         if (lastTooltipTick == current)
             return;
         lastTooltipTick = current;
+        timestamp = System.currentTimeMillis();
         if (opened)
             return;
         float value = progress.getValue();

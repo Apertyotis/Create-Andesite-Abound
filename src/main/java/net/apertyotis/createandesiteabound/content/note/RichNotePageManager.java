@@ -56,15 +56,15 @@ public class RichNotePageManager {
             if (currentPage instanceof RichNoteIndex) {
                 ResourceLocation key = ((RichNoteIndex) currentPage).getSelection();
                 open(key);
+                return true;
             }
         } else if (button == ClientEvents.getKeyUseCode()) {
             if (currentPage instanceof RichNoteData) {
                 openTitle();
+                return true;
             }
-        } else {
-            return false;
         }
-        return true;
+        return false;
     }
 
     public static RichNotePage resolveCurrentPage(Font font, int maxWidth, int maxHeight) {

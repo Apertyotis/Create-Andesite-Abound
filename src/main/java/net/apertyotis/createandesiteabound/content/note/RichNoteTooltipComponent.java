@@ -55,7 +55,7 @@ public class RichNoteTooltipComponent implements ClientTooltipComponent, Tooltip
         Component hint_1 = Component.translatable("caa.note.hint_1");
         Component hint_2 = Component.translatable("caa.note.hint_2");
         width = font.width(hint_2);
-        guiGraphics.drawString(font, hint_1, x + 12, y + 8, 0xffffff, false);
-        guiGraphics.drawString(font, hint_2, x + CLIPBOARD_WIDTH - 12 - width, y + 8, 0xffffff, false);
+        guiGraphics.drawString(font, hint_1, x + 18, y + 8, 0xffffff, false);
+        guiGraphics.drawString(font, hint_2, x + CLIPBOARD_WIDTH - 18 - width, y + 8, 0xffffff, false);
     }
 }
