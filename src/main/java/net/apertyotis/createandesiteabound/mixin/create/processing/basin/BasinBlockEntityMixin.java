@@ -3,6 +3,8 @@ package net.apertyotis.createandesiteabound.mixin.create.processing.basin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.simibubi.create.content.processing.basin.BasinBlock;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -14,6 +16,7 @@ import com.simibubi.create.foundation.utility.LangBuilder;
 import net.apertyotis.createandesiteabound.mixin.create.foundation.fluid.CombinedTankWrapperAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -43,6 +46,24 @@ public abstract class BasinBlockEntityMixin extends SmartBlockEntity {
     // 创建空构造函数来通过编译器语法检查，没有实际作用
     public BasinBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    @WrapOperation(
+        method = "lazyTick",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/simibubi/create/content/processing/basin/BasinBlockEntity;updateSpoutput()V"
+        )
+    )
+    private void dontFindNewSpoutout(BasinBlockEntity basin, Operation<Void> ignored) {
+        BlockState blockState = getBlockState();
+        Direction currentFacing = blockState.getValue(BasinBlock.FACING);
+        // noinspection DataFlowIssue
+        if (!level.isLoaded(worldPosition.relative(currentFacing)))
+            return;
+        if (BasinBlock.canOutputTo(level, worldPosition, currentFacing))
+            return;
+        level.setBlockAndUpdate(worldPosition, blockState.setValue(BasinBlock.FACING, Direction.DOWN));
     }
 
     // 工作盆也会提醒头顶的工作方块更新（让锅盖类工作方块不必频繁主动搜索配方

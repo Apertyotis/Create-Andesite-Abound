@@ -5,17 +5,41 @@ import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehavi
 import com.simibubi.create.content.logistics.funnel.FunnelBlock;
 import com.simibubi.create.content.processing.basin.BasinBlock;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = BasinBlock.class, remap = false)
-public abstract class BasinBlockMixin {
+public abstract class BasinBlockMixin extends Block {
+
+    public BasinBlockMixin(Properties pProperties) {
+        super(pProperties);
+    }
+
+    @Override
+    public @Nullable BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        BlockState state = defaultBlockState();
+        for (Direction d: Iterate.horizontalDirections) {
+            if (BasinBlock.canOutputTo(level, pos, d)) {
+                state = state.setValue(BasinBlock.FACING, d);
+                break;
+            }
+        }
+        return state;
+    }
 
     @Inject(method = "canOutputTo", at = @At("HEAD"), cancellable = true)
     private static void faucetIgnoreBlock(BlockGetter world, BlockPos basinPos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
