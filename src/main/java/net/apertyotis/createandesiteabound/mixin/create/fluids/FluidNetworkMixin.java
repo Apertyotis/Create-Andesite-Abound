@@ -11,7 +11,7 @@ import com.simibubi.create.content.fluids.*;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.utility.BlockFace;
 import com.simibubi.create.foundation.utility.Pair;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.compat.Mods;
 import net.apertyotis.createandesiteabound.compat.lazytick.LazyTickConfig;
 import net.apertyotis.createandesiteabound.content.fluids.FluidNetworkEx;
@@ -153,7 +153,7 @@ public abstract class FluidNetworkMixin implements FluidNetworkEx {
     @Expression("cycle < ?")
     @ModifyExpressionValue(method = "tick", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean betterFluidNetwork(boolean original, @Cancellable CallbackInfo ci) {
-        if (!AllConfig.pump_speed_change)
+        if (!AllConfigs.pump_speed_change)
             return original;
         if (!isPresent(start)) {
             ci.cancel();
@@ -225,7 +225,7 @@ public abstract class FluidNetworkMixin implements FluidNetworkEx {
 
                     Optional<PipeConnection.Flow> flow = ((PipeConnectionAccessor) adjacent).getFlow();
                     if (flow.isPresent() && !flow.get().fluid.isFluidEqual(fluid)) {
-                        if (AllConfig.pipe_flow_collision) {
+                        if (AllConfigs.pipe_flow_collision) {
                             FluidReactions.handlePipeFlowCollision(world, blockFace.getPos(), flow.get().fluid, fluid);
                             ci.cancel();
                             return false;
@@ -282,7 +282,7 @@ public abstract class FluidNetworkMixin implements FluidNetworkEx {
     // 重建网络时清除前方液流
     @Inject(method = "reset", at = @At("HEAD"))
     private void beforeReset(CallbackInfo ci) {
-        if (!AllConfig.pump_speed_change || targets.isEmpty())
+        if (!AllConfigs.pump_speed_change || targets.isEmpty())
             return;
         // 不能在区块卸载后访问
         if (caa$blockEntity != null && caa$blockEntity.isChunkUnloaded())

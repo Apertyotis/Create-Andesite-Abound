@@ -1,6 +1,6 @@
 package net.apertyotis.createandesiteabound.content.fluids.filling;
 
-import net.apertyotis.createandesiteabound.AllBlockEntityType;
+import net.apertyotis.createandesiteabound.AllBlockEntityTypes;
 import net.apertyotis.createandesiteabound.content.fluids.AbstractFluidMachineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,7 +45,7 @@ public class FillingMachineBlock extends AbstractFluidMachineBlock<FillingMachin
 
     @Override
     public BlockEntityType<? extends FillingMachineBlockEntity> getBlockEntityType() {
-        return AllBlockEntityType.FILLING_MACHINE.get();
+        return AllBlockEntityTypes.FILLING_MACHINE.get();
     }
 
     @Override

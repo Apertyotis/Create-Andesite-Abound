@@ -3,7 +3,7 @@ package net.apertyotis.createandesiteabound.mixin.create.fluids.hosePulley;
 import com.simibubi.create.content.fluids.transfer.FluidManipulationBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
@@ -34,7 +34,7 @@ public abstract class FluidManipulationBehaviourMixin extends BlockEntityBehavio
         if (caa$effectCooldown > 0) {
             ci.cancel();
         } else {
-            caa$effectCooldown = AllConfig.hose_pulley_sound_cooldown;
+            caa$effectCooldown = AllConfigs.hose_pulley_sound_cooldown;
         }
     }
 }

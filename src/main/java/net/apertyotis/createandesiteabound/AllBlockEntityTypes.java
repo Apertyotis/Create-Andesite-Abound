@@ -10,7 +10,7 @@ import net.apertyotis.createandesiteabound.content.radar.RedstoneRadarBlockEntit
 
 import static net.apertyotis.createandesiteabound.CreateAndesiteAbound.REGISTRATE;
 
-public class AllBlockEntityType {
+public class AllBlockEntityTypes {
     public static final BlockEntityEntry<RedstoneRadarBlockEntity> REDSTONE_RADAR = REGISTRATE
         .blockEntity("redstone_radar", RedstoneRadarBlockEntity::new)
         .validBlocks(AllBlocks.REDSTONE_RADAR)

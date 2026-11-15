@@ -6,7 +6,7 @@ import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import com.simibubi.create.content.trains.entity.Train;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.compat.Mods;
 import net.apertyotis.createandesiteabound.compat.createaddition.PortableEnergyInterface;
 import net.minecraft.core.BlockPos;
@@ -25,7 +25,7 @@ public abstract class AbstractContraptionEntityMixin {
             MovementContext context, StructureTemplate.StructureBlockInfo blockInfo, MovementBehaviour actor,
             Vec3 actorPosition, BlockPos gridPosition, CallbackInfoReturnable<Boolean> cir
     ) {
-        if (!AllConfig.better_psi_on_carriage)
+        if (!AllConfigs.better_psi_on_carriage)
             return;
 
         boolean isPEI = Mods.CreateAddition

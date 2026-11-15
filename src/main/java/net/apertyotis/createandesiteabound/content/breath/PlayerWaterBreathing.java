@@ -1,6 +1,6 @@
 package net.apertyotis.createandesiteabound.content.breath;
 
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingBreatheEvent;
@@ -16,7 +16,7 @@ public class PlayerWaterBreathing {
     // 玩家不会在水下窒息
     @SubscribeEvent
     public static void onLivingBreath(LivingBreatheEvent event) {
-        if (!AllConfig.player_can_breath)
+        if (!AllConfigs.player_can_breath)
             return;
 
         if (event.getEntity() instanceof Player)

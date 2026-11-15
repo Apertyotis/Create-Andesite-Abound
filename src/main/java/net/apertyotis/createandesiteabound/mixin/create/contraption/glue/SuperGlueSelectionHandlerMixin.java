@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.contraptions.glue.SuperGlueSelectionHandler;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueHandler;
 import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +25,7 @@ public abstract class SuperGlueSelectionHandlerMixin {
             )
     )
     private boolean noCannotReachWarning(Set<BlockPos> instance, Object o, Operation<Boolean> original) {
-        if (!AllConfig.hachimi_glue) {
+        if (!AllConfigs.hachimi_glue) {
             return original.call(instance, o);
         }
         return true;
@@ -39,7 +39,7 @@ public abstract class SuperGlueSelectionHandlerMixin {
             )
     )
     private boolean alwaysCanReach(Set<BlockPos> instance, Object o, Operation<Boolean> original) {
-        if (!AllConfig.hachimi_glue) {
+        if (!AllConfigs.hachimi_glue) {
             return original.call(instance, o);
         }
         return true;
@@ -60,7 +60,7 @@ public abstract class SuperGlueSelectionHandlerMixin {
     private Iterator<SuperGlueEntity> dontRenderSelected(
             List<SuperGlueEntity> instance, Operation<Iterator<SuperGlueEntity>> original
     ) {
-        if (!AllConfig.hachimi_glue)
+        if (!AllConfigs.hachimi_glue)
             return original.call(instance);
         else
             return instance.stream().filter(entity -> entity != HachimiGlueHandler.HACHIMI_GLUE_HANDLER.getSelected())

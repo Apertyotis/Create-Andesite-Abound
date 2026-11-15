@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.content.hachimiGlue;
 
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -41,7 +41,7 @@ public class HachimiGlueModificationPacket extends SimplePacketBase {
             ServerPlayer player = context.getSender();
             if (player == null)
                 return;
-            if (!AllConfig.hachimi_glue) {
+            if (!AllConfigs.hachimi_glue) {
                 player.displayClientMessage(Component.translatable("info.caa.option.hachimi_disabled")
                         .withStyle(ChatFormatting.RED), true);
                 return;

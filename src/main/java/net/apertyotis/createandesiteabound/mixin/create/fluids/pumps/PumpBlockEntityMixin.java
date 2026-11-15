@@ -15,7 +15,7 @@ import com.simibubi.create.content.fluids.pipes.valve.FluidValveBlockEntity;
 import com.simibubi.create.content.fluids.pump.PumpBlockEntity;
 import com.simibubi.create.foundation.utility.BlockFace;
 import com.simibubi.create.foundation.utility.Pair;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.foundation.BlockFaceEx;
 import net.apertyotis.createandesiteabound.content.fluids.FluidTransportBehaviourEx;
 import net.apertyotis.createandesiteabound.content.fluids.PipelineHelper;
@@ -128,7 +128,7 @@ public abstract class PumpBlockEntityMixin {
     @Expression("pull")
     @ModifyExpressionValue(method = "distributePressureTo", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 0))
     private boolean resetFrontPipeline(boolean pull, @Local(name = "start") BlockFace start) {
-        if (pull && AllConfig.pump_speed_change) {
+        if (pull && AllConfigs.pump_speed_change) {
             // 后方管道更新时，额外重置前方管道的液流
             Level level = ((BlockEntity)(Object) this).getLevel();
             BlockFace front = new BlockFace(start.getPos(), start.getOppositeFace());

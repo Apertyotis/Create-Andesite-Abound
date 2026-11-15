@@ -1,7 +1,7 @@
 package net.apertyotis.createandesiteabound.mixin.create.kinetics.saw;
 
 import com.simibubi.create.content.kinetics.saw.SawBlockEntity;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -16,7 +16,7 @@ public abstract class SawBlockEntityMixin{
             name = "time"
     )
     private int setDefaultTime(int time) {
-        if (!AllConfig.saw_speed_change) return time;
+        if (!AllConfigs.saw_speed_change) return time;
         return 80;
     }
 }

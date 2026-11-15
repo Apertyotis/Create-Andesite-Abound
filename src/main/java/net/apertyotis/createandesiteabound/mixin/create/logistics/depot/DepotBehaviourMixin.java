@@ -8,7 +8,7 @@ import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.logistics.depot.DepotBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +35,7 @@ public abstract class DepotBehaviourMixin {
     // 将物品运动到中心动画改为 5tick
     @Inject(method = "tick(Lcom/simibubi/create/content/kinetics/belt/transport/TransportedItemStack;)Z", at = @At("HEAD"), cancellable = true)
     private void redirectAnimateTick(TransportedItemStack heldItem, CallbackInfoReturnable<Boolean> cir) {
-        if (!AllConfig.depot_speed_change)
+        if (!AllConfigs.depot_speed_change)
             return;
 
         heldItem.prevBeltPosition = heldItem.beltPosition;
@@ -58,7 +58,7 @@ public abstract class DepotBehaviourMixin {
         )
     )
     private boolean preventDropping(boolean original) {
-        if (!AllConfig.no_depot_overflow_drop)
+        if (!AllConfigs.no_depot_overflow_drop)
             return original;
 
         DepotBehaviour behaviour = (DepotBehaviour)(Object) this;
@@ -95,7 +95,7 @@ public abstract class DepotBehaviourMixin {
         cancellable = true
     )
     private void preventOverProcessing(CallbackInfo ci) {
-        if (!AllConfig.no_depot_overflow_drop)
+        if (!AllConfigs.no_depot_overflow_drop)
             return;
         if (!incoming.isEmpty())
             ci.cancel();
@@ -111,7 +111,7 @@ public abstract class DepotBehaviourMixin {
         remap = true
     )
     private void moveOverflowItemsToIncoming(Level p_18993_, double p_18994_, double p_18995_, double p_18996_, ItemStack p_18997_, Operation<Void> original) {
-        if (!AllConfig.no_depot_overflow_drop) {
+        if (!AllConfigs.no_depot_overflow_drop) {
             original.call(p_18993_, p_18994_, p_18995_, p_18996_, p_18997_);
             return;
         }
@@ -132,7 +132,7 @@ public abstract class DepotBehaviourMixin {
         cancellable = true
     )
     private void preventInfiniteIncoming(TransportedItemStack heldItem, boolean simulate, CallbackInfoReturnable<ItemStack> cir) {
-        if (!AllConfig.no_depot_overflow_drop)
+        if (!AllConfigs.no_depot_overflow_drop)
             return;
 
         if (this.heldItem != null && this.incoming.size() >= 4)

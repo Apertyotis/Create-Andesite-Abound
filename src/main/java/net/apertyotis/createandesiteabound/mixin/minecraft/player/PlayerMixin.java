@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.mixin.minecraft.player;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.Fluid;
@@ -21,7 +21,7 @@ public abstract class PlayerMixin {
             )
     )
     private boolean alwaysInAir(Player instance, TagKey<Fluid> tagKey, Operation<Boolean> original) {
-        if (!AllConfig.disable_dig_speed_penalty)
+        if (!AllConfigs.disable_dig_speed_penalty)
             return original.call(instance, tagKey);
         return false;
     }
@@ -35,7 +35,7 @@ public abstract class PlayerMixin {
             )
     )
     private boolean alwaysOnGround(Player instance, Operation<Boolean> original) {
-        if (!AllConfig.disable_dig_speed_penalty)
+        if (!AllConfigs.disable_dig_speed_penalty)
             return original.call(instance);
         return true;
     }

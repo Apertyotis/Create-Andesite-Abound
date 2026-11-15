@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.content.fluids;
 
 
 import net.apertyotis.createandesiteabound.AllBlocks;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.foundation.CircularArray;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -16,7 +16,7 @@ public class FluidMachineItemHandler implements IItemHandlerModifiable {
 
     public FluidMachineItemHandler(AbstractFluidMachineBlockEntity blockEntity) {
         this.blockEntity = blockEntity;
-        items = new CircularArray<>(ItemStack.class, AllConfig.fluid_machine_capacity);
+        items = new CircularArray<>(ItemStack.class, AllConfigs.fluid_machine_capacity);
     }
 
     public void onlyInput() {

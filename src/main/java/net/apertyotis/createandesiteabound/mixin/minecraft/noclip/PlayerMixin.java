@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.mixin.minecraft.noclip;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.content.trinklet.BottledGhost;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -64,6 +64,6 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Override
     public boolean isInWall() {
-        return !AllConfig.player_can_breath && super.isInWall();
+        return !AllConfigs.player_can_breath && super.isInWall();
     }
 }

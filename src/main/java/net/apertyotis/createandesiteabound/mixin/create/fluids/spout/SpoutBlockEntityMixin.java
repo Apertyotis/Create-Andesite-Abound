@@ -7,7 +7,7 @@ import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.mixin.create.kinetics.belt.BeltInventoryAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -44,7 +44,7 @@ public abstract class SpoutBlockEntityMixin extends SmartBlockEntity {
         )
     )
     private void afterTick(CallbackInfo ci) {
-        if (!AllConfig.spout_speed_change || processingTicks != 19) return;
+        if (!AllConfigs.spout_speed_change || processingTicks != 19) return;
 
         processingTicks--;
     }
@@ -58,7 +58,7 @@ public abstract class SpoutBlockEntityMixin extends SmartBlockEntity {
         )
     )
     private int modifyTankCapacity(int original) {
-        if (!AllConfig.spout_double_capacity) return original;
+        if (!AllConfigs.spout_double_capacity) return original;
         return 2000;
     }
 

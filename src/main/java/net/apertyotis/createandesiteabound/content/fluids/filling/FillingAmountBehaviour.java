@@ -8,7 +8,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatter;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import com.simibubi.create.foundation.utility.Components;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.mixin.create.foundation.blockEntity.FilteringBehaviourAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -66,7 +66,7 @@ public class FillingAmountBehaviour extends FilteringBehaviour {
         } else if (vs.row() == 0) {
             return Component.literal(String.valueOf(vs.value() * 5));
         } else {
-            int bucket = AllConfig.fluid_vessel_capacity * vs.value() / 200;
+            int bucket = AllConfigs.fluid_vessel_capacity * vs.value() / 200;
             return Component.literal(bucket == 0 ? "*" : String.valueOf(bucket));
         }
     }
@@ -78,7 +78,7 @@ public class FillingAmountBehaviour extends FilteringBehaviour {
         if (vs.row() == 0) {
             count = vs.value() * 5;
         } else {
-            count = AllConfig.fluid_vessel_capacity * vs.value() / 200 * 1000;
+            count = AllConfigs.fluid_vessel_capacity * vs.value() / 200 * 1000;
         }
         upTo = count == 0;
     }
@@ -86,7 +86,7 @@ public class FillingAmountBehaviour extends FilteringBehaviour {
     @Override
     public ValueSettings getValueSettings() {
         if (count % 1000 == 0) {
-            return new ValueSettings(1, count * 200 / (AllConfig.fluid_vessel_capacity * 1000) + 1);
+            return new ValueSettings(1, count * 200 / (AllConfigs.fluid_vessel_capacity * 1000) + 1);
         } else {
             return new ValueSettings(0, count / 5);
         }

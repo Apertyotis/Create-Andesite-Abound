@@ -8,7 +8,7 @@ import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackH
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.kinetics.deployer.BeltDeployerCallbacks;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.mixin.create.kinetics.belt.BeltInventoryAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,7 +28,7 @@ public abstract class BeltDeployerCallbacksMixin {
         )
     )
     private static void waitStart_1(DeployerBlockEntity instance, Operation<Void> original) {
-        if (!AllConfig.deployer_speed_change) {
+        if (!AllConfigs.deployer_speed_change) {
             original.call(instance);
             return;
         }
@@ -48,7 +48,7 @@ public abstract class BeltDeployerCallbacksMixin {
         )
     )
     private static void waitStart_2(DeployerBlockEntity instance, Operation<Void> original) {
-        if (!AllConfig.deployer_speed_change) {
+        if (!AllConfigs.deployer_speed_change) {
             original.call(instance);
             return;
         }

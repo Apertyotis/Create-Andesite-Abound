@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.fluids.drain.ItemDrainBlockEntity;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +24,7 @@ public abstract class ItemDrainBlockEntityMixin {
             )
     )
     private void modifyProcessingTicks(ItemDrainBlockEntity instance, int value, Operation<Void> original) {
-        if (!AllConfig.item_drain_speed_change)
+        if (!AllConfigs.item_drain_speed_change)
             original.call(instance, value);
         else
             original.call(instance, value - 1);
@@ -37,7 +37,7 @@ public abstract class ItemDrainBlockEntityMixin {
             cancellable = true
     )
     private void redirectItemMovementPerTick(CallbackInfoReturnable<Float> cir){
-        if (!AllConfig.item_drain_speed_change) return;
+        if (!AllConfigs.item_drain_speed_change) return;
         cir.setReturnValue(0.1f);
     }
 
@@ -52,7 +52,7 @@ public abstract class ItemDrainBlockEntityMixin {
             )
     )
     private int continueProcessing_redirectProcessingTicks(int original) {
-        if (!AllConfig.item_drain_speed_change)
+        if (!AllConfigs.item_drain_speed_change)
             return original;
         else
             return original + 1;

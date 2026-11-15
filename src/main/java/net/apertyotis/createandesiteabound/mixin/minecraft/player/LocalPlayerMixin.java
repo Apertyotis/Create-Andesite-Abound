@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.mixin.minecraft.player;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +19,7 @@ public abstract class LocalPlayerMixin {
             )
     )
     private boolean keepFlyingOnGround(MultiPlayerGameMode instance, Operation<Boolean> original) {
-        if (!AllConfig.keep_flying_on_ground)
+        if (!AllConfigs.keep_flying_on_ground)
             return original.call(instance);
         else
             return true;

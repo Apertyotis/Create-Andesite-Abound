@@ -3,7 +3,7 @@ package net.apertyotis.createandesiteabound.mixin.create.contraption.haverster;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.contraptions.actors.harvester.HarvesterMovementBehaviour;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,7 +21,7 @@ public abstract class HarvesterMovementBehaviourMixin {
             )
     )
     private void notConsumeSeed(ItemStack instance, int p_41775_, Operation<Void> original) {
-        if (!AllConfig.harvester_not_consume_seed)
+        if (!AllConfigs.harvester_not_consume_seed)
             original.call(instance, p_41775_);
     }
 }

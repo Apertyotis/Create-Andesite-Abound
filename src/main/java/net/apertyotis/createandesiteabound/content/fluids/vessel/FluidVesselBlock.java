@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.content.fluids.vessel;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
-import net.apertyotis.createandesiteabound.AllBlockEntityType;
+import net.apertyotis.createandesiteabound.AllBlockEntityTypes;
 import net.apertyotis.createandesiteabound.AllBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -43,7 +43,7 @@ public class FluidVesselBlock extends Block implements IBE<FluidVesselBlockEntit
 
     @Override
     public BlockEntityType<? extends FluidVesselBlockEntity> getBlockEntityType() {
-        return AllBlockEntityType.FLUID_VESSEL.get();
+        return AllBlockEntityTypes.FLUID_VESSEL.get();
     }
 
     @Override

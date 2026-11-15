@@ -13,7 +13,7 @@ import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
 import com.simibubi.create.content.fluids.pipes.StraightPipeBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.content.fluids.FluidTransportBehaviourEx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -138,7 +138,7 @@ public abstract class FluidTransportBehaviourMixin extends BlockEntityBehaviour 
     @Expression("onServer")
     @ModifyExpressionValue(method = "tick", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 1))
     private boolean tickConnections(boolean original, @Cancellable CallbackInfo ci) {
-        if (!AllConfig.pump_speed_change)
+        if (!AllConfigs.pump_speed_change)
             return original;
         ci.cancel();
         if (!original || caa$noSource)

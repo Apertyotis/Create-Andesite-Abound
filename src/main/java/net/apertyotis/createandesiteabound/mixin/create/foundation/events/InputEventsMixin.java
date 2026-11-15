@@ -8,7 +8,7 @@ import com.simibubi.create.content.equipment.toolbox.ToolboxBlockEntity;
 import com.simibubi.create.content.equipment.toolbox.ToolboxEquipPacket;
 import com.simibubi.create.content.equipment.toolbox.ToolboxHandler;
 import com.simibubi.create.foundation.events.InputEvents;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.content.toolbox.BetterToolboxHandlerClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -50,8 +50,8 @@ public abstract class InputEventsMixin {
         }
 
         BetterToolboxHandlerClient handler = BetterToolboxHandlerClient.BETTER_TOOLBOX_HANDLER_CLIENT;
-        if (!pressed && AllConfig.quick_unequip_items && !handler.keyBlocked &&
-            handler.keyPressed && handler.holdTicks <= AllConfig.toolbelt_hold_delay
+        if (!pressed && AllConfigs.quick_unequip_items && !handler.keyBlocked &&
+            handler.keyPressed && handler.holdTicks <= AllConfigs.toolbelt_hold_delay
         ) {
             List<ToolboxBlockEntity> toolboxes = ToolboxHandler.getNearest(player.level(), player, 8);
             toolboxes.sort(Comparator.comparing(ToolboxBlockEntity::getUniqueId));

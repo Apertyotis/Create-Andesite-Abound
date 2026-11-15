@@ -7,7 +7,7 @@ import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.foundation.utility.RaycastHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.mixin.create.contraption.glue.SuperGlueSelectionHandlerAccessor;
 import net.minecraft.client.Minecraft;
@@ -33,7 +33,7 @@ public class HachimiGlueHandler {
     private int cooldown = 0;
 
     public void tick() {
-        if (!AllConfig.hachimi_glue)
+        if (!AllConfigs.hachimi_glue)
             return;
 
         Player player = Minecraft.getInstance().player;

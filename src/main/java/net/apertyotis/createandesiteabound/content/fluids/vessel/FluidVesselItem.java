@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import net.apertyotis.createandesiteabound.AllBlocks;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -40,7 +40,7 @@ public class FluidVesselItem extends BlockItem {
 
     @Override
     public int getMaxStackSize(ItemStack stack) {
-        return AllConfig.nonnull_fluid_vessel_stackable || getFluid(stack).isEmpty() ? 64 : 1;
+        return AllConfigs.nonnull_fluid_vessel_stackable || getFluid(stack).isEmpty() ? 64 : 1;
     }
 
     public static FluidStack getFluid(ItemStack stack) {
@@ -77,7 +77,7 @@ public class FluidVesselItem extends BlockItem {
                 .append(" ")
                 .append(Component.literal(String.valueOf(fluid.getAmount()))
                     .withStyle(ChatFormatting.GOLD))
-                .append(Component.literal(" / %d mB".formatted(AllConfig.fluid_vessel_capacity * 1000))
+                .append(Component.literal(" / %d mB".formatted(AllConfigs.fluid_vessel_capacity * 1000))
                     .withStyle(ChatFormatting.GRAY));
             tooltip.add(component);
         } else {
@@ -99,7 +99,7 @@ public class FluidVesselItem extends BlockItem {
 
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-        return new VesselFluidHandlerItemStack(stack, AllConfig.fluid_vessel_capacity * 1000);
+        return new VesselFluidHandlerItemStack(stack, AllConfigs.fluid_vessel_capacity * 1000);
     }
 
     public static class VesselFluidHandlerItemStack extends FluidHandlerItemStack {
@@ -146,7 +146,7 @@ public class FluidVesselItem extends BlockItem {
 
             int x = xOffset + 1;
             int y = yOffset + 13;
-            int width = Math.round(14f * fluid.getAmount() / 1000 / AllConfig.fluid_vessel_capacity);
+            int width = Math.round(14f * fluid.getAmount() / 1000 / AllConfigs.fluid_vessel_capacity);
             PoseStack pose = guiGraphics.pose();
             pose.pushPose();
             pose.translate(x, y, 199.9f);

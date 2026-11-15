@@ -1,6 +1,6 @@
 package net.apertyotis.createandesiteabound.mixin.minecraft.entity;
 
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +23,7 @@ public abstract class ItemEntityMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void setLifespan(CallbackInfo ci) {
-        if (lifespan == 6000 && lifespan != AllConfig.item_entity_lifespan && !(getOwner() instanceof Player))
-            lifespan = AllConfig.item_entity_lifespan;
+        if (lifespan == 6000 && lifespan != AllConfigs.item_entity_lifespan && !(getOwner() instanceof Player))
+            lifespan = AllConfigs.item_entity_lifespan;
     }
 }

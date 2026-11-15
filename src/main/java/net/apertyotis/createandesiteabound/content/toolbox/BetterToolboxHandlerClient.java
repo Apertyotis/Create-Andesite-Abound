@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.content.toolbox;
 
 import com.simibubi.create.AllKeys;
 import com.simibubi.create.content.equipment.toolbox.ToolboxHandlerClient;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.client.Minecraft;
 
 public class BetterToolboxHandlerClient {
@@ -21,7 +21,7 @@ public class BetterToolboxHandlerClient {
         if (keyBlocked)
             return;
         if (keyPressed) {
-            if (holdTicks++ >= AllConfig.toolbelt_hold_delay) {
+            if (holdTicks++ >= AllConfigs.toolbelt_hold_delay) {
                 keyPressed = false;
                 keyBlocked = true;
                 holdTicks = 0;

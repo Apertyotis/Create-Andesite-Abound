@@ -34,11 +34,11 @@ public class CreateAndesiteAbound {
 
         AllItems.register();
         AllBlocks.register();
-        AllBlockEntityType.register();
+        AllBlockEntityTypes.register();
         AllPackets.registerPackets();
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, AllConfig.SERVER_SPEC);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, AllConfig.CLIENT_SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, AllConfigs.SERVER_SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, AllConfigs.CLIENT_SPEC);
 
         ModLoadingContext context = ModLoadingContext.get();
         if (ModList.get().isLoaded("cloth_config")) {

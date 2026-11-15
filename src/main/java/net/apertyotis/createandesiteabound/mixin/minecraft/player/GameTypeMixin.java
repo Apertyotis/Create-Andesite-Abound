@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.mixin.minecraft.player;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.level.GameType;
 import org.objectweb.asm.Opcodes;
@@ -22,7 +22,7 @@ public abstract class GameTypeMixin {
         )
     )
     private void alwaysAllowFly(Abilities instance, boolean value, Operation<Void> original) {
-        if (!AllConfig.always_allow_flying) {
+        if (!AllConfigs.always_allow_flying) {
             original.call(instance, value);
             return;
         }

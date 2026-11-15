@@ -16,8 +16,8 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static net.apertyotis.createandesiteabound.AllConfig.CLIENT;
-import static net.apertyotis.createandesiteabound.AllConfig.SERVER;
+import static net.apertyotis.createandesiteabound.AllConfigs.CLIENT;
+import static net.apertyotis.createandesiteabound.AllConfigs.SERVER;
 
 
 @SuppressWarnings({"UnstableApiUsage", "SameParameterValue"})
@@ -48,6 +48,7 @@ public class ConfigScreen {
         qol.addEntry(booleanEntry(entryBuilder, SERVER.PIPE_FLOW_COLLISION, true));
         qol.addEntry(intEntry(entryBuilder, SERVER.HOSE_PULLEY_SOUND_COOLDOWN, true, 0, Integer.MAX_VALUE));
         qol.addEntry(booleanEntry(entryBuilder, SERVER.EASY_BELT, true));
+        qol.addEntry(booleanEntry(entryBuilder, SERVER.VOID_BURNING, true));
 
         ConfigCategory norm = builder.getOrCreateCategory(Component.translatable("caa.config.normalization.title"));
         norm.addEntry(booleanEntry(entryBuilder, SERVER.DEPLOYER_SPEED_CHANGE, true));
@@ -71,10 +72,10 @@ public class ConfigScreen {
         misc.addEntry(booleanEntry(entryBuilder, SERVER.DONT_COMPARE_ITEM_CAPABILITY, true));
 
         builder.setSavingRunnable(() -> {
-            AllConfig.clientConfig.save();
-            AllConfig.serverConfig.save();
-            AllConfig.reloadClient();
-            AllConfig.reloadServer();
+            AllConfigs.clientConfig.save();
+            AllConfigs.serverConfig.save();
+            AllConfigs.reloadClient();
+            AllConfigs.reloadServer();
         });
         return builder.build();
     }

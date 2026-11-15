@@ -3,7 +3,7 @@ package net.apertyotis.createandesiteabound.mixin.create.kinetics.press;
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
 import com.simibubi.create.content.kinetics.press.PressingBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -42,7 +42,7 @@ public abstract class PressBehaviourMixin extends BeltProcessingBehaviour {
     // 在辊压机工作结束后，提前1gt检查是否完成
     @Inject(method = "tick", at = @At("TAIL"))
     private void afterTick(CallbackInfo ci){
-        if (!AllConfig.press_speed_change)
+        if (!AllConfigs.press_speed_change)
             return;
         if (mode == PressingBehaviour.Mode.WORLD) {
             Level level = getWorld();

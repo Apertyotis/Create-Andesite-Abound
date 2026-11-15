@@ -8,7 +8,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 @Mod.EventBusSubscriber(modid = CreateAndesiteAbound.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class AllConfig {
+public class AllConfigs {
     public static final Server SERVER;
     public static final ForgeConfigSpec SERVER_SPEC;
     public static ModConfig serverConfig;
@@ -61,6 +61,7 @@ public class AllConfig {
         public final ForgeConfigSpec.IntValue FLUID_VESSEL_CAPACITY;
         public final ForgeConfigSpec.IntValue FLUID_MACHINE_CAPACITY;
         public final ForgeConfigSpec.BooleanValue EASY_BELT;
+        public final ForgeConfigSpec.BooleanValue VOID_BURNING;
 
         Server(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -159,6 +160,9 @@ public class AllConfig {
             EASY_BELT = builder
                 .comment("Allow belts to operate without requiring a power source.")
                 .define("easy_belt", true);
+            VOID_BURNING = builder
+                .comment("Blaze Burner will use the Void as fuel.")
+                .define("void_burning", true);
             builder.pop();
 
             builder.comment("Fluid Filling&Emptying").push("fluid");
@@ -233,6 +237,7 @@ public class AllConfig {
     public static boolean quick_unequip_items;
     public static int hose_pulley_sound_cooldown;
     public static boolean easy_belt;
+    public static boolean void_burning;
 
     // 重载配置时，更新缓存
     public static void reloadServer() {
@@ -268,6 +273,7 @@ public class AllConfig {
         fluid_machine_capacity = SERVER.FLUID_MACHINE_CAPACITY.get();
         hose_pulley_sound_cooldown = SERVER.HOSE_PULLEY_SOUND_COOLDOWN.get();
         easy_belt = SERVER.EASY_BELT.get();
+        void_burning = SERVER.VOID_BURNING.get();
     }
 
     public static void reloadClient() {

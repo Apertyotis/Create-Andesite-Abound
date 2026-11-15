@@ -3,7 +3,7 @@ package net.apertyotis.createandesiteabound.content.fluids.filling;
 import com.simibubi.create.content.logistics.filter.FilterItemStack;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.CenteredSideValueBoxTransform;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.content.fluids.AbstractFluidMachineBlock;
 import net.apertyotis.createandesiteabound.content.fluids.AbstractFluidMachineBlockEntity;
 import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselItem;
@@ -82,7 +82,7 @@ public class FillingMachineBlockEntity extends AbstractFluidMachineBlockEntity {
                 break Filling;
 
             boolean precise = filter.count != 0;
-            int amount = precise ? filter.count : AllConfig.fluid_vessel_capacity * 1000;
+            int amount = precise ? filter.count : AllConfigs.fluid_vessel_capacity * 1000;
             FluidStack resolvedFilter = resolveFilter(level, filter);
             FluidStack toExtract = FluidStack.EMPTY;
             if (resolvedFilter != null) {

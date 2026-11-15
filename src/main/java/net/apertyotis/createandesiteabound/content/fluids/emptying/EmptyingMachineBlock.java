@@ -1,6 +1,6 @@
 package net.apertyotis.createandesiteabound.content.fluids.emptying;
 
-import net.apertyotis.createandesiteabound.AllBlockEntityType;
+import net.apertyotis.createandesiteabound.AllBlockEntityTypes;
 import net.apertyotis.createandesiteabound.content.fluids.AbstractFluidMachineBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
@@ -16,6 +16,6 @@ public class EmptyingMachineBlock extends AbstractFluidMachineBlock<EmptyingMach
 
     @Override
     public BlockEntityType<? extends EmptyingMachineBlockEntity> getBlockEntityType() {
-        return AllBlockEntityType.EMPTYING_MACHINE.get();
+        return AllBlockEntityTypes.EMPTYING_MACHINE.get();
     }
 }

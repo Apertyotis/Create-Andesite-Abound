@@ -4,14 +4,13 @@ import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.content.equipment.toolbox.*;
 import com.simibubi.create.foundation.gui.AbstractSimiScreen;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -63,7 +62,7 @@ public class RadialMenu extends AbstractSimiScreen {
 
     @Override
     protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        int ticks = Math.max(1, AllConfig.toolbelt_animation_ticks);
+        int ticks = Math.max(1, AllConfigs.toolbelt_animation_ticks);
         float fade = (ticksOpen + AnimationTickHolder.getPartialTicks()) / ticks;
         fade = Mth.clamp(fade, 1 / 512f, 1);
 

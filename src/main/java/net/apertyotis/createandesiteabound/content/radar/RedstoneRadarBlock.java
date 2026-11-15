@@ -3,7 +3,7 @@ package net.apertyotis.createandesiteabound.content.radar;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.Iterate;
-import net.apertyotis.createandesiteabound.AllBlockEntityType;
+import net.apertyotis.createandesiteabound.AllBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -64,7 +64,7 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
 
     @Override
     public BlockEntityType<? extends RedstoneRadarBlockEntity> getBlockEntityType() {
-        return AllBlockEntityType.REDSTONE_RADAR.get();
+        return AllBlockEntityTypes.REDSTONE_RADAR.get();
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.fluids.*;
 import com.simibubi.create.foundation.utility.BlockFace;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.apertyotis.createandesiteabound.content.fluids.FluidNetworkEx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -74,7 +74,7 @@ public abstract class PipeConnectionMixin {
         Level world, BlockPos pos, FluidStack ignored,
         Predicate<FluidStack> filter, CallbackInfoReturnable<Boolean> cir
     ) {
-        if (!AllConfig.pump_speed_change)
+        if (!AllConfigs.pump_speed_change)
             return;
         PipeConnection connection = (PipeConnection)(Object) this;
 
@@ -129,7 +129,7 @@ public abstract class PipeConnectionMixin {
         )
     )
     private void immediateFlow(LerpedFloat instance, double value, Operation<Void> original) {
-        if (AllConfig.pump_speed_change)
+        if (AllConfigs.pump_speed_change)
             value = 1;
         original.call(instance, value);
     }

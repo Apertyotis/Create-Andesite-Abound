@@ -7,7 +7,7 @@ import com.simibubi.create.content.logistics.chute.AbstractChuteBlock;
 import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -63,7 +63,7 @@ public abstract class ChuteBlockEntityMixin extends SmartBlockEntity implements 
         @Local(name = "clientSide") boolean clientSide,
         @Local(name = "itemMotion") float itemMotion)
     {
-        if (!AllConfig.chute_speed_change)
+        if (!AllConfigs.chute_speed_change)
             return;
 
         // 取消原抽取物品逻辑，改为不耗时操作
@@ -77,7 +77,7 @@ public abstract class ChuteBlockEntityMixin extends SmartBlockEntity implements 
                     handleInputFromBelow();
             }
 
-            if (!AllConfig.chute_speed_change) {
+            if (!AllConfigs.chute_speed_change) {
                 ci.cancel();
                 return;
             }

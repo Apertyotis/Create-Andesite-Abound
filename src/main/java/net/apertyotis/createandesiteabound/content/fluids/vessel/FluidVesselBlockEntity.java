@@ -4,7 +4,7 @@ import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -144,7 +144,7 @@ public class FluidVesselBlockEntity extends SmartBlockEntity implements IHaveGog
         private final int capacity;
 
         public VesselTankHandler() {
-            capacity = AllConfig.fluid_vessel_capacity * 1000;
+            capacity = AllConfigs.fluid_vessel_capacity * 1000;
         }
 
         public boolean canVoid() {

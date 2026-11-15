@@ -2,7 +2,7 @@ package net.apertyotis.createandesiteabound.mixin.minecraft.items;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.apertyotis.createandesiteabound.AllConfig;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.CapabilityProvider;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +25,7 @@ public abstract class ItemStackMixin {
             CapabilityProvider<ItemStack> capabilityProvider,
             Operation<Boolean> original
     ) {
-        if (AllConfig.dont_compare_item_capability)
+        if (AllConfigs.dont_compare_item_capability)
             return true;
         else
             return original.call(instance, capabilityProvider);
