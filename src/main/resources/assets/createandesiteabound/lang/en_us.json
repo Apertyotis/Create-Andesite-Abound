@@ -126,6 +126,8 @@
   "caa.config.tweaks.hose_pulley_sound_cooldown": "Hose Pulley Sound Cooldown",
   "caa.config.tweaks.easy_belt": "Easy Belt",
   "caa.config.tweaks.easy_belt.1": "Allow belts to operate without requiring a power source.",
+  "caa.config.tweaks.void_burning": "Void Burning",
+  "caa.config.tweaks.void_burning.1": "Blaze Burner will use the Void as fuel.",
 
   "caa.config.normalization.title": "Normalization",
   "caa.config.normalization.deployer": "Deployer",

@@ -127,6 +127,8 @@
   "caa.config.tweaks.hose_pulley_sound_cooldown": "软管滑轮音效冷却",
   "caa.config.tweaks.easy_belt": "简易传送带",
   "caa.config.tweaks.easy_belt.1": "允许传送带无动力工作。",
+  "caa.config.tweaks.void_burning": "虚空燃烧",
+  "caa.config.tweaks.void_burning.1": "烈焰人燃烧室可以从虚空获取燃料。",
 
   "caa.config.normalization.title": "归一化",
   "caa.config.normalization.deployer": "机械手",
