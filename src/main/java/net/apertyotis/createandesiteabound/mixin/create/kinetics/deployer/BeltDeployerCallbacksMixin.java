@@ -73,7 +73,7 @@ public abstract class BeltDeployerCallbacksMixin {
         TransportedItemStack s, TransportedItemStackHandlerBehaviour i,
         DeployerBlockEntity blockEntity, CallbackInfoReturnable<BeltProcessingBehaviour.ProcessingResult> cir
     ) {
-        if (s.stack.isEmpty())
+        if (s.stack.isEmpty() && i.blockEntity instanceof BeltBlockEntity)
             cir.setReturnValue(BeltProcessingBehaviour.ProcessingResult.REMOVE);
     }
 
