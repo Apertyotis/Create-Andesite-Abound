@@ -36,6 +36,7 @@ public class CreateAndesiteAbound {
         AllBlocks.register();
         AllBlockEntityTypes.register();
         AllPackets.registerPackets();
+        AllRecipeTypes.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, AllConfigs.SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, AllConfigs.CLIENT_SPEC);

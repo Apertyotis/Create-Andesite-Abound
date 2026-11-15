@@ -2,80 +2,60 @@ package net.apertyotis.createandesiteabound.mixin.create.processing.burner;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.content.processing.burner.BlazeBurnerBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import org.jetbrains.annotations.NotNull;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import static com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HEAT_LEVEL;
+import static net.minecraftforge.fluids.FluidUtil.tryEmptyContainerAndStow;
 
 @Mixin(value = BlazeBurnerBlock.class, remap = false)
-public abstract class BlazeBurnerBlockMixin extends HorizontalDirectionalBlock {
-    protected BlazeBurnerBlockMixin(Properties pProperties) {
-        super(pProperties);
-    }
-
-    // 创造烈焰人燃烧室将掉落蛋糕
-    @SuppressWarnings("deprecation")
-    @ParametersAreNonnullByDefault
-    @Override
-    public @NotNull List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
-        try {
-            BlockEntity be = pParams.getParameter(LootContextParams.BLOCK_ENTITY);
-            if (be instanceof BlazeBurnerBlockEntity burner && burner.isCreative()) {
-                if (pState.getValue(HEAT_LEVEL) == BlazeBurnerBlock.HeatLevel.KINDLED)
-                    return List.of(AllBlocks.BLAZE_BURNER.asStack(), AllItems.CREATIVE_BLAZE_CAKE.asStack());
-                else if (pState.getValue(HEAT_LEVEL) == BlazeBurnerBlock.HeatLevel.SEETHING)
-                    return List.of(AllBlocks.BLAZE_BURNER.asStack(), AllItems.CREATIVE_BLAZE_CAKE.asStack(2));
-            }
-        } catch (NoSuchElementException | IllegalArgumentException ignored) {
-        }
-
-        return super.getDrops(pState, pParams);
-    }
-
+public abstract class BlazeBurnerBlockMixin{
     @WrapOperation(
-        method = "tryInsert",
+        method = "use",
         at = @At(
             value = "INVOKE",
-            target = "Lcom/simibubi/create/content/processing/burner/BlazeBurnerBlockEntity;applyCreativeFuel()V"
-        )
+            target = "Lcom/simibubi/create/content/processing/burner/BlazeBurnerBlock;tryInsert(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/ItemStack;ZZZ)Lnet/minecraft/world/InteractionResultHolder;",
+            remap = false
+        ),
+        remap = true
     )
-    private static void survivalBlazeCake(
-        BlazeBurnerBlockEntity burnerBE, Operation<Void> original,
-        @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level world,
-        @Local(argsOnly = true) ItemStack stack, @Local(argsOnly = true, ordinal = 0) boolean doNotConsume,
-        @Cancellable CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir
-    ) {
-        if (!doNotConsume && !world.isClientSide) {
-            try {
-                if (!burnerBE.isCreative())
-                    stack.shrink(1);
-                else if (state.getValue(HEAT_LEVEL) == BlazeBurnerBlock.HeatLevel.SEETHING)
-                    cir.setReturnValue(InteractionResultHolder.success(AllItems.CREATIVE_BLAZE_CAKE.asStack(2)));
-                else
-                    stack.shrink(1);
-            } catch (IllegalArgumentException ignored) {
+    private InteractionResultHolder<ItemStack> tryFill(
+        BlockState state, Level level, BlockPos pos, ItemStack stack,
+        boolean doNotConsume, boolean forceOverflow, boolean simulate,
+        Operation<InteractionResultHolder<ItemStack>> original,
+        @Local(argsOnly = true) Player player, @Local(argsOnly = true) InteractionHand hand
+        ) {
+        Try: {
+            BlockEntity burner = level.getBlockEntity(pos);
+            if (burner == null)
+                break Try;
+
+            IFluidHandler fluidHandler = burner.getCapability(ForgeCapabilities.FLUID_HANDLER).resolve().orElse(null);
+            IItemHandler inventory = player.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().orElse(null);
+            if (stack.isEmpty() || fluidHandler == null || inventory == null)
+                break Try;
+
+            FluidActionResult result = tryEmptyContainerAndStow(stack, fluidHandler, inventory, 1000, player, !simulate);
+            if (result.isSuccess()) {
+                if (!doNotConsume)
+                    player.setItemInHand(hand, result.getResult());
+                return InteractionResultHolder.success(ItemStack.EMPTY);
             }
         }
-        original.call(burnerBE);
+
+        return original.call(state, level, pos, stack, doNotConsume, forceOverflow, simulate);
     }
 }
