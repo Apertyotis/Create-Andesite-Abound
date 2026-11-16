@@ -132,6 +132,10 @@
   "caa.config.tweaks.easy_belt.1": "Allow belts to operate without requiring a power source.",
   "caa.config.tweaks.void_burning": "Void Burning",
   "caa.config.tweaks.void_burning.1": "Blaze Burner will use the Void as fuel.",
+  "caa.config.tweaks.fan_passive_generation": "Fan Passive Generation",
+  "caa.config.tweaks.fan_passive_generation.1": "A downward Encased Fan upon any Boiler Heater will provide stress capacity.",
+  "caa.config.tweaks.fan_active_generation": "Fan Active Generation",
+  "caa.config.tweaks.fan_active_generation.1": "A downward Encased Fan upon any Boiler Heater will provide stress capacity.",
 
   "caa.config.normalization.title": "Normalization",
   "caa.config.normalization.deployer": "Deployer",

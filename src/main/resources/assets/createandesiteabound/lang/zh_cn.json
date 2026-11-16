@@ -132,6 +132,10 @@
   "caa.config.tweaks.easy_belt.1": "允许传送带无动力工作。",
   "caa.config.tweaks.void_burning": "虚空燃烧",
   "caa.config.tweaks.void_burning.1": "烈焰人燃烧室可以从虚空获取燃料。",
+  "caa.config.tweaks.fan_passive_generation": "鼓风机被动加热应力",
+  "caa.config.tweaks.fan_passive_generation.1": "位于锅炉热源上方的朝下鼓风机可以产生应力。",
+  "caa.config.tweaks.fan_active_generation": "鼓风机主动加热应力",
+  "caa.config.tweaks.fan_active_generation.1": "位于锅炉热源上方的朝下鼓风机可以产生应力。",
 
   "caa.config.normalization.title": "归一化",
   "caa.config.normalization.deployer": "机械手",

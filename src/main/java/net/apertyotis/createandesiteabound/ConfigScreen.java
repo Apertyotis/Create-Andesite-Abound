@@ -49,6 +49,8 @@ public class ConfigScreen {
         qol.addEntry(intEntry(entryBuilder, SERVER.HOSE_PULLEY_SOUND_COOLDOWN, true, 0, Integer.MAX_VALUE));
         qol.addEntry(booleanEntry(entryBuilder, SERVER.EASY_BELT, true));
         qol.addEntry(booleanEntry(entryBuilder, SERVER.VOID_BURNING, true));
+        qol.addEntry(intEntry(entryBuilder, SERVER.FAN_PASSIVE_GENERATION, true, 0, Integer.MAX_VALUE));
+        qol.addEntry(intEntry(entryBuilder, SERVER.FAN_ACTIVE_GENERATION, true, 0, Integer.MAX_VALUE));
 
         ConfigCategory norm = builder.getOrCreateCategory(Component.translatable("caa.config.normalization.title"));
         norm.addEntry(booleanEntry(entryBuilder, SERVER.DEPLOYER_SPEED_CHANGE, true));

@@ -62,6 +62,8 @@ public class AllConfigs {
         public final ForgeConfigSpec.IntValue FLUID_MACHINE_CAPACITY;
         public final ForgeConfigSpec.BooleanValue EASY_BELT;
         public final ForgeConfigSpec.BooleanValue VOID_BURNING;
+        public final ForgeConfigSpec.IntValue FAN_PASSIVE_GENERATION;
+        public final ForgeConfigSpec.IntValue FAN_ACTIVE_GENERATION;
 
         Server(ForgeConfigSpec.Builder builder) {
             // 配方时间归一化
@@ -163,6 +165,12 @@ public class AllConfigs {
             VOID_BURNING = builder
                 .comment("Blaze Burner will use the Void as fuel.")
                 .define("void_burning", true);
+            FAN_PASSIVE_GENERATION = builder
+                .comment("A downward Encased Fan upon any Boiler Heater will provide stress capacity.")
+                .defineInRange("fan_passive_generation", 2048, 0, Integer.MAX_VALUE);
+            FAN_ACTIVE_GENERATION = builder
+                .comment("A downward Encased Fan upon any Boiler Heater will provide stress capacity.")
+                .defineInRange("fan_active_generation", 2048, 0, Integer.MAX_VALUE);
             builder.pop();
 
             builder.comment("Fluid Filling&Emptying").push("fluid");
@@ -238,6 +246,8 @@ public class AllConfigs {
     public static int hose_pulley_sound_cooldown;
     public static boolean easy_belt;
     public static boolean void_burning;
+    public static int fan_passive_generation;
+    public static int fan_active_generation;
 
     // 重载配置时，更新缓存
     public static void reloadServer() {
@@ -274,6 +284,8 @@ public class AllConfigs {
         hose_pulley_sound_cooldown = SERVER.HOSE_PULLEY_SOUND_COOLDOWN.get();
         easy_belt = SERVER.EASY_BELT.get();
         void_burning = SERVER.VOID_BURNING.get();
+        fan_passive_generation = SERVER.FAN_PASSIVE_GENERATION.get();
+        fan_active_generation = SERVER.FAN_ACTIVE_GENERATION.get();
     }
 
     public static void reloadClient() {
