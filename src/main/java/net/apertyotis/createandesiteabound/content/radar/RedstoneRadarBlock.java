@@ -47,13 +47,13 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
     public RedstoneRadarBlock(Properties properties) {
         super(properties);
         registerDefaultState(getStateDefinition().any()
-                .setValue(NORTH, false)
-                .setValue(EAST, false)
-                .setValue(SOUTH, false)
-                .setValue(WEST, false)
-                .setValue(INPUT, 0)
-                .setValue(OUTPUT, 0)
-                .setValue(FORCELOAD, false)
+            .setValue(NORTH, false)
+            .setValue(EAST, false)
+            .setValue(SOUTH, false)
+            .setValue(WEST, false)
+            .setValue(INPUT, 0)
+            .setValue(OUTPUT, 0)
+            .setValue(FORCELOAD, false)
         );
     }
 
@@ -117,22 +117,23 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
 
     @Override
     public void neighborChanged(
-            BlockState state, Level world, BlockPos pos,
-            Block otherBlock, BlockPos neighborPos, boolean isMoving
+        BlockState state, Level world, BlockPos pos,
+        Block otherBlock, BlockPos neighborPos, boolean isMoving
     ) {
         updateInputSignal(state, world, pos);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(NORTH, EAST, SOUTH, WEST, INPUT, OUTPUT, FORCELOAD));
+        super.createBlockStateDefinition(builder);
+        builder.add(NORTH, EAST, SOUTH, WEST, INPUT, OUTPUT, FORCELOAD);
     }
 
     @SuppressWarnings("removal")
     @Override
     public @NotNull InteractionResult use(
-            BlockState state, Level world, BlockPos pos,
-            Player player, InteractionHand handIn, BlockHitResult hit
+        BlockState state, Level world, BlockPos pos,
+        Player player, InteractionHand handIn, BlockHitResult hit
     ) {
         ItemStack item = player.getItemInHand(handIn);
         if (!item.hasTag() || !(world.getBlockEntity(pos) instanceof RedstoneRadarBlockEntity be))
@@ -149,12 +150,11 @@ public class RedstoneRadarBlock extends Block implements IBE<RedstoneRadarBlockE
                 if (posTag == null || posTag.size() != 3)
                     return InteractionResult.PASS;
                 position = switch (posTag.getElementType()) {
-                    case Tag.TAG_INT ->
-                            new BlockPos(posTag.getInt(0), posTag.getInt(1), posTag.getInt(2));
+                    case Tag.TAG_INT -> new BlockPos(posTag.getInt(0), posTag.getInt(1), posTag.getInt(2));
                     case Tag.TAG_FLOAT ->
-                            BlockPos.containing(posTag.getFloat(0), posTag.getFloat(1), posTag.getFloat(2));
+                        BlockPos.containing(posTag.getFloat(0), posTag.getFloat(1), posTag.getFloat(2));
                     case Tag.TAG_DOUBLE ->
-                            BlockPos.containing(posTag.getDouble(0), posTag.getDouble(1), posTag.getDouble(2));
+                        BlockPos.containing(posTag.getDouble(0), posTag.getDouble(1), posTag.getDouble(2));
                     default -> null;
                 };
                 if (position == null)
