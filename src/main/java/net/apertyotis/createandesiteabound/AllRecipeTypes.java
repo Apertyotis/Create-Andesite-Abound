@@ -18,15 +18,25 @@ import static net.apertyotis.createandesiteabound.CreateAndesiteAbound.MOD_ID;
 public enum AllRecipeTypes {
     LIQUID_BURNING();
 
-    public final ResourceLocation id;
-    public final RegistryObject<RecipeSerializer<?>> serializer;
-    public final RegistryObject<RecipeType<?>> type;
+    private final ResourceLocation id;
+    private final RegistryObject<RecipeSerializer<?>> serializer;
+    private final RegistryObject<RecipeType<?>> type;
 
     AllRecipeTypes() {
         String name = name().toLowerCase(Locale.ROOT);
         id = new ResourceLocation(MOD_ID, name);
         type = Registers.TYPE_REGISTER.register(name, () -> RecipeType.simple(id));
         serializer = Registers.SERIALIZER_REGISTER.register(name, LiquidBurningRecipeSerializer::new);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends RecipeSerializer<?>> T serializer() {
+        return (T) serializer.get();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends RecipeType<?>> T type() {
+        return (T) type.get();
     }
 
     public static void register(IEventBus modEventBus) {

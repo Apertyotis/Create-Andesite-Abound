@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import net.apertyotis.createandesiteabound.AllConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -21,23 +23,22 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import static net.minecraftforge.fluids.FluidUtil.tryEmptyContainerAndStow;
 
-@Mixin(value = BlazeBurnerBlock.class, remap = false)
-public abstract class BlazeBurnerBlockMixin{
+@Mixin(value = BlazeBurnerBlock.class)
+public abstract class BlazeBurnerBlockMixin {
     @WrapOperation(
         method = "use",
         at = @At(
             value = "INVOKE",
             target = "Lcom/simibubi/create/content/processing/burner/BlazeBurnerBlock;tryInsert(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/ItemStack;ZZZ)Lnet/minecraft/world/InteractionResultHolder;",
             remap = false
-        ),
-        remap = true
+        )
     )
     private InteractionResultHolder<ItemStack> tryFill(
         BlockState state, Level level, BlockPos pos, ItemStack stack,
         boolean doNotConsume, boolean forceOverflow, boolean simulate,
         Operation<InteractionResultHolder<ItemStack>> original,
         @Local(argsOnly = true) Player player, @Local(argsOnly = true) InteractionHand hand
-        ) {
+    ) {
         Try: {
             BlockEntity burner = level.getBlockEntity(pos);
             if (burner == null)
@@ -57,5 +58,22 @@ public abstract class BlazeBurnerBlockMixin{
         }
 
         return original.call(state, level, pos, stack, doNotConsume, forceOverflow, simulate);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @WrapOperation(
+        method = "getStateForPlacement",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/block/state/BlockState;setValue(Lnet/minecraft/world/level/block/state/properties/Property;Ljava/lang/Comparable;)Ljava/lang/Object;",
+            ordinal = 0
+        )
+    )
+    private Object voidBurning(
+        BlockState instance, Property property, Comparable comparable, Operation<Object> original
+    ) {
+        if (AllConfigs.void_burning && comparable == BlazeBurnerBlock.HeatLevel.SMOULDERING)
+            comparable = BlazeBurnerBlock.HeatLevel.KINDLED;
+        return original.call(instance, property, comparable);
     }
 }

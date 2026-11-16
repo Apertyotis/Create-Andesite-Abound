@@ -68,11 +68,11 @@ public class LiquidBurningRecipe implements Recipe<LiquidBurningRecipeWrapper> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return AllRecipeTypes.LIQUID_BURNING.serializer.get();
+        return AllRecipeTypes.LIQUID_BURNING.serializer();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return AllRecipeTypes.LIQUID_BURNING.type.get();
+        return AllRecipeTypes.LIQUID_BURNING.type();
     }
 }

@@ -75,6 +75,9 @@
   "caa.schematic.error.invalid": "文件已失效",
   "caa.filling_machine.target_amount": "目标装罐液体数量",
   "caa.easy_filter.hold_to_open": "扳手长按：使用JEI书签过滤",
+  "caa.recipe.liquid_burning": "液体燃烧",
+  "caa.unit.sec": "秒",
+  "caa.unit.tick": "刻",
 
   "caa.keybind.category": "安山林立的便签",
   "caa.keybind.open_note": "打开便签",

@@ -86,9 +86,8 @@ public abstract class BlazeBurnerBlockEntityMixin extends SmartBlockEntity {
         if (level == null)
             return Optional.empty();
         LiquidBurningRecipeWrapper wrapper = new LiquidBurningRecipeWrapper(fluid);
-        RecipeType<?> type = AllRecipeTypes.LIQUID_BURNING.type.get();
-        // noinspection unchecked
-        return level.getRecipeManager().getRecipeFor((RecipeType<LiquidBurningRecipe>) type, wrapper, level);
+        RecipeType<LiquidBurningRecipe> type = AllRecipeTypes.LIQUID_BURNING.type();
+        return level.getRecipeManager().getRecipeFor(type, wrapper, level);
     }
 
     @Definition(id = "isCreative", field = "Lcom/simibubi/create/content/processing/burner/BlazeBurnerBlockEntity;isCreative:Z")

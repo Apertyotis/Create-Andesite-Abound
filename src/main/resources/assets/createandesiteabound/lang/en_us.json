@@ -75,6 +75,10 @@
   "caa.schematic.error.invalid": "Expired File.",
   "caa.filling_machine.target_amount": "Targeted Fill Amount",
   "caa.easy_filter.hold_to_open": "Hold with a wrench: JEI Bookmark Overlay",
+  "caa.recipe.liquid_burning": "Liquid Burning",
+  "caa.unit.sec": "sec",
+  "caa.unit.tick": "tick",
+
   "caa.config.client.title": "Client",
   "caa.config.keep_flying_on_ground": "Keep Flying on Ground",
   "caa.config.keep_flying_on_ground.1": "Prevents players from automatically exiting flight mode when touching the ground.",
@@ -163,5 +167,4 @@
   "caa.config.fluid.fluid_vessel_capacity": "Cartridge Canister Capacity",
   "caa.config.fluid.fluid_machine_capacity": "Fluid Machine Capacity",
   "caa.config.tweaks.dont_compare_item_capability": "Dont Compare Item Capability"
-
 }
