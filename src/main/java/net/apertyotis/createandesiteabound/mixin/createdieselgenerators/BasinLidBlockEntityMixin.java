@@ -1,6 +1,7 @@
 package net.apertyotis.createandesiteabound.mixin.createdieselgenerators;
 
 import com.jesz.createdieselgenerators.blocks.entity.BasinLidBlockEntity;
+import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -13,8 +14,6 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = BasinLidBlockEntity.class, remap = false)
 public abstract class BasinLidBlockEntityMixin extends BasinOperatingBlockEntity {
@@ -30,6 +29,12 @@ public abstract class BasinLidBlockEntityMixin extends BasinOperatingBlockEntity
     public boolean continueWithPreviousRecipe() {
         startProcessingBasin();
         return true;
+    }
+
+    @Expression("? / ?")
+    @ModifyExpressionValue(method = "tick", at = @At("MIXINEXTRAS:EXPRESSION"))
+    private float calcProgress(float original) {
+        return Math.max(original, 0);
     }
 
     @ModifyExpressionValue(
@@ -58,12 +63,5 @@ public abstract class BasinLidBlockEntityMixin extends BasinOperatingBlockEntity
             caa$cooldown = 200;
             original.call(instance);
         }
-    }
-
-    @Inject(method = "startProcessingBasin", at = @At("TAIL"))
-    private void onStartProcessing(CallbackInfo ci) {
-        BasinLidBlockEntity self = (BasinLidBlockEntity)(Object) this;
-        if (self.processingTime > 0)
-            self.processingTime--;
     }
 }
