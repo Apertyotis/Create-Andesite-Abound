@@ -44,5 +44,6 @@ public class QuickPickupUltimineHandler {
             QuickPickupUtil.wrenchOn(player, currentHit);
         }
         data.setPressed(true);
+        event.setCanceled(true);
     }
 }

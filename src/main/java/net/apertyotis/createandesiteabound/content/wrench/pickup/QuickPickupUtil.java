@@ -35,6 +35,8 @@ public class QuickPickupUtil {
     }
 
     public static void wrenchOn(ServerPlayer player, BlockHitResult hitResult) {
+        if (!AllItems.WRENCH.isIn(player.getMainHandItem()))
+            return;
         ServerLevel level = (ServerLevel) player.level();
         BlockPos pos = hitResult.getBlockPos();
         BlockState blockState = level.getBlockState(pos);

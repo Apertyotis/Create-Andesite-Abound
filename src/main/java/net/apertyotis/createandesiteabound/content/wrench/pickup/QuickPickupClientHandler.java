@@ -18,6 +18,11 @@ public class QuickPickupClientHandler {
     public static final int DAS = 250;
     public static long timestamp = -1;
 
+    public static void tick() {
+        if (Minecraft.getInstance().screen != null)
+            timestamp = -1;
+    }
+
     public static boolean onMouseInput(int button, boolean pressed) {
         if (!pressed && button == ClientEvents.getKeyAttackCode()) {
             timestamp = -1;
@@ -44,7 +49,9 @@ public class QuickPickupClientHandler {
             return;
 
         HitResult hitResult = Minecraft.getInstance().hitResult;
-        if (hitResult instanceof BlockHitResult hit && hit.getType() == HitResult.Type.BLOCK) {
+        if (hitResult instanceof BlockHitResult hit && hit.getType() == HitResult.Type.BLOCK &&
+            hit.getBlockPos().equals(event.getPos())
+        ) {
             AllPackets.getChannel().sendToServer(new QuickPickupPacket(hit));
             event.setCanceled(true);
         }

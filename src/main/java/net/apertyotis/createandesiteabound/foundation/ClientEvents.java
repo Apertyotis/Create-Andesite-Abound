@@ -63,6 +63,7 @@ public class ClientEvents {
         EasyFilteringHandlerClient.EASY_FILTERING_HANDLER_CLIENT.tick();
         BetterToolboxHandlerClient.BETTER_TOOLBOX_HANDLER_CLIENT.tick();
         RichNoteClientHandler.tick();
+        QuickPickupClientHandler.tick();
     }
 
     @SubscribeEvent
