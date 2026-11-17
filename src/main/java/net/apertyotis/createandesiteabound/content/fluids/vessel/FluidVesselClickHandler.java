@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.utility.RaycastHelper;
 import net.apertyotis.createandesiteabound.AllBlocks;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
+import net.apertyotis.createandesiteabound.foundation.GhostSupplyPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -65,7 +66,7 @@ public class FluidVesselClickHandler {
         if (hit.getType() == HitResult.Type.BLOCK &&
             AllBlocks.FLUID_VESSEL.has(level.getBlockState(hit.getBlockPos()))
         ) {
-            AllPackets.getChannel().sendToServer(new GetFreeFluidVesselPacket(-1));
+            AllPackets.getChannel().sendToServer(new GhostSupplyPacket(-1, AllBlocks.FLUID_VESSEL.asItem()));
             return true;
         }
         return false;

@@ -1,28 +1,35 @@
-package net.apertyotis.createandesiteabound.content.fluids.vessel;
+package net.apertyotis.createandesiteabound.foundation;
 
 import com.simibubi.create.foundation.networking.SimplePacketBase;
-import net.apertyotis.createandesiteabound.AllBlocks;
+import net.apertyotis.createandesiteabound.AllTags;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
-public class GetFreeFluidVesselPacket extends SimplePacketBase {
+@SuppressWarnings("deprecation")
+public class GhostSupplyPacket extends SimplePacketBase {
     final int slotId;
+    final Item item;
 
-    public GetFreeFluidVesselPacket(int slotId) {
+    public GhostSupplyPacket(int slotId, Item item) {
         this.slotId = slotId;
+        this.item = item;
     }
 
-    public GetFreeFluidVesselPacket(FriendlyByteBuf buf) {
+    public GhostSupplyPacket(FriendlyByteBuf buf) {
         this.slotId = buf.readChar();
+        this.item = buf.readById(BuiltInRegistries.ITEM);
     }
 
     @Override
     public void write(FriendlyByteBuf buf) {
         buf.writeChar(slotId);
+        buf.writeId(BuiltInRegistries.ITEM, item);
     }
 
     @Override
@@ -31,7 +38,11 @@ public class GetFreeFluidVesselPacket extends SimplePacketBase {
             ServerPlayer player = context.getSender();
             if (player == null)
                 return;
-            ItemStack stack = AllBlocks.FLUID_VESSEL.asStack(64);
+            if (!AllTags.AllItemTags.GHOST_SUPPLY.matches(item)) {
+                return;
+            }
+            ItemStack stack = new ItemStack(item);
+            stack.setCount(stack.getMaxStackSize());
             if (slotId >= 0 && slotId < 36) {
                 if (player.getInventory().items.get(slotId).isEmpty()) {
                     player.getInventory().items.set(slotId, stack);

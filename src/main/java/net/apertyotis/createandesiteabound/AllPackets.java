@@ -3,7 +3,7 @@ package net.apertyotis.createandesiteabound;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.apertyotis.createandesiteabound.content.wrench.filtering.EasyFilteringPacket;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueModificationPacket;
-import net.apertyotis.createandesiteabound.content.fluids.vessel.GetFreeFluidVesselPacket;
+import net.apertyotis.createandesiteabound.foundation.GhostSupplyPacket;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicPlacePacket;
 import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerUsePacket;
 import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerAttackPacket;
@@ -29,7 +29,7 @@ public enum AllPackets {
     TOGGLE_PACKER_MODE(SimplePackerAttackPacket.class, SimplePackerAttackPacket::new, PLAY_TO_SERVER),
     MODIFY_GLUE(HachimiGlueModificationPacket.class, HachimiGlueModificationPacket::new, PLAY_TO_SERVER),
     CONFIGURE_THRESHOLD_SWITCH_EX(ConfigurePreciseThresholdSwitchPacket.class, ConfigurePreciseThresholdSwitchPacket::new, PLAY_TO_SERVER),
-    GET_FREE_FLUID_VESSEL(GetFreeFluidVesselPacket.class, GetFreeFluidVesselPacket::new, PLAY_TO_SERVER),
+    GET_FREE_FLUID_VESSEL(GhostSupplyPacket.class, GhostSupplyPacket::new, PLAY_TO_SERVER),
     EASY_FILTERING(EasyFilteringPacket.class, EasyFilteringPacket::new, PLAY_TO_SERVER),
     QUICK_PICKUP(QuickPickupPacket.class, QuickPickupPacket::new, PLAY_TO_SERVER);
 

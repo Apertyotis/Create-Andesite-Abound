@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import mezz.jei.api.gui.handlers.IGhostIngredientHandler;
 import mezz.jei.library.gui.helpers.ScreenHelper;
-import net.apertyotis.createandesiteabound.compat.jei.GhostFluidVesselHandler;
+import net.apertyotis.createandesiteabound.compat.jei.GhostSupplyHandler;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +28,7 @@ public abstract class ScreenHelperMixin {
     ) {
         ArrayList<IGhostIngredientHandler<?>> handlers = original.call();
         if (guiScreen instanceof InventoryScreen)
-            handlers.add(new GhostFluidVesselHandler());
+            handlers.add(new GhostSupplyHandler());
         return handlers;
     }
 }
