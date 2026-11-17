@@ -19,7 +19,12 @@ public enum Mods {
     Create_Connected("InventoryAccessPortBlockMixin", "InventoryAccessPortBlockEntityMixin"),
     FTBUltimine(),
     Curios(),
-    Supplementaries("FaucetBlockTileMixin", "FluidsUtilImplMixin");
+    Supplementaries("FaucetBlockTileMixin", "FluidsUtilImplMixin"),
+    CreateOreExcavation("ExcavatingBlockEntityMixin", "ExcavatingCategoryMixin"),
+    CreateDieselGenerators("BasinFermentingCategoryMixin", "BasinLidBlockEntityMixin",
+        "BasinLidBlockMixin", "CDGJEIMixin", "DistillationCategoryMixin", "DistillationTankBlockEntityMixin",
+        "HugeDieselEngineBlockEntityMixin", "HugeDieselEngineBlockMixin", "PoweredEngineShaftBlockEntityMixin",
+        "PoweredEngineShaftBlockMixin", "ShaftBlockMixin");
 
     private final String id;
     private final String[] mixins;
