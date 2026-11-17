@@ -18,7 +18,8 @@ public enum Mods {
     CreateLazyTick(),
     Create_Connected("InventoryAccessPortBlockMixin", "InventoryAccessPortBlockEntityMixin"),
     FTBUltimine(),
-    Curios();
+    Curios(),
+    Supplementaries("FaucetBlockTileMixin", "FluidsUtilImplMixin");
 
     private final String id;
     private final String[] mixins;

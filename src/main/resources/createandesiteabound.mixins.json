@@ -111,7 +111,10 @@
     "minecraft.noclip.PlayerMixin",
     "minecraft.noclip.StandingAndWallBlockItemMixin",
     "minecraft.player.GameTypeMixin",
-    "minecraft.player.PlayerMixin"
+    "minecraft.player.PlayerMixin",
+    "suppementaries.FaucetBlockTileAccessor",
+    "suppementaries.FaucetBlockTileMixin",
+    "suppementaries.FluidsUtilImplMixin"
   ],
   "client": [
     "create.contraption.glue.SuperGlueSelectionHandlerAccessor",
