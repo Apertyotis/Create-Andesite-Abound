@@ -29,7 +29,7 @@ public class LiquidBurningCategory extends CreateRecipeCategory<LiquidBurningRec
         super(info);
     }
 
-    @SuppressWarnings({"derecation, removal"})
+    @SuppressWarnings("removal")
     @Override
     @ParametersAreNonnullByDefault
     public void setRecipe(IRecipeLayoutBuilder builder, LiquidBurningRecipe recipe, IFocusGroup focuses) {
