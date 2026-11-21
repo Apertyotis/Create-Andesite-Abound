@@ -15,6 +15,9 @@
   "block.createandesiteabound.fluid_vessel.tooltip.behaviour4": "_Empty canisters_ cannot exist as dropped items.",
   "item.createandesiteabound.simple_schematic": "Engineering Set",
   "item.createandesiteabound.simple_schematic.temp": "Temporary Engineering Set",
+  "item.createandesiteabound.simple_wrapper": "Engineering Set Housing",
+  "item.createandesiteabound.simple_wrapper.tooltip1": "Writing: ",
+  "item.createandesiteabound.simple_wrapper.tooltip2": "[%s]: print material checklist",
   "item.createandesiteabound.simple_packer": "Boxed Slime",
   "item.createandesiteabound.simple_packer.closure": "Schrödinger's Slime",
   "item.createandesiteabound.simple_packer.tooltip.summary": "Used to _recycle a structure_ placed by an Engineering Set. Or _transport any structure_.",
@@ -76,6 +79,7 @@
   "caa.filling_machine.target_amount": "Targeted Fill Amount",
   "caa.easy_filter.hold_to_open": "Hold with a wrench: JEI Bookmark Overlay",
   "caa.recipe.liquid_burning": "Liquid Burning",
+  "caa.recipe.schematic_polishing": "Schematic Polishing",
   "caa.unit.sec": "sec",
   "caa.unit.tick": "tick",
 

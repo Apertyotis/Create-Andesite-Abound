@@ -111,6 +111,10 @@ public class SimpleSchematicItem extends Item {
             dir = world.isClientSide ?
                 PathHelper.getOrCreateClientTempSchematicPath() :
                 PathHelper.getOrCreateServerTempSchematicPath((ServerLevel) world).resolve(playerName);
+        else if (tag.getBoolean("FromCreate"))
+            dir = world.isClientSide ?
+                Paths.get("schematics") :
+                Paths.get("schematics", "uploaded", playerName);
         else
             dir = PathHelper.getOrCreateSchematicPath();
         dir = dir.toAbsolutePath();

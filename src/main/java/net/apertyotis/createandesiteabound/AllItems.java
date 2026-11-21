@@ -4,6 +4,7 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.apertyotis.createandesiteabound.content.schematic.deploy.SimpleSchematicItem;
 import net.apertyotis.createandesiteabound.content.schematic.pack.SimplePackerItem;
+import net.apertyotis.createandesiteabound.content.schematic.wrapper.SimpleWrapperItem;
 import net.apertyotis.createandesiteabound.content.trinklet.BottledGhost;
 
 import static net.apertyotis.createandesiteabound.CreateAndesiteAbound.REGISTRATE;
@@ -20,6 +21,11 @@ public class AllItems {
         REGISTRATE.item("simple_packer", SimplePackerItem::new)
             .properties(p -> p.stacksTo(1))
             .model(AssetLookup.itemModelWithPartials())
+            .register();
+
+    public static final ItemEntry<SimpleWrapperItem> SIMPLE_WRAPPER =
+        REGISTRATE.item("simple_wrapper", SimpleWrapperItem::new)
+            .properties(p -> p.stacksTo(16))
             .register();
 
     public static final ItemEntry<BottledGhost> BOTTLED_GHOST =

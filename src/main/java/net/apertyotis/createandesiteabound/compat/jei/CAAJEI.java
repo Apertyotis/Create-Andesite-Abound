@@ -2,12 +2,15 @@ package net.apertyotis.createandesiteabound.compat.jei;
 
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
+import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.CreateJEI;
 import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -56,6 +59,13 @@ public class CAAJEI implements IModPlugin {
             .addTypedRecipes(AllRecipeTypes.LIQUID_BURNING::type)
             .build("liquid_burning", LiquidBurningCategory::new);
 
+        builder(ConversionRecipe.class)
+            .addRecipes(() -> SchematicPolishingCategory.RECIPES)
+            .catalyst(AllItems.SCHEMATIC::get)
+            .catalyst(net.apertyotis.createandesiteabound.AllItems.SIMPLE_WRAPPER::get)
+            .emptyBackground(177, 55)
+            .build("schematic_polishing", SchematicPolishingCategory::new);
+
         registration.addRecipeCategories(ALL.toArray(IRecipeCategory[]::new));
     }
 
@@ -92,6 +102,10 @@ public class CAAJEI implements IModPlugin {
         public CategoryBuilder<T> addRecipeListConsumer(Consumer<List<T>> consumer) {
             recipeListConsumers.add(consumer);
             return this;
+        }
+
+        public CategoryBuilder<T> addRecipes(Supplier<Collection<? extends T>> collection) {
+            return addRecipeListConsumer(recipes -> recipes.addAll(collection.get()));
         }
 
         public CategoryBuilder<T> addTypedRecipes(Supplier<RecipeType<? extends T>> recipeType) {

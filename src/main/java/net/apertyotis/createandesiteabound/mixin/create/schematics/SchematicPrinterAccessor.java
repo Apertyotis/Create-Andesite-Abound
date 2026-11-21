@@ -16,6 +16,9 @@ public interface SchematicPrinterAccessor {
     @Accessor("blockReader")
     void setBlockReader(SchematicWorld world);
 
+    @Accessor("blockReader")
+    SchematicWorld getBlockReader();
+
     @Accessor("schematicLoaded")
     void setSchematicLoaded(boolean loaded);
 

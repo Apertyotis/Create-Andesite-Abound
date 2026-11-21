@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.fluid.FluidRenderer;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +17,7 @@ public class FluidVesselItemRender extends CustomRenderedItemModelRenderer {
         ItemStack stack, CustomRenderedItemModel model, PartialItemModelRenderer renderer,
         ItemDisplayContext transformType, PoseStack ms, MultiBufferSource buffer, int light, int overlay
     ) {
-        renderer.render(model.getOriginalModel(), light);
+        renderer.renderGlowing(model.getOriginalModel(), LightTexture.FULL_BRIGHT);
 
         FluidStack fluidStack = FluidVesselItem.getFluid(stack);
         if (fluidStack.isEmpty())

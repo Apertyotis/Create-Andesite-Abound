@@ -15,6 +15,9 @@
   "block.createandesiteabound.fluid_vessel.tooltip.behaviour4": "_空液罐_无法以掉落物形式存在。",
   "item.createandesiteabound.simple_schematic": "工程集合",
   "item.createandesiteabound.simple_schematic.temp": "临时工程集合",
+  "item.createandesiteabound.simple_wrapper": "工程外壳",
+  "item.createandesiteabound.simple_wrapper.tooltip1": "正在写入: ",
+  "item.createandesiteabound.simple_wrapper.tooltip2": "[%s]: 打开材料列表",
   "item.createandesiteabound.simple_packer": "盒装史莱姆",
   "item.createandesiteabound.simple_packer.closure": "薛定谔的史莱姆",
   "item.createandesiteabound.simple_packer.tooltip.summary": "用于回收已放置的工程集合，或搬运任意结构。",
@@ -76,6 +79,7 @@
   "caa.filling_machine.target_amount": "目标装罐液体数量",
   "caa.easy_filter.hold_to_open": "扳手长按：使用JEI书签过滤",
   "caa.recipe.liquid_burning": "液体燃烧",
+  "caa.recipe.schematic_polishing": "图纸打磨",
   "caa.unit.sec": "秒",
   "caa.unit.tick": "刻",
 

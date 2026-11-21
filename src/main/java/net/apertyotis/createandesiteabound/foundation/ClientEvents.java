@@ -6,9 +6,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
 import net.apertyotis.createandesiteabound.AllBlocks;
+import net.apertyotis.createandesiteabound.AllItems;
 import net.apertyotis.createandesiteabound.CreateAndesiteAbound;
 import net.apertyotis.createandesiteabound.content.note.RichNoteClientHandler;
 import net.apertyotis.createandesiteabound.content.note.RichNoteTooltipComponent;
+import net.apertyotis.createandesiteabound.content.schematic.wrapper.ChecklistTooltipComponent;
+import net.apertyotis.createandesiteabound.content.schematic.wrapper.SimpleWrapperItem;
+import net.apertyotis.createandesiteabound.content.schematic.wrapper.SimpleWrapperTooltipHandler;
 import net.apertyotis.createandesiteabound.content.wrench.filtering.EasyFilteringHandlerClient;
 import net.apertyotis.createandesiteabound.content.hachimiGlue.HachimiGlueHandler;
 import net.apertyotis.createandesiteabound.content.fluids.vessel.FluidVesselClickHandler;
@@ -64,6 +68,7 @@ public class ClientEvents {
         BetterToolboxHandlerClient.BETTER_TOOLBOX_HANDLER_CLIENT.tick();
         RichNoteClientHandler.tick();
         QuickPickupClientHandler.tick();
+        SimpleWrapperTooltipHandler.tick();
     }
 
     @SubscribeEvent
@@ -93,7 +98,9 @@ public class ClientEvents {
     public static void onScreenMouseScroll(ScreenEvent.MouseScrolled.Pre event) {
         double delta = event.getScrollDelta();
 
-        if (RichNoteClientHandler.mouseScrolled(delta)) {
+        if (RichNoteClientHandler.mouseScrolled(delta) ||
+            SimpleWrapperTooltipHandler.mouseScrolled(delta)
+        ) {
             event.setCanceled(true);
         }
     }
@@ -123,7 +130,9 @@ public class ClientEvents {
         double x = event.getMouseX();
         double y = event.getMouseY();
 
-        if (RichNoteClientHandler.mouseClick(button, x, y)) {
+        if (RichNoteClientHandler.mouseClick(button, x, y) ||
+            SimpleWrapperTooltipHandler.mouseClick(button, x, y)
+        ) {
             event.setCanceled(true);
         }
     }
@@ -179,11 +188,13 @@ public class ClientEvents {
         public static void registerClientTooltipComponent(RegisterClientTooltipComponentFactoriesEvent event) {
             event.register(AssemblyContentTooltipComponent.class, Function.identity());
             event.register(RichNoteTooltipComponent.class, Function.identity());
+            event.register(ChecklistTooltipComponent.class, Function.identity());
         }
 
         @SubscribeEvent
-        public static void registerFluidVesselDecorator(RegisterItemDecorationsEvent event) {
+        public static void registerItemDecorator(RegisterItemDecorationsEvent event) {
             event.register(AllBlocks.FLUID_VESSEL.asItem(), new FluidVesselItem.VesselItemDecorator());
+            event.register(AllItems.SIMPLE_WRAPPER.get(), new SimpleWrapperItem.SimpleWrapperDecorator());
         }
     }
 }
