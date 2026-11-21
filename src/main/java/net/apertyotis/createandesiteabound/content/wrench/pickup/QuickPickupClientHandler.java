@@ -32,6 +32,8 @@ public class QuickPickupClientHandler {
 
     @SubscribeEvent
     public static void onLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        if (event.getEntity() != Minecraft.getInstance().player)
+            return;
         switch (event.getAction()) {
             case START, CLIENT_HOLD -> {
                 if (timestamp == -1)
