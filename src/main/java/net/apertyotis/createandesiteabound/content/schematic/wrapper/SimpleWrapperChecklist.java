@@ -20,6 +20,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 import java.io.*;
 import java.util.*;
@@ -30,6 +34,7 @@ import java.util.zip.GZIPOutputStream;
 public class SimpleWrapperChecklist {
     private final Map<HashableRequirement, CheckEntry> itemMap = new HashMap<>();
     private final Map<HashableRequirement, CheckEntry> itemStackMap = new HashMap<>();
+    private final Map<Fluid, CheckEntry> fluidMap = new HashMap<>();
 
     private int completeItemEntries = 0;
     private int completeItemStackEntries = 0;
@@ -59,6 +64,8 @@ public class SimpleWrapperChecklist {
 
             for (StackRequirement stackRequirement: requirement.getRequiredItems())
                 checklist.putOrIncrement(stackRequirement);
+
+            checklist.putOrIncrement(required.getFluidState());
         }
 
         reader.getEntityStream().forEach(entity -> {
@@ -79,6 +86,22 @@ public class SimpleWrapperChecklist {
             .computeIfAbsent(new HashableRequirement(requirement), k -> new CheckEntry());
         entry.total += requirement.stack.getCount();
         totalAmount += requirement.stack.getCount();
+    }
+
+    public void putOrIncrement(FluidState fluidState) {
+        if (fluidState.isEmpty())
+            return;
+        Fluid fluid = fluidState.getType();
+        if (fluid == Fluids.EMPTY || fluid == Fluids.FLOWING_WATER || fluid == Fluids.FLOWING_LAVA)
+            return;
+        if (fluid instanceof ForgeFlowingFluid forgeFluid) {
+            if (!forgeFluid.isSource(fluidState))
+                return;
+            fluid = forgeFluid.getSource();
+        }
+        CheckEntry entry = fluidMap.computeIfAbsent(fluid, k -> new CheckEntry());
+        entry.total++;
+        totalAmount++;
     }
 
     public ItemStack countAndConsume(Player player, ItemStack stack) {
@@ -143,18 +166,18 @@ public class SimpleWrapperChecklist {
             ItemStack stack = entry.getKey().asStack();
             Map.Entry<ItemStack, CheckEntry> e = new AbstractMap.SimpleEntry<>(stack, entry.getValue());
             if (entry.getValue().isComplete())
-                list1.add(e);
-            else
                 list2.add(e);
+            else
+                list1.add(e);
         }
 
         for (var entry: itemMap.entrySet()) {
             ItemStack stack = entry.getKey().asStack();
             Map.Entry<ItemStack, CheckEntry> e = new AbstractMap.SimpleEntry<>(stack, entry.getValue());
             if (entry.getValue().isComplete())
-                list1.add(e);
-            else
                 list2.add(e);
+            else
+                list1.add(e);
         }
         list1.addAll(list2);
         return list1;
