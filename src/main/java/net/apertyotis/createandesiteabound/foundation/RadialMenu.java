@@ -211,7 +211,9 @@ public class RadialMenu extends AbstractSimiScreen {
                 scrollSlot = 0;
             } else {
                 int size = items.size();
-                scrollSlot = (scrollSlot - Mth.sign(delta) + size) % size;
+                int index = (page * 8 + scrollSlot - Mth.sign(delta) + size) % size;
+                page = index / 8;
+                scrollSlot = index % 8;
             }
             return true;
         }
