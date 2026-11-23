@@ -24,7 +24,8 @@ public enum Mods {
     CreateDieselGenerators("BasinFermentingCategoryMixin", "BasinLidBlockEntityMixin",
         "BasinLidBlockMixin", "CDGJEIMixin", "DistillationCategoryMixin", "DistillationTankBlockEntityMixin",
         "HugeDieselEngineBlockEntityMixin", "HugeDieselEngineBlockMixin", "PoweredEngineShaftBlockEntityMixin",
-        "PoweredEngineShaftBlockMixin", "ShaftBlockMixin");
+        "PoweredEngineShaftBlockMixin", "ShaftBlockMixin"),
+    SophisticatedBackpacks();
 
     private final String id;
     private final String[] mixins;

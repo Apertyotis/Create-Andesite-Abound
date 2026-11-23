@@ -22,7 +22,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -104,7 +103,7 @@ public class SimpleWrapperItem extends Item implements CustomUseEffectsItem {
                 return stack;
             }
 
-            gatherItems(checklist, player);
+            checklist.gatherItems(player);
             ItemStack result = createUsingResult(checklist, tag.getString("File"), player);
             if (!result.isEmpty()) {
                 stack.shrink(1);
@@ -120,7 +119,7 @@ public class SimpleWrapperItem extends Item implements CustomUseEffectsItem {
                 return stack;
             }
 
-            gatherItems(checklist, player);
+            checklist.gatherItems(player);
             // noinspection DataFlowIssue
             ItemStack result = createUsingResult(checklist, blueprint.getTag().getString("File"), player);
             if (!result.isEmpty()) {
@@ -129,17 +128,6 @@ public class SimpleWrapperItem extends Item implements CustomUseEffectsItem {
             }
         }
         return stack;
-    }
-
-    public static void gatherItems(SimpleWrapperChecklist checklist, Player player) {
-        Inventory inventory = player.getInventory();
-        for (int i = 0; i < 36; i++) {
-            ItemStack inSlot = inventory.getItem(i);
-            ItemStack result = checklist.countAndConsume(player, inSlot);
-            if (result.getCount() != inSlot.getCount() || !ItemStack.isSameItemSameTags(result, inSlot)) {
-                inventory.setItem(i, result);
-            }
-        }
     }
 
     public static ItemStack createUsingResult(SimpleWrapperChecklist checklist, String filename, Player player) {
