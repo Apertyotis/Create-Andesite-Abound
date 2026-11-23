@@ -28,7 +28,7 @@ public abstract class ScreenHelperMixin {
     ) {
         ArrayList<IGhostIngredientHandler<?>> handlers = original.call();
         if (guiScreen instanceof InventoryScreen)
-            handlers.add(new GhostSupplyHandler());
+            handlers.add(new GhostSupplyHandler<>());
         return handlers;
     }
 }

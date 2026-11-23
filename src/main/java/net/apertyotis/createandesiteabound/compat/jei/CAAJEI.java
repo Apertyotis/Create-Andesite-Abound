@@ -3,10 +3,7 @@ package net.apertyotis.createandesiteabound.compat.jei;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.compat.jei.ConversionRecipe;
-import com.simibubi.create.compat.jei.CreateJEI;
-import com.simibubi.create.compat.jei.EmptyBackground;
-import com.simibubi.create.compat.jei.ItemIcon;
+import com.simibubi.create.compat.jei.*;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 
 import java.util.ArrayList;
@@ -19,11 +16,15 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.apertyotis.createandesiteabound.AllRecipeTypes;
+import net.apertyotis.createandesiteabound.compat.Mods;
+import net.apertyotis.createandesiteabound.compat.beyonddimensions.NetGhostSupplyHandler;
+import net.apertyotis.createandesiteabound.compat.sophisticatedbackpacks.BackpackGhostSupplyHandler;
 import net.apertyotis.createandesiteabound.content.burner.LiquidBurningRecipe;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -78,6 +79,14 @@ public class CAAJEI implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
         ALL.forEach(c -> c.registerCatalysts(registration));
+    }
+
+    @Override
+    public void registerGuiHandlers(@NotNull IGuiHandlerRegistration registration) {
+        Mods.SophisticatedBackpacks.executeIfInstalled(
+            () -> () -> BackpackGhostSupplyHandler.register(registration));
+        Mods.BeyondDimensions.executeIfInstalled(
+            () -> () -> NetGhostSupplyHandler.register(registration));
     }
 
     @SuppressWarnings("SameParameterValue")

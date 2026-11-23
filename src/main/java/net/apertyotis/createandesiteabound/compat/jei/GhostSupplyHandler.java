@@ -5,7 +5,7 @@ import mezz.jei.api.ingredients.ITypedIngredient;
 import net.apertyotis.createandesiteabound.AllPackets;
 import net.apertyotis.createandesiteabound.AllTags;
 import net.apertyotis.createandesiteabound.foundation.GhostSupplyPacket;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
@@ -16,11 +16,10 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GhostSupplyHandler implements IGhostIngredientHandler<InventoryScreen> {
-
+public class GhostSupplyHandler <T extends AbstractContainerScreen<?>> implements IGhostIngredientHandler<T> {
     @Override
     @ParametersAreNonnullByDefault
-    public <I> @NotNull List<Target<I>> getTargetsTyped(InventoryScreen gui, ITypedIngredient<I> ingredient, boolean doStart) {
+    public <I> @NotNull List<Target<I>> getTargetsTyped(T gui, ITypedIngredient<I> ingredient, boolean doStart) {
         ItemStack stack = ingredient.getItemStack().orElse(ItemStack.EMPTY);
         if (!AllTags.AllItemTags.GHOST_SUPPLY.matches(stack))
             return List.of();
@@ -41,7 +40,7 @@ public class GhostSupplyHandler implements IGhostIngredientHandler<InventoryScre
         final Rect2i area;
         final Item item;
 
-        public GhostSupplyTarget(InventoryScreen gui, Slot slot, int index, Item item) {
+        public <T extends AbstractContainerScreen<?>> GhostSupplyTarget(T gui, Slot slot, int index, Item item) {
             this.index = index;
             this.area = new Rect2i(gui.getGuiLeft() + slot.x, gui.getGuiTop() + slot.y, 16, 16);
             this.item = item;
