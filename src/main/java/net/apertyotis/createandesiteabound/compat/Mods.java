@@ -25,7 +25,8 @@ public enum Mods {
         "BasinLidBlockMixin", "CDGJEIMixin", "DistillationCategoryMixin", "DistillationTankBlockEntityMixin",
         "HugeDieselEngineBlockEntityMixin", "HugeDieselEngineBlockMixin", "PoweredEngineShaftBlockEntityMixin",
         "PoweredEngineShaftBlockMixin", "ShaftBlockMixin"),
-    SophisticatedBackpacks();
+    SophisticatedBackpacks(),
+    BeyondDimensions();
 
     private final String id;
     private final String[] mixins;

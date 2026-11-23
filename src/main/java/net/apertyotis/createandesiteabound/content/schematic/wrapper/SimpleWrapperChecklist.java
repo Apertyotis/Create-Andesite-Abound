@@ -9,6 +9,7 @@ import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUs
 import com.simibubi.create.content.schematics.requirement.ItemRequirement.StackRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement.StrictNbtStackRequirement;
 import net.apertyotis.createandesiteabound.compat.Mods;
+import net.apertyotis.createandesiteabound.compat.beyonddimensions.BeyondDimensions;
 import net.apertyotis.createandesiteabound.compat.sophisticatedbackpacks.Backpacks;
 import net.apertyotis.createandesiteabound.mixin.create.schematics.SchematicPrinterAccessor;
 import net.minecraft.core.BlockPos;
@@ -47,16 +48,16 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class SimpleWrapperChecklist {
-    private final Map<HashableRequirement, CheckEntry> itemMap = new HashMap<>();
-    private final Map<HashableRequirement, CheckEntry> itemStackMap = new HashMap<>();
-    private final Map<Fluid, CheckEntry> fluidMap = new HashMap<>();
+    public final Map<HashableRequirement, CheckEntry> itemMap = new HashMap<>();
+    public final Map<HashableRequirement, CheckEntry> itemStackMap = new HashMap<>();
+    public final Map<Fluid, CheckEntry> fluidMap = new HashMap<>();
 
-    private int completeItemEntries = 0;
-    private int completeItemStackEntries = 0;
-    private int completeFluidEntries = 0;
+    public int completeItemEntries = 0;
+    public int completeItemStackEntries = 0;
+    public int completeFluidEntries = 0;
 
-    private long currentAmount = 0;
-    private long totalAmount = 0;
+    public long currentAmount = 0;
+    public long totalAmount = 0;
 
     public static SimpleWrapperChecklist create(Level world, ItemStack blueprint) {
         if (!AllItems.SCHEMATIC.isIn(blueprint))
@@ -138,10 +139,14 @@ public class SimpleWrapperChecklist {
             });
         }
 
-        if (isComplete())
-            return;
-        Mods.SophisticatedBackpacks.executeIfInstalled(
-            () -> () -> Backpacks.gatherMaterialsFromBackpacks(this, player));
+        if (!isComplete()) {
+            Mods.SophisticatedBackpacks.executeIfInstalled(
+                () -> () -> Backpacks.gatherMaterialsFromBackpacks(this, player));
+        }
+        if (!isComplete()) {
+            Mods.BeyondDimensions.executeIfInstalled(
+                () -> () -> BeyondDimensions.gatherMaterialsFromNetwork(this, player));
+        }
     }
 
     public void gatherItemsFrom(
@@ -151,7 +156,7 @@ public class SimpleWrapperChecklist {
         if (handler == null)
             return;
         List<ItemStack> overflowing = new ArrayList<>();
-        for (int i = 0; i < handler.getSlots(); i++) {
+        for (int i = 0; i < handler.getSlots() && !isComplete(); i++) {
             ItemStack inSlot = handler.getStackInSlot(i);
             if (inSlot.isEmpty())
                 continue;
@@ -159,8 +164,15 @@ public class SimpleWrapperChecklist {
             if (!isItemComplete()) {
                 ConsumeResult result = countAndConsumeItem(player, inSlot);
                 if (result.changed) {
-                    inSlot = result.remaining;
-                    handler.setStackInSlot(i, result.remaining);
+                    if (!result.remaining.isEmpty()) {
+                        handler.setStackInSlot(i, result.remaining);
+                        overflowing.addAll(result.overflowing);
+                    } else if (!result.overflowing.isEmpty()) {
+                        handler.setStackInSlot(i, result.overflowing.get(0));
+                        overflowing.addAll(result.overflowing.subList(1, result.overflowing.size()));
+                    } else {
+                        handler.setStackInSlot(i, ItemStack.EMPTY);
+                    }
                 }
             }
 
@@ -179,9 +191,6 @@ public class SimpleWrapperChecklist {
                     }
                 }
             }
-
-            if (isComplete())
-                break;
         }
         placeBack.accept(overflowing);
     }
@@ -189,7 +198,7 @@ public class SimpleWrapperChecklist {
     public int drainFluidsFrom(IFluidHandler tank) {
         int drainedAmount = 0;
         if (tank != null) {
-            for (int i = 0; i < tank.getTanks(); i++) {
+            for (int i = 0; i < tank.getTanks() && !isFluidComplete(); i++) {
                 FluidStack inTank = tank.getFluidInTank(i);
                 if (inTank.isEmpty() || inTank.getAmount() < FluidType.BUCKET_VOLUME)
                     continue;
@@ -205,8 +214,8 @@ public class SimpleWrapperChecklist {
                 tank.drain(toDrain, IFluidHandler.FluidAction.EXECUTE);
                 drainedAmount += drained.getAmount();
                 entry.count += cost;
+                currentAmount += cost;
                 if (entry.isComplete()) {
-                    currentAmount++;
                     completeFluidEntries++;
                 }
             }
@@ -214,46 +223,63 @@ public class SimpleWrapperChecklist {
         return drainedAmount;
     }
 
-    private ConsumeResult countAndConsumeItem(Player player, ItemStack stack) {
+    public ConsumeResult countAndConsumeItem(Player player, ItemStack stack) {
         ItemStack copy = stack.copy();
-        boolean changed = damageItem(true, copy, player);
+        List<ItemStack> overflowing = new ArrayList<>();
+        ConsumeResult result = damageItem(true, copy, player);
+        boolean changed = result.changed;
+        if (result.changed) {
+            copy = result.remaining;
+            overflowing.addAll(result.overflowing);
+        }
         changed |= consumeItem(true, copy);
-        changed |= damageItem(false, copy, player);
+        result = damageItem(false, copy, player);
+        changed |= result.changed;
+        if (result.changed) {
+            copy = result.remaining;
+            overflowing.addAll(result.overflowing);
+        }
         changed |= consumeItem(false, copy);
-        return new ConsumeResult(changed, copy, List.of());
+        return new ConsumeResult(changed, copy, overflowing);
     }
 
-    private boolean damageItem(boolean strictNbt, ItemStack stack, Player player) {
+    private ConsumeResult damageItem(boolean strictNbt, ItemStack stack, Player player) {
         if (stack.isEmpty())
-            return false;
-        HashableRequirement key = new HashableRequirement(stack.getItem(), stack.getTag(), ItemUseType.DAMAGE);
+            return ConsumeResult.EMPTY;
+        HashableRequirement key = new HashableRequirement(stack.getItem(), strictNbt ? stack.getTag() : null, ItemUseType.DAMAGE);
         CheckEntry entry = (strictNbt ? itemStackMap : itemMap).get(key);
         if (entry == null || entry.isComplete())
-            return false;
+            return ConsumeResult.EMPTY;
         boolean changed = false;
+        List<ItemStack> overflowing = new ArrayList<>();
         // 考虑可堆叠的有耐久物品和空耐久不消失的物品
         do {
             int cost = Math.min(entry.total - entry.count, stack.getMaxDamage() - stack.getDamageValue());
             if (cost <= 0)
                 break;
+            ItemStack copy = stack.copyWithCount(1);
+            stack.shrink(1);
             changed = true;
             entry.count += cost;
-            stack.hurtAndBreak(cost, player, p -> {});
+            currentAmount += cost;
+            copy.hurtAndBreak(cost, player, p -> {});
+            if (!copy.isEmpty())
+                overflowing.add(copy);
             if (entry.isComplete()) {
                 if (strictNbt)
                     completeItemStackEntries++;
                 else
                     completeItemEntries++;
-                return true;
+                break;
             }
         } while (!stack.isEmpty());
-        return changed;
+        return new ConsumeResult(changed, stack, overflowing);
     }
 
     private boolean consumeItem(boolean strictNbt, ItemStack stack) {
         if (stack.isEmpty())
             return false;
-        HashableRequirement key = new HashableRequirement(stack.getItem(), stack.getTag(), ItemUseType.CONSUME);
+        HashableRequirement key = new HashableRequirement(stack.getItem(), strictNbt ? stack.getTag() : null, ItemUseType.CONSUME);
         CheckEntry entry = (strictNbt ? itemStackMap : itemMap).get(key);
         if (entry == null || entry.isComplete())
             return false;
@@ -270,7 +296,7 @@ public class SimpleWrapperChecklist {
         return true;
     }
 
-    private ConsumeResult drainItem(ItemStack stack) {
+    public ConsumeResult drainItem(ItemStack stack) {
         List<ItemStack> overflowing = new ArrayList<>();
         if (stack.isEmpty())
             return ConsumeResult.EMPTY;
@@ -453,7 +479,7 @@ public class SimpleWrapperChecklist {
         return new AbstractMap.SimpleEntry<>(key, value);
     }
 
-    private static class HashableRequirement {
+    public static class HashableRequirement {
 
         private final Item item;
         private final CompoundTag nbt;
@@ -465,7 +491,7 @@ public class SimpleWrapperChecklist {
         public HashableRequirement(StackRequirement requirement) {
             item = requirement.stack.getItem();
             type = requirement.usage;
-            if (requirement instanceof StrictNbtStackRequirement && requirement.stack.hasTag())
+            if (requirement instanceof StrictNbtStackRequirement)
                 nbt = requirement.stack.getTag();
             else
                 nbt = null;
@@ -515,7 +541,7 @@ public class SimpleWrapperChecklist {
         }
     }
 
-    private record ConsumeResult(boolean changed, ItemStack remaining, List<ItemStack> overflowing) {
+    public record ConsumeResult(boolean changed, ItemStack remaining, List<ItemStack> overflowing) {
         static final ConsumeResult EMPTY = new ConsumeResult(false, ItemStack.EMPTY, List.of());
     }
 }
